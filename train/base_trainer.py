@@ -10,6 +10,9 @@ from utils import colorize
 import numpy as np
 
 
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
 class BaseTrainer:
     """
     Base trainer class. Includes boilerplate code for:
@@ -51,6 +54,11 @@ class BaseTrainer:
         else: 
             print('choose optimizer adam or adamw or adafactor')
         print(colorize('%s' % self.optimizer, 'green'))
+
+        # print('model:', model)
+
+        n = count_parameters(model)
+        print("Number of parameters: %s" % n)
 
         # TODO: Change this for multi-gpu training
         # self.device = torch.device('cuda:{}'.format(opts.gpu_id))

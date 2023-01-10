@@ -52,6 +52,13 @@ def main(opts):
 
     print('Cuda current device ', torch.cuda.current_device())
 
+    # print(torch.cuda.memory_summary())
+    # os.system('nvidia-smi')
+    # test = torch.full((16,), 3.141592).to(torch.device('cuda:0'))
+    # print(torch.cuda.memory_summary())
+    # test = torch.full((16356609,), 3.141592).to(torch.device('cuda:0'))
+    # print(torch.cuda.memory_summary())
+
     set_seed(42)
 
     if opts.test_only: 
@@ -146,14 +153,22 @@ def main(opts):
             random.seed(opts.random_subset_data_seed)
             test_files = random.sample(test_files, opts.random_subset_data)
 
-        if os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '/signhd.vtt')):
-            sub_ext = '/signhd.vtt'
-        elif os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '.vtt')):
-            sub_ext = '.vtt'
-        else: 
-            print('cannot find file')
+        # if os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '/signhd.vtt')):
+        #     sub_ext = '/signhd.vtt'
+        # elif os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '.vtt')):
+        #     sub_ext = '.vtt'
+        # else: 
+        #     print('cannot find file')
 
-        gt_anno_paths = [Path(os.path.join(opts.gt_sub_path, p+sub_ext)) for p in test_files]
+        # gt_anno_paths = [Path(os.path.join(opts.gt_sub_path, p+sub_ext)) for p in test_files]
+
+        print("before DTW output")
+        eval_str = eval_subtitle_alignment(
+            pred_path_root=Path(f'{opts.save_subs_folder}'),
+            gt_anno_path_root=Path(f'{opts.gt_sub_path}'),
+            list_videos=test_files,
+            fps=25,
+        )
         
         if opts.dtw_postpro:
             with Pool(opts.n_workers) as pool:

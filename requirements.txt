@@ -4,7 +4,7 @@ jiwer==2.2.0
 matplotlib==3.3.2
 nltk==3.5
 numpy==1.19.2
-scikit_learn==1.1.1
+scikit_learn==1
 scipy==1.5.2
 six==1.16.0
 tensorboardX==2.5.1

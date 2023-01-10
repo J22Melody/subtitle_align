@@ -11,6 +11,9 @@ Example usage:
 python misc/sub_align/evaluate_sub_alignment.py \
     --pred_subtitle_dir /scratch/shared/beegfs/albanie/shared-datasets/bbcsl_raw/subtitles/subtitles-vtt-text-normalized-aligned/heuristic-aligned-subs-05_01_2021-mouth-padding4_all
 """
+import sys
+sys.path.append('/net/cephfs/shares/volk.cl.uzh/zifjia/subtitle_align') #hack
+
 import argparse
 from pickle import SHORT_BINSTRING
 from typing import List, Tuple
@@ -298,18 +301,25 @@ def parse_args():
 
 
 def main():
-    args = parse_args()
-    gt_anno_paths = list(args.gt_anno_dir.glob("**/*.vtt"))
-    print(f"Found {len(gt_anno_paths)} ground truth annotation files in {args.gt_anno_dir}")
-    pred_paths = [args.pred_subtitle_dir / path.relative_to(args.gt_anno_dir) for path
-                  in gt_anno_paths]
+    # args = parse_args()
+    # gt_anno_paths = list(args.gt_anno_dir.glob("**/*.vtt"))
+    # print(f"Found {len(gt_anno_paths)} ground truth annotation files in {args.gt_anno_dir}")
+    # pred_paths = [args.pred_subtitle_dir / path.relative_to(args.gt_anno_dir) for path
+    #               in gt_anno_paths]
 
-    #import ipdb; ipdb.set_trace(context=20)
+    # #import ipdb; ipdb.set_trace(context=20)
 
-    eval_subtitle_alignment(
-        pred_paths=pred_paths,
-        fps=args.fps,
-        gt_anno_paths=gt_anno_paths,
+    # eval_subtitle_alignment(
+    #     pred_paths=pred_paths,
+    #     fps=args.fps,
+    #     gt_anno_paths=gt_anno_paths,
+    # )
+    test_files = open(opts.test_videos_txt, "r").read().split('\n')
+    eval_str = eval_subtitle_alignment(
+        pred_path_root=Path(f'{opts.save_subs_folder}'),
+        gt_anno_path_root=Path(f'{opts.gt_sub_path}'),
+        list_videos=test_files,
+        fps=25,
     )
 
 

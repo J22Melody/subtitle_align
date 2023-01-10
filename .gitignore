@@ -46,3 +46,6 @@ checkpoints/*
 .vector_cache*
 
 data/bobsl_align_test_signer*
+
+checkpoints_subtitle_align/
+slurm*.out
