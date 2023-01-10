@@ -163,11 +163,15 @@ def eval_subtitle_alignment(
 
     if os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.vtt')): 
         ext_gt = '.vtt'
+    if os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.srt')): 
+        ext_gt = '.srt'
     else: 
         ext_gt = '/signhd.vtt'
 
     if os.path.exists(os.path.join(pred_path_root, list_videos[0]+'.vtt')): 
         ext_pred = '.vtt'
+    if os.path.exists(os.path.join(pred_path_root, list_videos[0]+'.srt')): 
+        ext_pred = '.srt'
     else: 
         ext_pred = '/signhd.vtt'
     gt_anno_paths = [Path(f'{gt_anno_path_root}/{p}{ext_gt}') for p in list_videos]
@@ -193,8 +197,12 @@ def eval_subtitle_alignment(
         # if 'natural' in str(pred_path):
         #     continue
 
-        pred_subs = list(webvtt.read(pred_path))
-        gt_subs = list(webvtt.read(gt_path))
+        if ext_pred == '.srt':
+            pred_subs = list(webvtt.from_srt(pred_path))
+            gt_subs = list(webvtt.from_srt(gt_path))
+        else:
+            pred_subs = list(webvtt.read(pred_path))
+            gt_subs = list(webvtt.read(gt_path))
 
         if shift!=0: 
             for sub_idx in range(len(pred_subs)): 
@@ -316,7 +324,7 @@ def main():
     # )
     test_files = open(opts.test_videos_txt, "r").read().split('\n')
     eval_str = eval_subtitle_alignment(
-        pred_path_root=Path(f'{opts.save_subs_folder}'),
+        pred_path_root=Path(f'{opts.pred_path_root}'),
         gt_anno_path_root=Path(f'{opts.gt_sub_path}'),
         list_videos=test_files,
         fps=25,

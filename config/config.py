@@ -137,7 +137,12 @@ def load_opts():
     parser.add_argument('--save_subs_folder', type=str, default='inference_output/subtitles', help='Folder to save subtitles')
     parser.add_argument('--save_postpro_subs_folder', type=str, default='inference_output/subtitles_postprocessing', help='Folder to save subtitles with postprocessing to remove overlaps')
 
-
+    # --- evaluation
+    parser.add_argument('--pred_path_root', 
+        type = str, 
+        default = 'inference_output/subtitles', 
+        help = 'Path to predicted subtitles')
+    
     args = parser.parse_args()
 
     return args
