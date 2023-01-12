@@ -21,6 +21,8 @@ def postprocessing_remove_intersections(test_file, path_subtitles = '/scratch/sh
             sub_ext = '/signhd.vtt'
         elif os.path.exists(os.path.join(path_subtitles, test_file + '.vtt')):
             sub_ext = '.vtt'
+        elif os.path.exists(os.path.join(path_subtitles, test_file + '.srt')):
+            sub_ext = '.srt'
         else: 
             print('cannot find file ', os.path.join(path_subtitles, test_file))
         path_pred = os.path.join(path_subtitles, test_file + sub_ext)

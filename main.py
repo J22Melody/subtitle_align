@@ -157,6 +157,8 @@ def main(opts):
         #     sub_ext = '/signhd.vtt'
         # elif os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '.vtt')):
         #     sub_ext = '.vtt'
+        # elif os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '.srt')):
+        #     sub_ext = '.srt'
         # else: 
         #     print('cannot find file')
 

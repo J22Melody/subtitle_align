@@ -1,0 +1,812 @@
+WEBVTT
+
+00:00:05.200 --> 00:00:05.360
+1:1-Untertitelung.
+
+00:00:05.360 --> 00:00:08.240
+Livepassagen können Fehler enthalten.
+
+00:00:08.400 --> 00:00:08.560
+Die "Tagesschau", meine Damen und Herren.
+
+00:00:09.560 --> 00:00:09.720
+Guten Abend.
+
+00:00:09.720 --> 00:00:18.200
+Partiell zurück in die Normalität - die Schweiz machte heute den grössten Lockerungsschritt seit dem verordneten Lockdown:
+
+00:00:19.080 --> 00:00:24.040
+Die Züge fahren praktisch wieder im Normalfahrplan und besser besetzt.
+
+00:00:24.040 --> 00:00:28.200
+In den Restaurants wird seit heute wieder Essen serviert.
+
+00:00:28.200 --> 00:00:32.360
+Läden aller Art durften wieder öffnen.
+
+00:00:32.360 --> 00:00:34.280
+Genauso wie Sportstudios und Fitnesscenter.
+
+00:00:34.280 --> 00:00:37.800
+Geht lieber rein, als so nahe beieinander zu stehen.
+
+00:00:37.800 --> 00:00:40.040
+Gespannt erwartet wurde die Öffnung der Schulen.
+
+00:00:41.000 --> 00:00:47.560
+Und ebenfalls seit heute wieder möglich: Kunst vor Ort anschauen - im Museum.
+
+00:00:47.560 --> 00:00:51.880
+Ich glaube, viele Menschen in unserem Land haben begriffen und jetzt auch gesehen:
+
+00:00:51.880 --> 00:00:56.840
+Mit Distanz und Hygienemassnahmen kann man dieses Virus im Griff behalten.
+
+00:00:56.840 --> 00:01:01.160
+Wenn wir uns daran halten, können wir auch dieses Stück Normalität leben.
+
+00:01:01.400 --> 00:01:05.880
+Auch jetzt ist unser aller Eigenverantwortung nötig.
+
+00:01:05.880 --> 00:01:06.040
+Mehr dazu gleich.
+
+00:01:06.280 --> 00:01:17.320
+Und das sind die weiteren Themen des Tages: Russlands Präsident Putin erklärt die landesweit verordnete arbeitsfreie Zeit für beendet.
+
+00:01:17.920 --> 00:01:22.720
+Die Super-League-Vereine dürfen seit heute wieder trainieren.
+
+00:01:22.720 --> 00:01:30.240
+Ausser Leader St. Gallen und GC verzichten die Klubs aber darauf - aus Kostengründen.
+
+00:01:30.680 --> 00:01:37.720
+Filmproduzenten suchen nach Möglichkeiten, um Projekte trotz Virusrisiko zu ermöglichen.
+
+00:01:39.680 --> 00:01:46.720
+Die Wolken machen vielerorts der Sonne Platz - bei eher kühlen 11-15 °C.
+
+00:01:47.080 --> 00:01:52.360
+Tag 1 der Lockerungen - seit heute sind also wieder deutlich mehr Menschen unterwegs.
+
+00:01:52.360 --> 00:02:02.280
+Auf den Strassen - z.B. hier auf der Autobahn A1 bei Weiningen - hat der Verkehr im Vergleich mit der Vorwoche laut Viasuisse leicht zugenommen.
+
+00:02:04.240 --> 00:02:06.320
+Zürich, Bern und Basel meldeten heute auch wieder Staus.
+
+00:02:06.320 --> 00:02:15.600
+Dass u.a. Läden, Schulen und Restaurants wieder geöffnet sind, zeigte sich heute deutlich am öffentlichen Verkehr, wenn auch noch nicht ganz so wie vor dem Lockdown.
+
+00:02:15.880 --> 00:02:26.600
+Zum ersten Mal bewähren musste sich das Schutzkonzept der Bahnen und Busse heute Morgen in der Rushhour - unsere Reporter berichten aus Basel und Zürich:
+
+00:02:26.600 --> 00:02:31.080
+Trams und Busse in Basel fahren wieder im normalen Takt.
+
+00:02:31.080 --> 00:02:34.760
+Ab heute Morgen gilt die Empfehlung, Masken zu tragen, wenn es eng wird.
+
+00:02:37.000 --> 00:02:42.440
+Es gibt viele, die ohne Maske fahren, das ist ein bisschen unverantwortlich.
+
+00:02:42.440 --> 00:02:44.680
+Ich habe ehrlich gesagt gar nicht darüber nachgedacht.
+
+00:02:44.680 --> 00:02:46.600
+Wann kommt die zum Einsatz bei Ihnen?
+
+00:02:47.160 --> 00:02:50.360
+Wenn es mehr Leute hat, sonst nicht.
+
+00:02:50.360 --> 00:02:50.520
+Jetzt ist noch ok für Sie?
+
+00:02:51.240 --> 00:02:53.160
+- Ja, es hat genug Abstand.
+
+00:02:53.160 --> 00:02:58.680
+Es trägt fast niemand eine Maske, ich fühle mich fast komisch, eine zu tragen.
+
+00:02:58.680 --> 00:03:02.680
+Nein, ich habe keine, aber sobald es zwingend wird, kaufe ich mir eine.
+
+00:03:02.680 --> 00:03:11.800
+Das Schutzkonzept im ÖV sieht Schutzmasken als dringende Empfehlung überall dort vor, wo der 2-m-Abstand nicht eingehalten werden kann.
+
+00:03:11.800 --> 00:03:12.920
+Eine Tragepflicht gibt es in der Schweiz nicht.
+
+00:03:12.920 --> 00:03:15.160
+Wir kommen aus Frankreich.
+
+00:03:15.160 --> 00:03:18.680
+Bei uns ist es wirklich sehr streng, wir müssen Masken tragen.
+
+00:03:19.840 --> 00:03:26.240
+Hier hat niemand eine Maske, das ist schon ein bisschen komisch für uns.
+
+00:03:26.240 --> 00:03:26.400
+Warum haben Sie keine?
+
+00:03:26.400 --> 00:03:30.240
+Weil es noch keine offizielle Maskenpflicht gibt.
+
+00:03:30.240 --> 00:03:35.040
+Im öffentlichen Nahverkehr sollte es Pflicht sein, wie bei uns in Deutschland.
+
+00:03:35.400 --> 00:03:38.760
+Wenn man sich daran hält, kann man die Verbreitung gut vermeiden.
+
+00:03:38.760 --> 00:03:44.200
+Dieses Schutzkonzept der Systemführer plädiert ganz klar auf Eigenverantwortung und Solidarität der Fahrgäste.
+
+00:03:44.200 --> 00:03:50.920
+Wir, die BVB, machen in unseren Fahrzeugen auf unseren Bildschirmen auf dieses Schutzkonzept aufmerksam.
+
+00:03:50.920 --> 00:03:56.200
+Dort steht auch, wenn der Abstand nicht eingehalten wird, dass dann eine Maske getragen werden soll.
+
+00:03:56.200 --> 00:04:00.200
+Doch letztlich ist jeder Fahrgast für sich selbst verantwortlich.
+
+00:04:00.880 --> 00:04:01.040
+Doch es wäre natürlich wünschenswert.
+
+00:04:01.040 --> 00:04:07.280
+Auch Zürich spürt den Mehrverkehr und die Maskenempfehlung im ÖV.
+
+00:04:08.440 --> 00:04:15.320
+Ich trage eine Maske, weil ich heute nach Chur fahre und lange im Zug sitze.
+
+00:04:15.320 --> 00:04:15.480
+Es wäre sicher eine gute Sache.
+
+00:04:18.320 --> 00:04:20.560
+Wenn es Maskenpflicht gäbe, würde ich auch eine tragen.
+
+00:04:20.560 --> 00:04:26.000
+Ich finde schön, dass in der Schweiz wirklich Eigenverantwortung zählt, dass man es den Leuten überlässt.
+
+00:04:26.000 --> 00:04:28.240
+Die dringende Maskenempfehlung im engen Berufsverkehr.
+
+00:04:31.600 --> 00:04:31.760
+Wann ist es eng im ÖV?
+
+00:04:31.760 --> 00:04:33.840
+Die Maskenempfehlung legt jeder Pendler für sich persönlich aus.
+
+00:04:33.840 --> 00:04:39.120
+Während des Lockdowns hatte die SBB ihren Betrieb um bis zu 50 % reduziert.
+
+00:04:39.120 --> 00:04:42.960
+Seit heute sind schweizweit wieder 90 % aller Verbindungen abgedeckt.
+
+00:04:43.280 --> 00:04:48.240
+Für alle 170 ÖV-Unternehmen in der Schweiz eine grosse Herausforderung.
+
+00:04:48.240 --> 00:05:00.080
+Das Schutzkonzept der SBB inspizierte Bundespräsidentin Simonetta Sommaruga heute höchstpersönlich am Bahnhof Bern.
+
+00:05:00.080 --> 00:05:00.240
+Erwin Schmid war dabei: Hände desinfizieren gehört jetzt zum Benutzen der Bahn.
+
+00:05:00.320 --> 00:05:06.240
+Daneben: Abstand halten und Billette wenn möglich online oder am Automaten kaufen.
+
+00:05:06.400 --> 00:05:12.000
+Wenn es im Zug eng wird, ist ab heute zudem das Tragen von Hygienemasken dringend empfohlen.
+
+00:05:12.000 --> 00:05:16.800
+So wie es auch für das Personal gilt, das mit Kund/-innen in Kontakt kommt.
+
+00:05:16.800 --> 00:05:20.800
+Ich glaube, das Bewusstsein, dass man hier eine grosse Verantwortung hat, ist vorhanden.
+
+00:05:20.880 --> 00:05:28.080
+Gleichzeitig möchte man auch, dass der ÖV wieder benutzt wird, dass er zuverlässig und sicher ist.
+
+00:05:28.080 --> 00:05:31.920
+Mit dieser Vorbereitung ist es jetzt gut möglich, den öffentlichen Verkehr wieder zu nutzen.
+
+00:05:31.920 --> 00:05:39.440
+Aber besser nicht zu Stosszeiten, nicht alle gleichzeitig, dann können wir uns auch sicher fühlen.
+
+00:05:39.440 --> 00:05:43.760
+Augenschein im Zugskontrollzentrum.
+
+00:05:43.760 --> 00:05:48.240
+Der Betrieb wird gerade von 70 % der Züge wieder auf 90 % hochgefahren.
+
+00:05:48.240 --> 00:05:50.960
+25 km abgestellte Züge kamen wieder in Betrieb.
+
+00:05:50.960 --> 00:05:52.880
+Gleichzeitig wurde das Schutzkonzept eingeführt.
+
+00:05:52.880 --> 00:05:55.280
+Ein Kraftakt für die SBB.
+
+00:05:55.400 --> 00:05:59.080
+Betrieblich hat es sehr gut funktioniert, wir waren bereit.
+
+00:06:00.080 --> 00:06:02.960
+Wir sind auch zufrieden mit dem Schutzkonzept.
+
+00:06:02.960 --> 00:06:05.520
+Die Leute müssen sich noch daran gewöhnen.
+
+00:06:06.200 --> 00:06:14.840
+Das ist sicher eine kleine Herausforderung, ihnen das beizubringen: nicht nur Abstand, sondern auch eine Schutzmaske zu tragen, wenn dieser Abstand nicht mehr gegeben ist.
+
+00:06:14.840 --> 00:06:15.000
+Das wird etwas Zeit brauchen.
+
+00:06:15.000 --> 00:06:17.560
+Wir haben etwa halb so viele Kunden wie an einem normalen Tag.
+
+00:06:17.920 --> 00:06:21.760
+Es gibt also noch Platz in den Zügen. Aber das ist normal.
+
+00:06:21.760 --> 00:06:26.400
+Die Postautos fahren ab heute wieder normal, mit Ausnahme der Tourismuslinien.
+
+00:06:26.400 --> 00:06:31.200
+Die Erholung dürfte aber wie bei der SBB Monate dauern.
+
+00:06:31.200 --> 00:06:36.640
+Wir spüren doch noch eine Vorsicht, denn die Unternehmen sind immer noch häufig im Homeoffice.
+
+00:06:36.640 --> 00:06:38.720
+Es gibt jetzt Schritt für Schritt eine Öffnung.
+
+00:06:38.720 --> 00:06:46.080
+Heute Morgen waren die Nutzerzahlen zwar immer noch tief, aber es sind doch jeden Tag etwas mehr.
+
+00:06:46.080 --> 00:06:50.240
+Betrieblich hat das Hochfahren des ÖV gut schweizerisch funktioniert.
+
+00:06:50.240 --> 00:06:54.080
+Noch gewöhnungsbedürftig für alle ist das Einhalten des Schutzkonzeptes.
+
+00:06:56.480 --> 00:07:04.800
+Gewöhnen an den neuen Alltag war auch das Credo in den heute wiedereröffneten Schulen - und zwar für die Kinder wie für die Lehrkräfte.
+
+00:07:04.800 --> 00:07:14.080
+Bei aller Erleichterung, dass der Unterricht wieder losgeht, mindestens so gross war heute Morgen die Spannung, wie der virusgeschütze Unterricht genau vonstatten gehen kann:
+
+00:07:14.080 --> 00:07:17.920
+Geht lieber hinein, als so nahe zusammen zu stehen.
+
+00:07:23.720 --> 00:07:25.320
+Die neuen Massnahmen sind gewöhnungsbedürftig.
+
+00:07:25.320 --> 00:07:30.920
+Jetzt tasten sich die Jugendlichen schrittweise in den Alltag zurück.
+
+00:07:31.000 --> 00:07:34.040
+Wir freuen uns wahnsinnig, dass die Kinder wieder da sind.
+
+00:07:34.040 --> 00:07:37.560
+Ein Schulhaus ohne Kinder bringt eigentlich nichts.
+
+00:07:37.560 --> 00:07:41.560
+Ich freue mich sehr, euch alle endlich wieder persönlich zu sehen.
+
+00:07:41.600 --> 00:07:51.680
+Gita Topiwala muss ihre Halbklasse mit den neuen Hygienemassnahmen vertraut machen und zu mehr Distanz zu Lehrpersonen anhalten.
+
+00:07:51.680 --> 00:07:55.040
+Das Abstandhalten ist eine grosse Herausforderung.
+
+00:07:55.040 --> 00:07:57.920
+Das sind wir uns aus dem normalen Unterricht nicht gewohnt.
+
+00:07:58.600 --> 00:08:02.600
+Das braucht sicher noch Gewöhnung.
+
+00:08:02.600 --> 00:08:08.360
+Die Lockerung ist eine grosse Umstellung für Lehrpersonen und Jugendliche.
+
+00:08:08.360 --> 00:08:16.680
+Einerseits habe ich mich gefreut, andererseits fand ich es auch ein wenig komisch mit diesen ganzen Regeln.
+
+00:08:16.880 --> 00:08:20.880
+Aber im Ganzen finde ich es toll, dass es wieder so ist.
+
+00:08:20.880 --> 00:08:26.640
+Grüezi per Ellbogen statt mit Handschlag - das ist die Devise im bündnerischen Conters.
+
+00:08:28.120 --> 00:08:32.600
+Kinder und Primarlehrer Benjamin Bardill haben sich auf diesen Tag gefreut.
+
+00:08:32.600 --> 00:08:41.880
+Man ist ja nicht Lehrer geworden, um am Computer zu sitzen und es aus der Ferne mit den Kindern zu regeln, sondern man will, dass sie wirklich da sind.
+
+00:08:41.880 --> 00:08:45.720
+Und ab heute sind die Kinder von Conters also wieder da.
+
+00:08:45.720 --> 00:08:53.880
+Sie freuen sich, nicht nur ihre Freunde und Kameradinnen wieder zu sehen, sondern auf normalen Unterricht im Klassenzimmer.
+
+00:08:54.120 --> 00:09:13.000
+Schulen, ÖV, Restaurants - wir schauen ausserdem, wie die Situation heute im Detailhandel aussah: Denn wer das - quasi dank Corona - angesparte Geld ausgeben will, kann das seit heute wieder in den Läden tun: An der Einkaufsmeile par excellence, an der Zürcher Bahnhofstrasse, ist heute wieder Leben eingekehrt.
+
+00:09:13.000 --> 00:09:14.120
+Die meisten Geschäfte haben die Türen wieder geöffnet.
+
+00:09:15.160 --> 00:09:22.840
+Die grossen Kleiderketten und Einkaufshäuser, sie alle können jetzt wieder Kunden empfangen.
+
+00:09:22.840 --> 00:09:30.360
+Doch nicht nur das Verkaufspersonal hat die Wiedereröffnung sehnlichst erwartet, wie die Reportage von Raphael Drobi zeigt:
+
+00:09:30.360 --> 00:09:33.240
+So, jetzt geht's endlich wieder los.
+
+00:09:34.040 --> 00:09:38.200
+Es herrscht Freude über die Wiedereröffnung.
+
+00:09:38.200 --> 00:09:40.440
+Ich habe es so vermisst, einfach mal zu schauen.
+
+00:09:40.440 --> 00:09:47.480
+Und jetzt die schönen Sommersachen, die neuen Farben, das hat man vermisst.
+
+00:09:47.480 --> 00:09:49.880
+Mir geht es gar nicht unbedingt ums Einkaufen.
+
+00:09:50.520 --> 00:09:53.880
+Ich möchte erleben, wie die Leute wieder arbeiten dürfen.
+
+00:09:55.280 --> 00:09:57.360
+Diesen Moment finde ich ziemlich cool.
+
+00:09:57.360 --> 00:10:04.880
+Die neue Normalität: Plexiglasscheiben bei der Kasse, Desinfektionsmittel beim Eingang.
+
+00:10:04.880 --> 00:10:06.800
+Rückblick auf die Vorbereitungen beim Haushaltswarengeschäft Sibler.
+
+00:10:09.440 --> 00:10:13.600
+Haben wir jetzt eine Lösung, um die Leute zu zählen, die das Geschäft betreten?
+
+00:10:13.600 --> 00:10:13.760
+Mit den Karten?
+
+00:10:13.760 --> 00:10:20.000
+Die Vorgaben sind strikt: Pro 10 m2 Ladenfläche darf sich nur eine Person aufhalten.
+
+00:10:20.000 --> 00:10:23.680
+So, hierhin kommt eine Abstandsmarkierung.
+
+00:10:23.680 --> 00:10:29.600
+Auch beim Modegeschäft Weber in St. Gallen liefen die Vorbereitungen auf Hochtouren.
+
+00:10:29.600 --> 00:10:30.400
+Unklar ist, wie viele Kunden tatsächlich kommen.
+
+00:10:30.680 --> 00:10:32.280
+Heute Morgen überwiegt aber die Vorfreude.
+
+00:10:33.400 --> 00:10:36.600
+Wir freuen uns, dass das Team wieder hier ist, dass wieder Leben im Laden ist.
+
+00:10:36.600 --> 00:10:38.520
+Wir sind zuversichtlich.
+
+00:10:39.480 --> 00:10:44.600
+Nach einem ruhigen Morgen hat der Verkauf heute Nachmittag bereits angezogen.
+
+00:10:44.600 --> 00:10:49.400
+Zurück im Haushaltswarengeschäft: Auch Manuel Wiesendanger ist zufrieden.
+
+00:10:49.400 --> 00:10:56.600
+Obwohl noch nicht ganz so viele Kunden wie vor dem Shutdown gekommen sind, freut man sich über den persönlichen Kontakt.
+
+00:10:56.600 --> 00:11:06.200
+Es ist natürlich superschön, dass man die Leute wieder im Geschäft bedienen kann, mit ihnen vor den Produkten stehen und diese erklären kann.
+
+00:11:06.600 --> 00:11:12.040
+Endlich geschieht das wieder dreidimensional, und nicht nur am Telefon.
+
+00:11:12.040 --> 00:11:12.200
+Die neue Normalität.
+
+00:11:12.200 --> 00:11:18.120
+Was das heisst punkto Umsatz und wie sich die Schutzkonzepte bewähren, zeigt sich erst nach und nach.
+
+00:11:20.360 --> 00:11:23.560
+Einkaufen ist also durchwegs wieder erlaubt.
+
+00:11:23.560 --> 00:11:30.600
+Doch mit Abstand halten, einer beschränkten Anzahl Kunden im Laden und Desinfektionsmitteln beim Eingang stellt sich die Frage:
+
+00:11:30.600 --> 00:11:35.240
+Kommen die Leute wieder so zwanglos wie vor der Krise zum Einkaufen?
+
+00:11:35.360 --> 00:11:39.680
+Die Bilanz des ersten Tages ist sehr positiv.
+
+00:11:39.920 --> 00:11:44.400
+Die Kunden besuchen die Geschäfte etwa in derselben Frequenz wie an einem Maitag im Vorjahr.
+
+00:11:44.400 --> 00:11:47.280
+Die Kunden machen mehr Umsatz und halten sich auch ans Schutzkonzept.
+
+00:11:47.280 --> 00:11:54.000
+Das ist für uns sehr wichtig, so muss unser Verkaufspersonal nicht Polizei spielen, sondern kann sich auf die Beratung konzentrieren.
+
+00:11:54.000 --> 00:11:55.600
+Erwarten Sie Nachholbedarf bei den Kunden?
+
+00:11:55.600 --> 00:11:57.520
+Ja, wir haben einen sehr grossen Nachholbedarf gesehen.
+
+00:11:58.560 --> 00:12:07.840
+Es werden Kinderschuhe gekauft, Uhren zur Reparatur gebracht - es sind alles Dinge, die zu kurz gekommen sind und nun nachgeholt werden.
+
+00:12:07.840 --> 00:12:12.000
+Wann erwarten Sie Normalität betreffend der Umsätze?
+
+00:12:12.680 --> 00:12:16.360
+Das wird sich nächste Woche zeigen.
+
+00:12:16.360 --> 00:12:17.320
+Am Samstag erwarten wir noch einmal grosse Umsätze.
+
+00:12:17.320 --> 00:12:23.240
+Wenn das anhält und das Konsumvertrauen wieder zurückkommt, dann wird das schnell gehen.
+
+00:12:23.240 --> 00:12:31.400
+Wenn uns die Rezession hingegen doch stark trifft, kann das Monate, wenn nicht gar Jahre dauern, bis wir wieder bei Vor-Corona-Zeiten sind.
+
+00:12:32.600 --> 00:12:37.880
+Seit heute kann man also auch wieder Kleider, Schuhe, Werkzeug oder Fahrzeuge kaufen.
+
+00:12:37.880 --> 00:12:40.440
+Unter Schutzbedingungen sind jetzt alle Läden wieder offen.
+
+00:12:40.440 --> 00:12:43.960
+Erwin Schmid, wie haben Sie heute die Situation in Bern beobachtet?
+
+00:12:44.160 --> 00:13:04.160
+Wir untertiteln live: Viele haben grossen Respekt vor diesem grossen Eröffnungsschritt.
+
+00:13:04.160 --> 00:13:09.920
+Mein persönlicher Eindruck war, dass dieser Schritt an diesem ersten Tag zumindest gut funktioniert hat.
+
+00:13:09.920 --> 00:13:11.040
+Der Verkehr hat nur mässig zugenommen.
+
+00:13:11.040 --> 00:13:14.240
+Zumindest in Bayern gab es kaum irgendwo Gedränge in der Stadt.
+
+00:13:14.920 --> 00:13:20.520
+Ich denke aber auch, dass die grosse Herausforderung erst kommt.
+
+00:13:20.520 --> 00:13:28.040
+Bisher ging es darum, eine Situation zu überstehen, von der wir wussten, dass sie irgendwann vorbeigeht.
+
+00:13:28.040 --> 00:13:33.320
+Jetzt müssen wir uns an eine Situation gewöhnen, die nicht so rasch vorüber sein wird.
+
+00:13:33.320 --> 00:13:35.880
+Es ist der grösste Lockerungsschritt seit dem vom Bundesrat verordneten Shutdown.
+
+00:13:37.040 --> 00:13:42.640
+Wie sieht das politische Fazit des heutigen Tages aus?
+
+00:13:42.640 --> 00:13:50.800
+Es war nicht zuletzt Herr Bundesrat, der eigentlich zuerst einen gemächlicheren Schritt plante.
+
+00:13:50.800 --> 00:13:54.160
+Dann wurde man von der Gastrobranche unter Druck gesetzt.
+
+00:13:54.160 --> 00:14:11.120
+Ob dieser grosse Schritt richtig war, ob es zu schnell oder zu langsam war, das werden wir erst in 2-3 Wochen wissen, wenn wir die Zahlen haben, wie sich die Epidemie weiter entwickelt.
+
+00:14:11.120 --> 00:14:16.080
+Trotzdem war der Corona-Delegierte Daniel Koch heute bereits erleichtert über den Schritt.
+
+00:14:16.080 --> 00:14:21.360
+Ich bin sehr erleichtert, dass wir sehr vielen Menschen wieder Sachen ermöglichen können, die bisher nicht möglich waren.
+
+00:14:21.360 --> 00:14:31.760
+Man muss immer daran denken, dass Massnahmen auch negative Seiten haben, und ich bin sehr erleichtert, dass wir jetzt mindestens einen Teil dieser negativen Seiten beseitigen konnten.
+
+00:14:37.480 --> 00:14:44.040
+Für eine politische Bilanz ist es aber sicher zu früh.
+
+00:14:46.160 --> 00:14:50.160
+Es wird darauf ankommen, wie gut Aldi Schutzkonzepte umgesetzt werden.
+
+00:14:50.160 --> 00:14:58.000
+Aber auch hier mein erster Eindruck: Die beteiligten Firmen und Unternehmen tun alles, sie nehmen diese Schutzkonzepte sehr ernst.
+
+00:15:02.720 --> 00:15:02.880
+Und sie versuchen, sie bestmöglich umzusetzen.
+
+00:15:02.880 --> 00:15:08.000
+Das Bundesamt für Gesundheit rechnet nicht mit einer zweiten Welle.
+
+00:15:08.640 --> 00:15:18.720
+Darum sollen sich jetzt Risikogruppen auch wieder freier bewegen dürfen. Was heisst das konkret?
+
+00:15:18.720 --> 00:15:26.080
+Wurde am Freitag angekündigt und inzwischen hat man die Empfehlungen für die Risikogruppen ausgearbeitet.
+
+00:15:26.080 --> 00:15:34.880
+Neu sind diese Empfehlungen vor allem für die Bewohnerinnen und Bewohner von Pflegeeinrichtungen.
+
+00:15:37.440 --> 00:15:45.920
+Diese sollen wieder Besuch von Angehörigen unter strengen Schutzmassnahmen, Hygiene, Abstand - bekommen können.
+
+00:15:45.920 --> 00:15:50.560
+Über 65-jährige zählen weiterhin zur Risikogruppe.
+
+00:15:50.560 --> 00:15:57.760
+Obwohl die meisten Todesfälle bei über 80 -jährigen zu beklagen sind.
+
+00:15:57.760 --> 00:16:03.360
+Ins Ausland: In Russland soll der landesweit geltende Corona-Lockdown ab morgen teilweise aufgehoben werden.
+
+00:16:03.360 --> 00:16:11.040
+Das hat heute Präsident Wladimir Putin angekündigt - und der Bevölkerung damit Hoffnung gemacht auf wenigstens ein Stück Normalität nach sechs Wochen Quarantäne.
+
+00:16:11.040 --> 00:16:16.640
+Nur: Putins Ankündigung kommt zu einer Zeit, in der die Zahl der Neuinfektionen in Russland täglich weiter ansteigt.
+
+00:16:16.640 --> 00:16:24.800
+Mittlerweile zählt Russland mit über 220'000 Infizierten die viertmeisten Fälle weltweit.
+
+00:16:27.200 --> 00:16:39.520
+Via Online-Konferenz verkündet Wladimir Putin seinen Landsleuten die Neuigkeit: Die russische Wirtschaft soll bereits morgen wieder anlaufen - nach sechs Wochen Quarantäne.
+
+00:16:39.520 --> 00:16:45.600
+Ab dem 12. Mai, also ab morgen, wird der Lockdown für alle Teile der Wirtschaft schrittweise beendet.
+
+00:16:45.600 --> 00:16:51.840
+Die Lockerungen: ein Hoffnungsschimmer für die darbende russische Wirtschaft.
+
+00:16:51.880 --> 00:16:57.160
+Fast 1,5 Mio. Menschen haben sich seit Anfang April zusätzlich arbeitslos gemeldet.
+
+00:16:57.160 --> 00:17:04.680
+Putin verspricht darum heute Steuererleichterungen oder -rückzahlungen für Selbstständige sowie billige Kredite für KMU.
+
+00:17:04.880 --> 00:17:08.560
+Auch arbeitslose Eltern will er finanziell unterstützen.
+
+00:17:08.560 --> 00:17:14.320
+Weiterhin zu Hause bleiben müssen jedoch Menschen über 65.
+
+00:17:14.320 --> 00:17:17.840
+Und auch Massenveranstaltungen bleiben verboten.
+
+00:17:17.840 --> 00:17:23.920
+Inwieweit die von Putin angekün-digten Lockerungen umgesetzt werden, ist jedoch unklar.
+
+00:17:24.760 --> 00:17:30.360
+Die russischen Regionen können selber bestimmen, ob sie die Massnahmen lockern oder verschärfen.
+
+00:17:30.360 --> 00:17:36.120
+Moskau und St. Petersburg etwa haben die Quarantäne bereits bis Ende Monat verlängert.
+
+00:17:36.400 --> 00:17:45.520
+Im Iran sind durch einen versehentlichen Raketentreffer 19 Matrosen getötet und 15 weitere verletzt worden.
+
+00:17:45.680 --> 00:17:54.160
+Die Matrosen hatten sich auf einem iranischen Versorgungsschiff befunden - die Rakete war von einem anderen, ebenfalls iranischen Schiff abgefeuert worden.
+
+00:17:54.160 --> 00:18:08.240
+Dieser Zwischenfall erinnert an den versehentlichen und tragischen Abschuss eines ukrainischen Passagierflugzeugs Anfang Januar im Iran mit 176 Todesopfern. Die Ursache des neuen Zwischenfalls ist noch nicht bekannt.
+
+00:18:10.000 --> 00:18:13.840
+Von der Rakete getroffen wurde das Versorgungsschiff Konarak.
+
+00:18:13.840 --> 00:18:18.800
+Es hatte im Rahmen einer Übung Ziele im Meer ausgesetzt und wurde dabei selber zu einem Ziel.
+
+00:18:18.800 --> 00:18:33.360
+Diese von der Internetseite "Naval News" veröffentlichten Fotos sollen angeblich die Löscharbeiten an der Konarak zeigen. Das Unglück trug sich im Gebiet vor den iranischen Hafenstädten Dschask und Tschahbahar zu.
+
+00:18:33.360 --> 00:18:40.080
+Unweit davon liegt die Strasse von Hormus, ein Nadelöhr im internationalen Öltanker-Verkehr.
+
+00:18:40.080 --> 00:18:46.160
+Wieso die von der Fregatte Dschamaran abgefeuerte Rakete ein eigenes Versorgungsschiff traf, wird noch untersucht.
+
+00:18:46.160 --> 00:18:52.880
+Irans staatliche Medien berichteten zunächst von nur einem Todesopfer.
+
+00:18:53.200 --> 00:19:01.680
+Gemäss diesem von privater Seite veröffentlichten Video wurden zumindest einige Matrosen von Fischern gerettet.
+
+00:19:05.160 --> 00:19:10.920
+Er hat als Spitzenmanager von sich reden gemacht, jetzt ist Fritz Gerber tot.
+
+00:19:10.920 --> 00:19:30.920
+1990 hatte er den Pharmakonzern Roche mit der Übernahme des amerikanischen Biotech-Unternehmens Genentech und später des deutschen Diagnostik-Spezialisten Boehringer Mannheim an die Weltspitze geführt. In den 80er- und 90er-Jahren leitete der gebürtige Berner die beiden Konzerne Roche und Zurich Versicherung in Personalunion.
+
+00:19:31.760 --> 00:19:38.160
+Gerber starb letzte Nacht im Alter von 91 Jahren an einem Hirnschlag.
+
+00:19:38.160 --> 00:19:41.520
+Endlich darf wieder trainiert werden.
+
+00:19:42.280 --> 00:19:46.280
+Wer gerne Vereinssport treibt, brauchte lange Geduld.
+
+00:19:46.280 --> 00:19:48.200
+So erging es auch den Profis.
+
+00:19:48.200 --> 00:19:48.360
+Auch die Fussballer dürfen wieder auf den Platz.
+
+00:19:49.440 --> 00:19:57.280
+Trotzdem haben mit GC und St. Gallen nur gerade zwei Klubs aus den obersten beiden Ligen das Training wiederaufgenommen.
+
+00:19:57.280 --> 00:20:02.240
+Denn: Wer wieder trainiert, hat kein Anrecht mehr auf Kurzarbeit.
+
+00:20:03.560 --> 00:20:13.320
+Jeff Baltermia: Ein einfacher Pass, ein bisschen Spielfreude, ja sogar Koordinationsübungen - irgendwie ist in dieser fussballarmen Zeit alles ein Highlight bei GC.
+
+00:20:14.240 --> 00:20:15.840
+Wir hatten alle sehr viel Spass und sehr viel Freude.
+
+00:20:15.840 --> 00:20:20.640
+Natürlich mit gewissen Einschränkungen, an die wir uns aber gerne halten.
+
+00:20:20.640 --> 00:20:24.640
+Ich denke, es hat den Jungs auch sehr viel Spass gemacht.
+
+00:20:24.640 --> 00:20:30.560
+In der Super League schwitzen bis auf St. Gallen alle Klubs weiter im Homeoffice.
+
+00:20:30.560 --> 00:20:38.560
+Basel und YB mal ausgenommen, ist der Hauptgrund für das Zuwarten der Klubs ein Entscheid des Staatsekretariats für Wirtschaft.
+
+00:20:38.560 --> 00:20:45.280
+Denn das SECO stellt klar: Ab dem ersten Training wird es teuer.
+
+00:20:45.280 --> 00:20:53.600
+Der Arbeitsausfall ist insofern bestimmbar: Wenn nicht trainiert wird, nichts unternommen wird, dann ist das 100 % Arbeitsausfall.
+
+00:20:53.600 --> 00:20:57.920
+Dann kriegen sie entsprechend Kurzarbeitsentschädigung.
+
+00:20:58.800 --> 00:21:08.560
+Sobald allerdings das professionelle Training aufgenommen wird, müsste die Arbeitslosenversicherung sämtlich Trainingspläne durchgehen usw. Das geht nicht.
+
+00:21:08.560 --> 00:21:10.960
+Das ist praktisch nicht machbar.
+
+00:21:11.280 --> 00:21:16.880
+Nur wenige Klubs können es sich wie GC leisten, auf Kurzarbeit zu verzichten.
+
+00:21:16.880 --> 00:21:20.720
+Und so rollt der Ball vorerst nur in Zürich und St. Gallen.
+
+00:21:21.600 --> 00:21:27.360
+Zum ersten Mal seit 16 Jahren schrauben die Eishockey-Ligen an ihrem Modus:
+
+00:21:28.840 --> 00:21:38.440
+An ihrer Versammlung haben die zwei höchsten Ligen beschlossen, dass es nächste Saison, wegen der Corona-Krise, keinen Absteiger geben wird - Aufsteiger hingegen schon.
+
+00:21:38.440 --> 00:21:46.120
+Deshalb könnten ab übernächster Saison also 13 statt wie bisher zwölf Teams in der National League und in der Swiss League spielen.
+
+00:21:46.760 --> 00:21:57.480
+Die Schulen, die Läden, Restaurants, Museen und Fitnesscenter sind seit heute wieder offen - Kinos aber bleiben Corona-bedingt noch mind. bis zum 8. Juni geschlossen.
+
+00:21:57.480 --> 00:22:08.520
+Und auch die Produktion von Schweizer Spielfilmen und Serien liegt noch auf Eis. Produzentinnen und Produzenten suchen deshalb mit Hochdruck nach Möglichkeiten, dem Virus zu trotzen.
+
+00:22:08.560 --> 00:22:16.400
+Dabei setzen sie auch auf die Erfahrung einer Branche, die sich - sagen wir es so - mit engstem Körperkontakt bestens auskennt.
+
+00:22:16.400 --> 00:22:25.520
+Selim Petersen: Das Jahr 2020 hatte für die Schweizer Filmbranche so gut begonnen.
+
+00:22:25.520 --> 00:22:35.440
+Über 280'000 Zuschauer waren in die Kinos geeilt, um "Platzspitzbaby" zu sehen, das Drogendrama von Produzent Peter Reichenbach.
+
+00:22:35.440 --> 00:22:40.240
+Der Dreh seines nächsten Projekts musste dagegen wegen Corona unterbrochen werden.
+
+00:22:40.240 --> 00:22:47.280
+Die dritte Staffel der SRF-Serie "Wilder" liegt derzeit auf Eis, wie fast alle grossen TV-und Kino-Produktionen.
+
+00:22:49.240 --> 00:22:53.080
+Uns fehlen fünf Drehwochen, 25 Tage.
+
+00:22:53.080 --> 00:22:54.360
+Wir müssen jetzt schauen, wann man die nachholen kann.
+
+00:22:54.360 --> 00:23:00.120
+Wir planen im Moment mal damit, dass wir dann Mitte Juli wieder loslegen können.
+
+00:23:00.120 --> 00:23:03.960
+Aber es wird sich zeigen, ob das überhaupt machbar ist.
+
+00:23:03.960 --> 00:23:08.440
+Im Moment müssen verschiedene Konzepte erarbeitet werden.
+
+00:23:08.440 --> 00:23:11.320
+Drehen, ohne unnötig eine Ansteckung zu riskieren.
+
+00:23:11.400 --> 00:23:22.120
+Dieser Mann weiss, wie das gehen könnte: Ex-Porno-Produzent Peter Preissle, den wir im ehemaligen Sexkino Stüssihof zum Gespräch treffen.
+
+00:23:22.360 --> 00:23:30.840
+Er hat quasi hautnah miterlebt, wie harte Pornos in den 80er-und 90er-Jahren gedreht wurden - trotz HIV-Epidemie.
+
+00:23:30.840 --> 00:23:32.600
+Da wurde einfach getestet, getestet, getestet.
+
+00:23:32.600 --> 00:23:41.240
+Und bevor der Dreh begann, musste jeder einen zwei, drei Tage alten Test vorweisen.
+
+00:23:41.240 --> 00:23:45.400
+Dieser bestätigte, dass er kein HIV hat.
+
+00:23:46.520 --> 00:23:49.080
+Warum also nicht von der Pornobranche lernen?
+
+00:23:49.080 --> 00:24:00.440
+Statt auf HIV könnte man alle auf dem Set auf Corona testen lassen und dann an einem hermetisch abgeriegelten Ort drehen. Liesse sich diese Praktik nicht auch beim Spielfilm durchsetzen?
+
+00:24:00.440 --> 00:24:03.480
+Die Tests werden sicher kommen, auf die eine oder andere Weise.
+
+00:24:03.480 --> 00:24:07.800
+Ob ich die Schauspieler alle in Quarantäne stecken kann, ist eine ganz andere Frage.
+
+00:24:07.800 --> 00:24:10.520
+Ich müsste ja ein ganzes Hotel mieten, das keiner verlassen darf.
+
+00:24:10.520 --> 00:24:17.240
+Wer da mitmachen würde und wer nicht, kann ich so nicht sagen.
+
+00:24:17.600 --> 00:24:23.200
+Wann in der Schweiz wieder wie gedreht wird, weiss derzeit noch niemand.
+
+00:24:23.200 --> 00:24:27.200
+Bis es so weit ist, dürfte die Lust auf frische Inhalte weiter wachsen.
+
+00:24:29.360 --> 00:24:33.840
+Und jetzt zu Arthur Honegger und den Themen von "10vor10".
+
+00:24:33.840 --> 00:24:34.000
+Waren Sie heute auch unterwegs?
+
+00:24:35.560 --> 00:24:40.040
+Und was war da Ihr Eindruck: Halten sich die Leute an die Corona-Regeln?
+
+00:24:40.040 --> 00:24:43.080
+Davon hängt schliesslich in den nächsten Tagen alles ab.
+
+00:24:43.120 --> 00:24:49.680
+Darum fragen wir den Top-Epidemiologen live im Studio, wie er diesen Tag einschätzt.
+
+00:24:49.680 --> 00:24:59.440
+Und ja: Das verführerischste Lächeln aller Zeiten verzaubert jetzt mehr Menschen als jemals zuvor - und das, obwohl niemand die Mona Lisa im Louvre erleben kann.
+
+00:24:59.440 --> 00:25:03.600
+Wie das geht, zeigen wir um 10 vor 10.
+
+00:25:03.840 --> 00:25:04.000
+Danke, Arthur.
+
+00:25:04.000 --> 00:25:06.880
+So viel von uns - jetzt "Meteo" und danach "1 gegen 100".
+
+00:25:06.880 --> 00:25:11.360
+Im Gesundheitsmagazin "Puls" geht es heute um den belastenden Umgang mit der Virengefahr.
+
+00:25:11.480 --> 00:25:14.200
+Danke fürs Interesse und bis morgen.
+

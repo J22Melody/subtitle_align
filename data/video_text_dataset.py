@@ -77,14 +77,21 @@ class VideoTextDataset(Dataset):
 
         ### Loading features
         print('Loading features...')
-        if self.opts.load_features: 
-            if 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
+        if self.opts.load_features:
+            is_flat = False
+            if os.path.exists(os.path.join(self.opts.features_path, data_paths[0]) + '.npy'):
+                ext='.npy'
+                is_flat = True
+            elif 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
                 ext='.npy'
             else:
                 ext='.mat'
             self.features = {}
             for path in tqdm(data_paths):
-                full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
+                if is_flat:
+                    full_path = os.path.join(self.opts.features_path, data_paths[0]) + '.npy'
+                else:
+                    full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
                 if os.path.exists(full_path):
                     if ext=='.npy':
                         self.features[path] = np.load(full_path)
@@ -110,6 +117,8 @@ class VideoTextDataset(Dataset):
                     sub_ext_pr = '/signhd.vtt'
                 elif os.path.exists(os.path.join(self.opts.pr_sub_path, ep + '.vtt')):
                     sub_ext_pr = '.vtt'
+                elif os.path.exists(os.path.join(self.opts.pr_sub_path, ep + '.srt')):
+                    sub_ext_pr = '.srt'
                 else:
                     sub_ext_pr = ''
                     print(f"Cannot find subtitle file for: {ep}")
@@ -120,6 +129,8 @@ class VideoTextDataset(Dataset):
                         sub_ext_gt = '/signhd.vtt'
                     elif os.path.exists(os.path.join(self.opts.gt_sub_path, ep + '.vtt')):
                         sub_ext_gt = '.vtt'
+                    elif os.path.exists(os.path.join(self.opts.gt_sub_path, ep + '.srt')):
+                        sub_ext_gt = '.srt'
                     else:
                         sub_ext_gt = ''
                         print(f"Cannot find subtitle file for: {ep}")
@@ -128,9 +139,9 @@ class VideoTextDataset(Dataset):
                 else:
                     gt_vtt_path = pr_vtt_path
 
-                pr_subs = webvtt.read(pr_vtt_path)
+                pr_subs = webvtt.from_srt(pr_vtt_path) if sub_ext_pr == '.srt' else webvtt.read(pr_vtt_path)
                 if self.opts.gt_sub_path:
-                    gt_subs = webvtt.read(gt_vtt_path)
+                    gt_subs = webvtt.from_srt(gt_vtt_path) if sub_ext_gt == '.srt' else webvtt.read(gt_vtt_path)
                     assert len(gt_subs) == len(pr_subs), 'Ground truth subs not the same length as prior subs'    
                 else: 
                     gt_subs = pr_subs.copy()

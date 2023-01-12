@@ -197,12 +197,8 @@ def eval_subtitle_alignment(
         # if 'natural' in str(pred_path):
         #     continue
 
-        if ext_pred == '.srt':
-            pred_subs = list(webvtt.from_srt(pred_path))
-            gt_subs = list(webvtt.from_srt(gt_path))
-        else:
-            pred_subs = list(webvtt.read(pred_path))
-            gt_subs = list(webvtt.read(gt_path))
+        gt_subs = list(webvtt.from_srt(gt_path) if ext_gt == '.srt' else webvtt.read(gt_path))
+        pred_subs = list(webvtt.read(pred_path))
 
         if shift!=0: 
             for sub_idx in range(len(pred_subs)): 

@@ -1,0 +1,701 @@
+WEBVTT
+
+00:00:05.360 --> 00:00:05.520
+1:1-Untertitelung.
+
+00:00:05.520 --> 00:00:08.720
+Livepassagen können Fehler enthalten.
+
+00:00:08.960 --> 00:00:11.680
+Guten Abend, meine Damen und Herren.
+
+00:00:11.680 --> 00:00:21.760
+Willkommen zur "Tagesschau" zu Beginn der zweiten Woche, in der sich die Schweiz offiziell im Notstand befindet: Bund und Kantone wollen ihre Corona-Massnahmen besser absprechen.
+
+00:00:21.880 --> 00:00:30.200
+Es bringt nichts, wenn wir hier Unordnung haben, wenn wir nicht mehr koordiniert sind, am Schluss verlieren alle.
+
+00:00:31.280 --> 00:00:38.640
+In der Schweiz werden die Bettenkapazitäten und die Intensivstationen markant ausgebaut.
+
+00:00:38.640 --> 00:00:46.000
+Doch die Hürden für eine Erwerbsersatzentschädigung sind hoch.
+
+00:00:46.120 --> 00:00:52.520
+Eine Olympiaverschiebung scheint unausweichlich.
+
+00:00:57.560 --> 00:01:08.920
+In einer ausserordentlichen Lage zeigt sich, ob und wie ein Krisenmanagement funktioniert und wer was zu sagen hat.
+
+00:01:08.920 --> 00:01:09.080
+V.a. auch: Bei wem die Kompetenzen liegen.
+
+00:01:10.840 --> 00:01:18.040
+So kam es in den letzten Tagen und Wochen immer wieder zu Differenzen zwischen den Kantonen und dem Bund bezüglich Massnahmen in der Corona-Krise.
+
+00:01:18.040 --> 00:01:25.880
+Jüngste Beispiele: Der Kanton Uri, der über 65-Jährigen weitestgehend verbieten wollte, das Haus zu verlassen.
+
+00:01:26.360 --> 00:01:31.320
+Oder das Tessin, das alle Baustellen und Gewerbebetriebe schliessen liess.
+
+00:01:31.320 --> 00:01:31.480
+Heute haben sich der Bund und die Kantone kurzgeschlossen.
+
+00:01:33.240 --> 00:01:43.160
+Andre Ruch: Schwarze Limousinen reihen sich heute Morgen vor dem Bernerhof - die Nummernschilder stammen aus allen Kantonen.
+
+00:01:43.160 --> 00:01:51.800
+Ohne Händeschütteln und mit den gebührenden Abstandsregeln treffen sich im Gebäude die Präsidenten der kantonalen Regierungen mit dem Bundesrat.
+
+00:01:51.800 --> 00:01:51.960
+Bonjour, bonne journee.
+
+00:01:51.960 --> 00:02:00.120
+Nach dem Treffen ruft Bundespräsidentin Simonetta Sommaruga zur Einigkeit unter den Kantonen auf.
+
+00:02:00.520 --> 00:02:07.880
+Wir sind uns alle bewusst, dass einzelne Kantone in dieser Krisensituation stärker oder früher betroffen sind.
+
+00:02:07.880 --> 00:02:10.280
+Wir sind auch bereit, diese Situation mit den Kantonen anzuschauen.
+
+00:02:10.280 --> 00:02:16.680
+Heute haben eigentlich alle gesagt, dass wir das koordiniert und zusammen machen sollen.
+
+00:02:17.880 --> 00:02:24.440
+Es bringt nichts, wenn wir hier Unordnung haben und nicht mehr koordiniert sind.
+
+00:02:24.440 --> 00:02:24.600
+Am Schluss verlieren alle.
+
+00:02:25.880 --> 00:02:33.400
+Eine Stunde später macht der Direktor des Bundesamtes für Justiz klar: Das Vorpreschen einzelner Kantone sei illegal.
+
+00:02:33.400 --> 00:02:43.800
+Jetzt ist eine generelle Schliessung von Baustellen durch die Kantone nicht mehr möglich, sondern nur noch im Einzelfall, wenn man feststellt, dass die Bestimmungen nicht eingehalten werden können.
+
+00:02:43.800 --> 00:02:46.360
+Allerdings prüft der Bund nun eine Ausnahmeregelung.
+
+00:02:47.120 --> 00:03:04.720
+Die Frage ist, ob man allenfalls gewisse Krisenfenster vorsehen könnte, die einzelnen Kantonen in besonderen Situationen auch besondere Möglichkeiten eröffnen - befristet, auf Gesuch hin.
+
+00:03:04.720 --> 00:03:10.800
+Der Vertreter der Tessiner Regierung hält vorläufig an den schärferen Tessiner Regeln fest.
+
+00:03:10.800 --> 00:03:14.320
+Allerdings hofft er, dass der Bundesrat diese bald erlaubt.
+
+00:03:14.320 --> 00:03:26.320
+Das Tessin, die Südtäler des Kanton Graubünden oder auch Genf haben andere Bedürfnisse als etwa die Grossstädte oder andere Kantone und Regionen in der Schweiz.
+
+00:03:26.320 --> 00:03:35.120
+Darum brauchen wir Differenzierung und andere Massnahmen, die nicht gleich stark und gross sein müssen und sollen wie in anderen Regionen der Schweiz.
+
+00:03:35.520 --> 00:03:44.960
+Für die Rückfahrt in ihre Kantone konnten die Regierungsräte die klare Ansage mit nach Hause nehmen, dass der Bundesrat die Situation ohne Streit und bald klären will.
+
+00:03:44.960 --> 00:03:51.200
+Bund und Kantone wollen sich besser absprechen im Zusammenhang mit den Corona-Massnahmen.
+
+00:03:51.200 --> 00:03:58.720
+Gion-Duri Vincenz - ist das Problem, dass einzelne Kantone vorpreschen, damit geregelt?
+
+00:03:58.720 --> 00:04:14.400
+x
+
+00:04:16.320 --> 00:04:36.320
+x
+
+00:06:40.920 --> 00:06:45.240
+In der Schweiz steigt die Zahl der Corona-Infizierten weiter rasch an.
+
+00:06:45.240 --> 00:06:48.920
+Inzwischen sind es 8'060 - das ist ein Anstieg von 1'046 innert 24 Std.
+
+00:06:48.920 --> 00:06:54.520
+70 Menschen sind gemäss BAG an den Folgen gestorben.
+
+00:06:54.520 --> 00:07:04.920
+Seit vorgestern Samstag weist das Bundesamt für Gesundheit alle positiv getesteten Fälle aus, und nicht nur die, die auch vom Referenzlabor bestätigt wurden.
+
+00:07:04.920 --> 00:07:09.720
+Das erklärt u.a. auch den grossen Sprung von Ende letzter Woche.
+
+00:07:10.320 --> 00:07:20.080
+Angesichts der weiteren Ausbreitung des Coronavirus steigt auch die Wahrscheinlichkeit, dass immer mehr Menschen Spitalpflege beanspruchen müssen.
+
+00:07:20.080 --> 00:07:20.240
+Auch intensive Pflege.
+
+00:07:21.120 --> 00:07:25.920
+Hat es in Schweizer Spitälern genug solcher Intensivbetten?
+
+00:07:25.920 --> 00:07:26.080
+Im Moment kann diese Frage mit Ja beantwortet werden.
+
+00:07:27.600 --> 00:07:30.960
+Im Moment.
+
+00:07:30.960 --> 00:07:40.240
+Daniel Stadelmann : Eigentlich hätte das Bettenhochhaus des Kantonsspitals Frauenfeld abgerissen werden sollen.
+
+00:07:40.240 --> 00:07:40.560
+Es wurde vor Kurzem geräumt.
+
+00:07:40.600 --> 00:07:43.320
+Die leer stehenden Zimmer kommen nun aber wie gerufen.
+
+00:07:43.520 --> 00:07:53.280
+200 zusätzliche Betten speziell für Corona-Patient/-innen kann der Kanton Thurgau so innert weniger Tage bereitstellen.
+
+00:07:53.280 --> 00:07:55.360
+Geliefert von der Armee.
+
+00:07:55.360 --> 00:08:06.080
+Wir sind heute soweit vorbereitet, dass wir die Betten jetzt hineinbringen und ab nächster Woche, wenn der Bedarf dann wirklich da ist, betreiben können.
+
+00:08:06.080 --> 00:08:13.600
+Die Sorge, dass insbesondere Betten auf Intensivstationen wegen der Corona-Krise schweizweit knapp werden könnten, scheint bisher unbegründet.
+
+00:08:13.600 --> 00:08:20.960
+Wir haben damit gerechnet, dass wir überschwemmt werden dieses Wochenende, aber das hat sich zum Glück nicht bewahrheitet.
+
+00:08:20.960 --> 00:08:22.240
+Wir haben noch genügend Platz und schaffen sogar noch mehr Platz.
+
+00:08:22.240 --> 00:08:28.320
+Und erfreulicherweise konnten wir schon drei Patienten von der Intensivstation verlegen und ein vierter ist auf gutem Wege.
+
+00:08:29.000 --> 00:08:38.280
+Gemäss den Erfahrungen verschiedener Spitäler müssen selbst Corona-Patienten mit schweren Verläufen teils nur für wenige Stunden oder Tage auf die Intensivstation.
+
+00:08:38.280 --> 00:08:42.760
+Vorsorglich bauen viele Spitäler die Intensivbetten dennoch aus.
+
+00:08:42.760 --> 00:08:46.760
+Im Thurgau hat man die Zahl auf 50 verdoppelt.
+
+00:08:46.760 --> 00:08:52.360
+Wir gehen davon aus, dass wir knapp genügend haben, aber man weiss es nie so ganz genau.
+
+00:08:52.360 --> 00:08:58.600
+Die Zahlen, die international gemessen werden, zeigen, dass es tendenziell immer mehr Intensivplätze braucht.
+
+00:08:58.600 --> 00:09:05.960
+Das wird die grosse Herausforderung sein: rechtzeitig abzuschätzen, was wir noch brauchen, und das dann auch zu bekommen.
+
+00:09:05.960 --> 00:09:12.520
+Das Kantonsspital hofft, dass man den alten Bettentrakt frühestens ab Juli nicht mehr benötigt und abreissen kann.
+
+00:09:12.520 --> 00:09:18.760
+Vom medizinisch-gesundheitlichen Aspekt der Corona-Krise nun zur Wirtschaft.
+
+00:09:18.920 --> 00:09:27.240
+Das Staatssekretariat für Wirtschaft hat heute bekanntgegeben, dass im März Tausende Betriebe in der Schweiz um Kurzarbeit ersucht hätten.
+
+00:09:27.400 --> 00:09:43.720
+Wir hatten für den Monat März - jetzt die letzten Zahlen - 21'000 Betriebe, die für insgesamt 315'000 Arbeitnehmende ein Kurzarbeitsgesuch gestellt haben.
+
+00:09:43.840 --> 00:09:50.880
+Das sind etwa 6,1 % der Beschäftigten in der Schweiz.
+
+00:09:50.880 --> 00:09:53.440
+Rekordverdächtig viele Gesuche um Kurzarbeit.
+
+00:09:53.760 --> 00:09:59.840
+Die Folgen der Corona-Krise für die Wirtschaft, für Arbeitnehmende sind schwer.
+
+00:09:59.840 --> 00:10:00.160
+Sehr hart trifft es auch Selbständigerwerbende.
+
+00:10:00.160 --> 00:10:03.200
+Plötzlich kommt kein Geld mehr rein.
+
+00:10:03.200 --> 00:10:09.120
+Für die Coiffeuse beispielsweise, den Marktfahrer oder die selbständige Grafikerin.
+
+00:10:09.280 --> 00:10:12.000
+Selbständigerwerbende können bei ihren Ausgleichskassen deshalb eine sog.
+
+00:10:12.000 --> 00:10:14.720
+Erwerbsersatzentschädigung beantragen.
+
+00:10:14.720 --> 00:10:23.840
+Seit heute um 9 Uhr sind die Formulare online, der Ansturm ist riesig - und die Hürden sind hoch.
+
+00:10:25.240 --> 00:10:27.480
+Mathias Thomi: In den ersten 30 Min. reichen im Wirtschaftskanton Zürich rund 3'000 Selbständige Gesuche für Corona-Erwerbsersatzentschädigung ein.
+
+00:10:34.480 --> 00:10:39.440
+Kurz vor Mittag ist der Server bereits überlastet.
+
+00:10:39.640 --> 00:10:48.440
+Und bei der aufgestockten Telefonhotline laufen die Drähte heiss: Es ist wie ein Tsunami losgegangen, das kann man sagen.
+
+00:10:48.440 --> 00:10:51.960
+So 50-60 Anrufe am Morgen pro 30 Personen.
+
+00:10:51.960 --> 00:10:54.520
+Die drängendsten Fragen sind: Habe ich Anspruch, kriege ich etwas?
+
+00:10:54.520 --> 00:10:59.160
+Die Leute haben Sorgen und unsere Aufgabe ist es, das aufzufangen.
+
+00:10:59.160 --> 00:11:00.760
+Das ist das Hauptthema.
+
+00:11:02.400 --> 00:11:22.400
+Anspruch auf Corona-Entschädigung haben Selbständige: Wenn sie aufgrund der Massnahmen des Bundesrates ihre Betriebe schliessen müssen, sich ärztlich verordnet in Quarantäne befinden, Kinder unter zwölf Jahren nicht mehr betreuen können oder bei annullierten Veranstaltungen.
+
+00:11:22.400 --> 00:11:30.240
+Diese Leistung ist für diejenigen Personengruppen, die von diesem Schliessungsgebot des Bundesrates betroffen sind.
+
+00:11:30.240 --> 00:11:36.640
+Also das sind Restaurants, Floristinnen, Coiffeusen oder Nailstudios.
+
+00:11:36.640 --> 00:11:42.080
+Als Besitzer eines Messerfachgeschäfts wird Werner Scherrer Corona-Entschädigung wohl erhalten.
+
+00:11:42.080 --> 00:11:53.920
+Als Präsident des Zürcher KMU- und Gewerbeverbandes geht ihm die Lösung aber zu wenig weit: Seit dem Moment, als ich meine Türen geschlossen habe, habe ich keinen Umsatz mehr gemacht.
+
+00:11:53.920 --> 00:11:59.520
+Aber es gibt natürlich weitere Positionen, die Grafikerin z.B. oder meine Lieferanten.
+
+00:11:59.520 --> 00:12:04.320
+Wenn ich nicht bestelle, können die nichts liefern und haben ebenfalls ein Problem.
+
+00:12:04.320 --> 00:12:11.840
+Ohne direkt betroffen zu sein vom Schliessungsgebot, können Selbständigerwerbende keine Einbussen geltend machen.
+
+00:12:12.240 --> 00:12:20.720
+Denn: Ärzte, Architekten und Anwälte oder auch Taxifahrer etc. dürfen und sollen weiterarbeiten.
+
+00:12:20.720 --> 00:12:24.240
+Diese Berufsgruppen haben keinen Anspruch auf Erwerbsentschädigung.
+
+00:12:24.240 --> 00:12:30.960
+Eine Ausweitung der Corona-Entschädigung auf generelle Umsatzeinbussen müsste der Bundesrat beschliessen.
+
+00:12:33.240 --> 00:12:42.200
+Restaurants, Bars, Coiffeurläden, Kleidergeschäfte und so weiter und so fort - alle diese Betriebe sind seit einer Woche geschlossen.
+
+00:12:42.200 --> 00:12:46.040
+Trotzdem laufen für jene, die diese Läden führen, die Fixkosten weiter.
+
+00:12:46.040 --> 00:12:46.200
+So auch die Miete.
+
+00:12:46.200 --> 00:12:47.480
+Ohne Einnahmen wird es sehr schnell sehr eng.
+
+00:12:47.480 --> 00:12:54.680
+Die Vermieter, die Besitzer solcher Geschäftsliegenschaften wollen oder können jedoch nur bedingt Hand bieten für eine Lösung.
+
+00:12:55.800 --> 00:12:59.320
+Marcel Niedermann.
+
+00:12:59.440 --> 00:13:05.360
+Wo vor zwei Wochen noch Hunderte Passanten ihren Espresso tranken, herrscht jetzt Leere.
+
+00:13:05.360 --> 00:13:12.720
+ViCAFE-Inhaber Christian Forrer betreibt neun Cafes in bester Lage - und zahlt monatlich gegen 100'000 Fr. Miete.
+
+00:13:12.720 --> 00:13:18.000
+Bereits vergangene Woche ist er auf die Vermieter zugegangen.
+
+00:13:18.000 --> 00:13:28.400
+Einige Vermieter haben die ganzen Aprilmieten gestrichen, andere haben einen Aufschub gegeben, damit wir die Miete später bezahlen, wenn die Krise überwunden ist.
+
+00:13:28.400 --> 00:13:34.960
+Andere Vermieter haben den Vorschlag aufgenommen, die halbe Miete zu erlassen.
+
+00:13:34.960 --> 00:13:36.880
+Der grösste Liegenschaftsbesitzer der Schweiz ist Swiss Life.
+
+00:13:38.560 --> 00:13:47.200
+Der Konzern will bei Fällen, in denen KMU kein Geld mehr haben, unkompliziert die Hand bieten, indem er die Zahlungsfrist erstreckt.
+
+00:13:47.200 --> 00:14:05.920
+Denn der Konzern investiert die Gelder der Versicherten Denn der Konzern investiert die Gelder der Versicherten in Immobilien und erfüllt mit den laufenden Mieteinnahmen die Verpflichtungen gegenüber diesen.
+
+00:14:05.920 --> 00:14:17.440
+Auch die Credit Suisse will Zahlungsfristen erstrecken oder kann sich vorstellen, vereinzelt Mieten vorübergehend zu reduzieren, um so die langfristigen Vermietungen zu sichern, Konkurse zu verhindern.
+
+00:14:17.440 --> 00:14:20.640
+Christian Forrer hofft auf das Entgegenkommen der Vermieter.
+
+00:14:20.640 --> 00:14:28.800
+Die Miete erlassen, wie das der Mieterverband fordert, ist bei den Liegenschaftsbesitzern zum jetzigen Zeitpunkt aber kein Thema.
+
+00:14:28.800 --> 00:14:33.120
+Dauert der Stillstand an, sieht er jedoch wenig Handlungsspielraum.
+
+00:14:33.480 --> 00:14:35.240
+Die Mieten machen ein Drittel der Kosten aus.
+
+00:14:35.240 --> 00:14:44.360
+Da die Mieten einen Grossteil unserer Kosten verursachen, wäre es ganz schwierig, über die Runden zu kommen, wir müssten dann wahrscheinlich Geld bei Banken aufnehmen.
+
+00:14:46.280 --> 00:14:49.000
+Auch das müsste man später zurückzahlen.
+
+00:14:49.000 --> 00:14:51.880
+Er hofft, dass die Zwangsschliessung nur von kurzer Dauer ist.
+
+00:14:51.880 --> 00:14:57.160
+Sein Online-Shop kompensiert nur einen Bruchteil der fehlenden Einnahmen.
+
+00:14:57.160 --> 00:14:57.320
+Viele Menschen geraten auch hierzulande wegen der Folgen der Corona-Krise in eine Notlage.
+
+00:15:01.520 --> 00:15:06.960
+Deshalb ruft die Glückskette mit Unterstützung der SRG zu Spenden auf.
+
+00:15:06.960 --> 00:15:13.840
+Die gesammelten Beträge werden für Sofort- und Sozialhilfe in der Schweiz eingesetzt.
+
+00:15:13.840 --> 00:15:14.000
+Spenden können Sie unter glueckskette.
+
+00:15:15.200 --> 00:15:22.720
+ch oder per E-Banking auf das Postkonto 10-15000-6 mit dem Vermerk Coronavirus.
+
+00:15:22.720 --> 00:15:31.840
+Im Kampf gegen die Coronavirus-Pandemie gelten rund um den Globus inzwischen in über 50 Ländern Ausgangsbeschränkungen.
+
+00:15:31.840 --> 00:15:36.160
+Betroffen sind über 1,5 Mrd. Menschen.
+
+00:15:36.160 --> 00:15:43.360
+Weltweit sind über 15'000 Menschen an den Folgen der Erkrankung gestorben.
+
+00:15:43.360 --> 00:15:46.400
+Mehr als ein Drittel davon alleine in unserem Nachbarland Italien.
+
+00:15:46.400 --> 00:15:49.920
+Dort sind inzwischen über 6'000 Tote registriert worden.
+
+00:15:50.560 --> 00:16:00.960
+Im Hafen von Genua wird dieses Passagierschiff zum Spital umfunktioniert, und in Mailand wird ein Hotel zum Notspital für Corona-Patienten umgerüstet.
+
+00:16:00.960 --> 00:16:06.560
+Leere Strassen in Bergamo - v.a. Norditalien ist schwer betroffen von der Corona-Krise.
+
+00:16:06.960 --> 00:16:20.880
+Trotz drastischer Massnahmen wie rigorosen Ausgangssperren hat sich die Seuche weiter ausgebreitet, sodass die Regierung auch die Schliessung von nicht lebensnotwendigen Firmen und Fabriken angeordnet hat.
+
+00:16:20.880 --> 00:16:29.520
+Der Unternehmerverband warnt: 100 Mrd. Euro würde die italienische Wirtschaft jetzt pro Monat mit diesen landesweiten Schliessungen verlieren.
+
+00:16:29.520 --> 00:16:36.080
+Gleichzeitig kündigen all jene Beschäftigte, die jetzt vom Stopp ausgeschlossen werden, nun Streiks an.
+
+00:16:36.080 --> 00:16:42.480
+Denn auch sie fürchten um das Ansteckungsrisiko an ihrem Arbeitsplatz.
+
+00:16:42.480 --> 00:16:44.560
+In Frankreich sind die Strassen leergefegt - so wie hier in Paris.
+
+00:16:44.560 --> 00:16:52.880
+Das Parlament hat gestern spät einen zweimonatigen Gesundheitsnotstand beschlossen, der auch verlängert werden kann.
+
+00:16:52.880 --> 00:17:02.000
+Der Zugang zu allen Stränden des Landes ist verboten, in den Städten sind Gärten und Parks geschlossen, in Paris darf auch niemand mehr am Seine-Ufer entlangspazieren.
+
+00:17:02.000 --> 00:17:14.000
+Im Elsass, in Mulhouse, hat das Militär ein Feldspital aus dem Boden gestampft, mit Intensivpflegebetten.
+
+00:17:14.280 --> 00:17:17.800
+Das Spital wurde heute eröffnet.
+
+00:17:17.800 --> 00:17:17.960
+Nach einer Testphase kommen die schwersten Fälle hierher.
+
+00:17:17.960 --> 00:17:24.040
+Angesichts der täglich neuen Corona-Patienten werden in Krankenhäusern Betten, Masken und Schutzkleidung knapp.
+
+00:17:25.200 --> 00:17:26.160
+Es sind bereits drei Ärzte am Virus gestorben.
+
+00:17:26.160 --> 00:17:36.240
+Ein Kollektiv, das 50'000 Spitalärzte, Klinikleiter und Professoren repräsentiert, appelliert an Präsident Macron, die Ausgangssperre strikt durchzusetzen.
+
+00:17:36.240 --> 00:17:37.040
+Noch liessen sich Tausende Tote vermeiden.
+
+00:17:37.040 --> 00:17:45.200
+In Grossbritannien sind seit heute alle Schulen geschlossen, ebenso alle Restaurants, Bars, Pubs oder Cafes.
+
+00:17:45.640 --> 00:17:51.720
+Die britische Regierung reagierte zunächst zögerlich im Kampf gegen das Coronavirus.
+
+00:17:51.720 --> 00:17:55.880
+Inzwischen gibt sie bekannt, dass die Anzahl der Todesfälle auf über 300 angestiegen ist.
+
+00:17:55.880 --> 00:18:03.080
+Die Regierung fordert, dass die Leute zu Hause bleiben und Abstand wahren - falls nicht, würden die Massnahmen per Notrecht durchgesetzt.
+
+00:18:03.080 --> 00:18:09.960
+Dieses Notrecht gibt der Regierung die Möglichkeit, Häfen und Grenzen ganz zu schliessen.
+
+00:18:09.960 --> 00:18:17.800
+Und die Polizei kann etwa so weit gehen, eine Person, die mutmasslich das Virus hat, festzunehmen und unter Zwang zu isolieren.
+
+00:18:17.800 --> 00:18:18.760
+Kritik gegen diesen Machtausbau gibt es kaum.
+
+00:18:19.840 --> 00:18:24.320
+Die meisten fordern ein vehementeres Vorgehen im Kampf gegen das Virus.
+
+00:18:25.840 --> 00:18:33.360
+In den USA, wie hier am Times Square in New York, sind die Bilder identisch mit jenen, die wir aus Europa kennen.
+
+00:18:33.360 --> 00:18:39.280
+Nun soll ein Hilfspaket von über 1 Billion $ geschnürt werden, um die Folgen für die Wirtschaft abzufedern.
+
+00:18:39.280 --> 00:18:46.320
+Die Gelder sollen in Unternehmen, in die Arbeitslosenhilfe und in das Gesundheitswesen fliessen.
+
+00:18:46.320 --> 00:18:54.160
+Eine erste Abstimmung ist gestern im Senat gescheitert, heute haben die Politiker/-innen einen neuen Anlauf genommen und wieder keine Einigung erreicht.
+
+00:18:54.920 --> 00:18:59.240
+Im Grundsatz sind sich Demokraten und Republikaner für einmal einig.
+
+00:18:59.240 --> 00:19:05.160
+Das Coronavirus bedroht nicht nur die Gesundheit des Einzelnen, sondern auch die Wirtschaft des Landes.
+
+00:19:05.680 --> 00:19:09.200
+Doch damit hört die Übereinstimmung bereits auf.
+
+00:19:09.200 --> 00:19:21.680
+Der Minderheitsführer der Demokraten im Senat, Chuck Schumer, fordert, dass mehr Geld in die Arbeitslosenversicherung fliessen soll, und dass Grosskonzerne nur unter bestimmten Auflagen die Staatsgelder erhalten dürfen.
+
+00:19:21.680 --> 00:19:27.760
+Das Gesetz wird sich nicht auf die nächsten Tage, sondern auf die nächsten Monate und Jahre auswirken.
+
+00:19:27.760 --> 00:19:30.960
+Deshalb brauchen wir das bestmögliche Gesetz.
+
+00:19:32.440 --> 00:19:38.680
+Der republikanische Mehrheitsführer im Senat, Mitch McConnell, drängt darauf, das Hilfspaket zu schnüren.
+
+00:19:38.680 --> 00:19:41.560
+Es ist kein Zeitpunkt für Egoismus oder Zerstrittenheit.
+
+00:19:42.840 --> 00:19:43.000
+Wir müssen jetzt solidarisch und grosszügig sein.
+
+00:19:43.000 --> 00:19:48.760
+Und ja, mutig!
+
+00:19:49.600 --> 00:19:54.080
+Leere Restaurants, geschlossene Geschäfte.
+
+00:19:54.080 --> 00:19:57.920
+Die Coronavirus-Pandemie bremst die US-Wirtschaft schon jetzt.
+
+00:19:57.920 --> 00:19:58.080
+Entlassungen drohen.
+
+00:19:59.160 --> 00:20:00.440
+Auch die US-Notenbank Fed bleibt nicht untätig.
+
+00:20:00.440 --> 00:20:07.320
+Sie kündigt heute an, unbegrenzte Staatsanleihen und bestimmte, mit Hypotheken gesicherte Wertpapiere zu kaufen.
+
+00:20:07.320 --> 00:20:12.600
+Massnahmen, die die Finanzmärkte und die Geldpolitik am Leben erhalten sollen.
+
+00:20:12.600 --> 00:20:21.720
+Notenbank und Politik - die USA bereiten sich auf unsichere Zeiten vor, meint SRF-USA-Korrepsondent Peter Düggeli.
+
+00:20:21.720 --> 00:20:32.440
+Die Notenbank geht mit ihren Massnahmen aufs Ganze, und auch der Kongress dürfte nach harzigen Verhandlungen bald nachziehen.
+
+00:20:32.440 --> 00:20:43.000
+Aber in nur wenigen Tagen Staatshilfen in der Rekordhöhe von rund 1,5 Billionen $ - mehr als zweimal die jährliche Wirtschaftsleistung der Schweiz - zu verteilen, ist nicht einfach.
+
+00:20:44.120 --> 00:20:48.920
+Denn die Begehrlichkeiten sind riesig - von den hart getroffenen Wirtschaftszweigen, aber auch von den 10 Mio.
+
+00:20:48.920 --> 00:20:55.800
+Arbeitnehmenden, die gemäss Prognosen ihre Stelle verlieren oder mit massiven Lohneinbussen rechnen müssen.
+
+00:20:55.800 --> 00:21:04.600
+In einem Land, das Kurzarbeit und ausreichende Arbeitslosenentschädigung nur vom Hörensagen kennt.
+
+00:21:06.360 --> 00:21:13.080
+Nach Russland, wo sich Präsident Putin bis jetzt nicht genötigt sah, sich wegen der Coronavirus-Gefahr an die Bevölkerung zu wenden.
+
+00:21:13.080 --> 00:21:15.160
+Und dies, obwohl die Zahl der Infizierten steigt.
+
+00:21:15.600 --> 00:21:24.080
+Aktuell sind es offiziell rund 500, bisher sei ein Mensch daran gestorben, melden die russischen Behörden.
+
+00:21:24.080 --> 00:21:28.560
+Doch das Misstrauen der Bevölkerung gegenüber den Behörden und dem Gesundheitssystem sitzt tief.
+
+00:21:28.800 --> 00:21:35.040
+Und noch bevor das Gesundheitssystem an seine Grenzen kommt, leidet die Wirtschaft.
+
+00:21:35.040 --> 00:21:35.200
+Luzia Tschirky.
+
+00:21:35.200 --> 00:21:37.120
+Die russische Wirtschaft taumelt am Abgrund.
+
+00:21:37.120 --> 00:21:40.000
+Der Rubel befindet sich auf einer Talfahrt wie seit Jahren nicht mehr.
+
+00:21:40.680 --> 00:21:47.400
+Innerhalb weniger Wochen verlor die russische Währung fast ein Drittel ihres Wertes gegenüber dem Dollar.
+
+00:21:47.400 --> 00:21:53.000
+Die russische Regierung erklärte die weltweite Corona-Krise für verantwortlich.
+
+00:21:53.000 --> 00:21:59.560
+Das Finanzministerium rechnet mit einem Einnahmeverlust von 3'000 Mrd. Rubel im Öl- und Gasgeschäft.
+
+00:21:59.560 --> 00:22:01.640
+Umgerechnet sind das 36 Mrd. Fr.
+
+00:22:01.640 --> 00:22:08.040
+Die Regierung hat finanzielle Unterstützung versprochen, um das Ende ganzer Branchen zu verhindern.
+
+00:22:08.720 --> 00:22:21.520
+Diese Massnahmen würden nicht helfen, sagt Wirtschaftsexperte Dmitri Potapenko: Kleine und mittelständische Unternehmen werden in den kommenden 2-3 Monaten einfach aussterben.
+
+00:22:21.520 --> 00:22:21.680
+Viele hatten bereits zu kämpfen.
+
+00:22:24.640 --> 00:22:24.800
+Alle diese sog. Massnahmen werden nicht helfen.
+
+00:22:24.800 --> 00:22:31.680
+Man müsste für kleine und mittelständische Unternehmen alle Steuern bis und mit Juli einfach erlassen.
+
+00:22:31.680 --> 00:22:40.960
+Präsident Wladimir Putin hat sich bisher nicht mit einer Rede an die Bevölkerung gewandt und hat laut seinem Sprecher auch nicht vor, dies demnächst zu tun.
+
+00:22:40.960 --> 00:22:51.680
+Zur Verbreitung des Coronavirus im Land, sagte Putin vorgestern: Angesichts des grossen Risikos haben wir die Situation insgesamt unter Kontrolle.
+
+00:22:51.680 --> 00:22:58.080
+Dazu sind unser Gesundheitssystem, die Grenzwache und weitere Dienste im Einsatz.
+
+00:22:58.080 --> 00:23:01.440
+Auf den ersten Blick scheint vieles normal.
+
+00:23:01.640 --> 00:23:04.360
+Die Restaurants haben geöffnet, der Verkehr rollt.
+
+00:23:04.360 --> 00:23:10.600
+Doch die wirtschaftliche Krise ist längst bei den Menschen angekommen.
+
+00:23:10.600 --> 00:23:13.480
+Die Menschen sind arm geworden.
+
+00:23:14.400 --> 00:23:18.400
+Selbst hier auf der Strasse geben sie dir selten Geld, wenn du spielst.
+
+00:23:18.400 --> 00:23:21.600
+Gestern wurde ich gefragt, ob ich heute nicht zu Hause bleiben könne.
+
+00:23:21.600 --> 00:23:28.640
+Ich sagte Ja, denn ich will ja nicht fürs Nichtstun Gehalt bekommen, ich will auch wirklich arbeiten.
+
+00:23:28.640 --> 00:23:29.280
+Noch steht Russland am Anfang dunkler Zeiten.
+
+00:23:29.960 --> 00:23:35.400
+Für weite Teile der Wirtschaft scheint jede Hilfe bereits jetzt zu spät zu kommen.
+
+00:23:39.120 --> 00:23:42.160
+Vielerorts herrscht praktisch Stillstand wegen der Corona-Krise.
+
+00:23:42.160 --> 00:23:42.800
+Das betrifft natürlich auch die Welt des Sports.
+
+00:23:42.800 --> 00:23:46.800
+Noch nicht abgesagt worden sind die Olympischen Sommerspiele in Tokyo.
+
+00:23:47.240 --> 00:23:51.400
+Doch dieser Optimismus wird mehr und mehr infrage gestellt.
+
+00:23:51.400 --> 00:23:56.200
+Mit Kanada und Australien haben die ersten Länder ihre Teilnahme abgesagt.
+
+00:23:56.200 --> 00:24:02.440
+Solche Bilder wie hier in Rio 2016 wird es dieses Jahr definitiv nicht geben.
+
+00:24:02.440 --> 00:24:10.280
+Sowohl Kanada als auch Australien werden keine Sportler/-innen zu den Olympischen Spielen in Tokio entsenden.
+
+00:24:10.280 --> 00:24:20.360
+"Es geht nicht nur um die Gesundheit der Athletinnen, sondern um die gesamte Weltgemeinschaft", so die Begründung des kanadischen Olympischen Komitees.
+
+00:24:20.360 --> 00:24:36.520
+Swiss Olympic hat dem Internationalen Komitee heute einen Brief mit einer klaren Forderung zugestellt: Unsere Vorstellung geht in die Richtung, dass eine klare Aussage kommen muss, dass die Spiele in diesem Sommer nicht stattfinden können.
+
+00:24:36.520 --> 00:24:43.400
+Man muss ihnen mehr Zeit für den Folgeentscheid geben, ob eine Verschiebung überhaupt möglich ist.
+
+00:24:43.840 --> 00:24:54.080
+Zuvor hatte der internationale Leichtathletikverband mit Präsident Sebastian Coe das IOC bereits aufgefordert, einen neuen Termin für den Grossanlass zu finden.
+
+00:24:54.080 --> 00:24:56.480
+Diese Entwicklungen zeigen in Tokio Wirkung.
+
+00:24:56.480 --> 00:25:04.800
+In einer Rede vor dem Parlament spricht Japans Premierminister Shinzo Abe erstmals über eine Verschiebung der Spiele.
+
+00:25:04.800 --> 00:25:12.160
+Wenn eine vollständige Durchführung nicht möglich ist, müssen wir zwingend über eine Verschiebung nachdenken.
+
+00:25:12.160 --> 00:25:17.280
+Denn die Sicherheit der Athleten hat oberste Priorität.
+
+00:25:17.520 --> 00:25:21.040
+Eine komplette Absage von Olympia 2020 ist derzeit noch kein Thema.
+
+00:25:21.040 --> 00:25:29.680
+Doch die Hoffnung auf eine Durchführung zum geplanten Datum ist durch die Absagen Kanadas und Australiens definitiv gesunken.
+
+00:25:30.720 --> 00:25:37.280
+Aufgrund der Corona-Krise strahlen wir auch heute im Anschluss an die "Tagesschau" eine Sondersendung aus.
+
+00:25:37.280 --> 00:25:39.040
+"1 gegen 100" entfällt.
+
+00:25:39.040 --> 00:25:42.720
+Mario Grossniklaus, welchen Schwerpunkt habt ihr heute?
+
+00:25:44.000 --> 00:25:51.360
+Eigentlich sind es zwei heute: Zuerst zeigen wir, ob und wie sich die Leute an die neuen Abstandsregeln gewöhnt haben.
+
+00:25:51.360 --> 00:26:01.120
+Dann gehen wir ins Ausland - denn wo man hinschaut auf der Weltkarte: Regierungen gehen überall anders um mit der Krise.
+
+00:26:02.560 --> 00:26:05.120
+Wir wollen wissen, ob das gutgehen kann.
+
+00:26:05.120 --> 00:26:07.680
+Das also ab 20.05 Uhr auf SRF 1, danke, Mario.
+
+00:26:07.680 --> 00:26:07.840
+Das war's von uns für Sie.
+
+00:26:07.840 --> 00:26:10.400
+Danke fürs Interesse.
+
+00:26:10.400 --> 00:26:10.560
+Einen guten Abend weiterhin.
+
+00:26:10.560 --> 00:26:14.880
+Und blibet gsung!
+
