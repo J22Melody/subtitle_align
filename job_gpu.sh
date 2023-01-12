@@ -20,4 +20,6 @@
 module load cudnn/7.6.5.32-10.2
 module load anaconda3
 source activate align
-stdbuf -o0 -e0 srun --unbuffered $@
+srun $@
+# srun --unbuffered $@
+# stdbuf -o0 -e0 srun --unbuffered $@

@@ -38,6 +38,7 @@ TAGS
 
 
 inference_output/*
+inference_output_srf/*
 figures/*
 checkpoints/*
 

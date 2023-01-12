@@ -59,9 +59,9 @@ class GtInvAlignTransformer(nn.Module):
 
         # text embedding model 
         if not self.opts.finetune_bert:
-            self.text_model = BertTextModel().requires_grad_(False)
+            self.text_model = BertTextModel(opts.bert_model).requires_grad_(False)
         else:
-            self.text_model = BertTextModel()
+            self.text_model = BertTextModel(opts.bert_model)
 
         # input projections for 2 modalities 
         self.input_proj_vid = nn.Conv1d(self.d_vid, opts.d_model, kernel_size=1)

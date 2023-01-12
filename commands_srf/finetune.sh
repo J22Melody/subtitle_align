@@ -1,11 +1,11 @@
 python main.py \
---features_path '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/' \
---gt_sub_path '/scratch/shared/beegfs/albanie/shared-datasets/bobsl/public_dataset_release/subtitles/manually-aligned/' \
---pr_sub_path '/scratch/shared/beegfs/hbull/shared-datasets/bobsl/audio-aligned-corrected/' \
+--features_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/videos_i3d/' \
+--gt_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles/' \
+--pr_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles_median_aligned/' \
 --gpu_id 0 \
 --batch_size 64 \
 --n_workers 32 \
---pr_subs_delta_bias 2.7 \
+--pr_subs_delta_bias 0 \
 --fixed_feat_len 20 \
 --jitter_location \
 --jitter_abs \
@@ -13,14 +13,15 @@ python main.py \
 --load_words False \
 --load_subtitles True \
 --lr 1e-6 \
---save_path 'inference_output/finetune_subtitles' \
---train_videos_txt 'data/bobsl_align_train.txt' \
---val_videos_txt 'data/bobsl_align_test.txt' \
---test_videos_txt 'data/bobsl_test_254.txt' \
+--save_path 'inference_output_srf/finetune_subtitles' \
+--train_videos_txt 'data/srf_align_train.txt' \
+--val_videos_txt 'data/srf_align_test.txt' \
+--test_videos_txt 'data/srf_align_test.txt' \
 --n_epochs 100 \
 --concatenate_prior True \
 --min_sent_len_filter 0.5 \
 --max_sent_len_filter 20 \
 --shuffle_words_subs 0.5 \
 --drop_words_subs 0.15 \
---resume 'inference_output/train_coarse_subtitles/checkpoints/model_0000250341.pt' \
+--resume '/shares/volk.cl.uzh/zifjia/subtitle_align/checkpoints_subtitle_align/finetune_subtitles/checkpoints/model_0000264041.pt' \
+--bert_model 'bert-base-multilingual-cased' \

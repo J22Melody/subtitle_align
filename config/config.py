@@ -115,6 +115,7 @@ def load_opts():
 
     parser.add_argument('--concatenate_prior', type=bool, default=True, help='Concatenate prior location')
     parser.add_argument('--finetune_bert', type=bool, default=False, help='Finetune Bert')
+    parser.add_argument('--bert_model', type=str, default='bert-base-uncased', help='Bert model to use')
 
     # --- trainer
     parser.add_argument('--optimizer', type=str, default='adam', help='adam or adamw optimizer')
