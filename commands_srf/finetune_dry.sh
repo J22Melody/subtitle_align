@@ -3,20 +3,17 @@ python main.py \
 --gt_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles/' \
 --pr_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles_median_aligned/' \
 --gpu_id 0 \
---batch_size 64 \
+--batch_size 4 \
 --n_workers 32 \
 --pr_subs_delta_bias 0 \
 --fixed_feat_len 20 \
---jitter_location \
---jitter_abs \
---jitter_loc_quantity 2. \
 --load_words False \
 --load_subtitles True \
 --lr 1e-5 \
---save_path 'inference_output_srf_lr/finetune_subtitles' \
---train_videos_txt 'data/srf_align_train.txt' \
---val_videos_txt 'data/srf_align_test.txt' \
---test_videos_txt 'data/srf_align_test.txt' \
+--save_path 'inference_output_srf_dry/finetune_subtitles' \
+--train_videos_txt 'data/srf_align_test_1.txt' \
+--val_videos_txt 'data/srf_align_test_1.txt' \
+--test_videos_txt 'data/srf_align_test_1.txt' \
 --n_epochs 100 \
 --concatenate_prior True \
 --min_sent_len_filter 0.5 \

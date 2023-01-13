@@ -320,8 +320,8 @@ def calc_align_metrics(
 
         # Compute frame-level accuracy
         for pred, gt in zip(pred_frames, gt_frames):
-            if gt == pred == BACKGROUND_LABEL: 
-                continue
+            # if gt == pred == BACKGROUND_LABEL: 
+            #     continue
             total += 1
             if pred == gt:
                 correct += 1

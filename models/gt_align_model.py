@@ -131,7 +131,7 @@ class GtInvAlignTransformer(nn.Module):
             pr_vec = pr_vec.cuda()
             ref_inp = self.ref_vec_embedding(pr_vec) 
             ref_inp = ref_inp.permute([1,0,2])
-            vid_emb = torch.cat((vid_emb,ref_inp),2)       
+            vid_emb = torch.cat((vid_emb,ref_inp),2)   
                     
         if self.opts.concatenate_prior: 
             vid_emb = self.reproject_concatenate(vid_emb)

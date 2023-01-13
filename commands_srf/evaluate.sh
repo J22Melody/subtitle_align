@@ -87,6 +87,7 @@ python misc/evaluate_sub_alignment.py \
 # Computed over 147952 frames, 863 sentences - Frame-level accuracy: 77.50 F1@0.10: 89.92 F1@0.25: 85.17 F1@0.50: 69.52
 
 # on predictions from the bobsl checkpoint (bert-multilingual) after fine-tuning
+# lr 10e-6
 
 # before DTW output
 # total  147952 subs 863
@@ -95,3 +96,13 @@ python misc/evaluate_sub_alignment.py \
 # after DTW output
 # total  147952 subs 863
 # Computed over 147952 frames, 863 sentences - Frame-level accuracy: 78.75 F1@0.10: 91.66 F1@0.25: 87.37 F1@0.50: 74.39
+
+# lr 10e-5
+
+# before DTW output
+# total  147952 subs 863
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 77.52 F1@0.10: 92.07 F1@0.25: 87.40 F1@0.50: 73.05
+
+# after DTW output
+# total  147952 subs 863
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 78.67 F1@0.10: 91.43 F1@0.25: 87.14 F1@0.50: 73.46

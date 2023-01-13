@@ -37,7 +37,7 @@ class VideoTextTrainer(BaseTrainer):
         # cummulative losses and metrics dictionary
         metrics_dict = defaultdict( float)  
 
-        bar = tqdm(total=len(dataloader))
+        # bar = tqdm(total=len(dataloader))
 
         self.data_tic = self.step_tic = None
 
@@ -163,18 +163,22 @@ class VideoTextTrainer(BaseTrainer):
             # metrics for prediction
             if 'tp' in model_out:
                 self.f1_logger.update(model_out)
-                metrics_dict['frame_acc'] = self.f1_logger.accuracy * (counter + 1) # hack 
+                # metrics_dict['frame_acc'] = self.f1_logger.accuracy * (counter + 1) # hack
+                metrics_dict['frame_acc'] += self.f1_logger.accuracy
                 f1s, overlaps = self.f1_logger.f1
                 for f1, ov in zip(f1s, overlaps):
-                    metrics_dict[f'f1@{ov}'] = f1 * (counter+1) # hack
+                    # metrics_dict[f'f1@{ov}'] = f1 * (counter+1) # hack
+                    metrics_dict[f'f1@{ov}'] += f1
 
             # metrics for base
             if 'tp_b' in model_out:
                 self.f1_logger_b.update(model_out)
-                metrics_dict['frame_acc_b'] = self.f1_logger_b.accuracy * (counter + 1) # hack 
+                # metrics_dict['frame_acc_b'] = self.f1_logger_b.accuracy * (counter + 1) # hack 
+                metrics_dict['frame_acc_b'] += self.f1_logger_b.accuracy 
                 f1s, overlaps = self.f1_logger_b.f1
                 for f1, ov in zip(f1s, overlaps):
-                    metrics_dict[f'f1@{ov}_b'] = f1 * (counter+1) # hack
+                    # metrics_dict[f'f1@{ov}_b'] = f1 * (counter+1) # hack
+                    metrics_dict[f'f1@{ov}_b'] += f1
 
             # - tb summaries
             if (self.opts.test_only or
@@ -189,17 +193,17 @@ class VideoTextTrainer(BaseTrainer):
             if mode == 'train' or self.opts.test_only:
                 self.global_step += 1
 
-            bar.update(1)
+            # bar.update(1)
 
-            desc = "%s: " % mode
-            for cuml_name, cuml in sorted(metrics_dict.items()):
-                desc += "%s %.2f " % (cuml_name, cuml / counter)
-            bar.set_description(desc)
+            # desc = "%s: " % mode
+            # for cuml_name, cuml in sorted(metrics_dict.items()):
+            #     desc += "%s %.2f " % (cuml_name, cuml / counter)
+            # bar.set_description(desc)
 
             self.data_tic = time.time(
             )  # this counts how long we are waiting for data
 
-        bar.close()
+        # bar.close()
 
         if mode=='test':
             ### save last video at epoch end 
@@ -222,6 +226,6 @@ class VideoTextTrainer(BaseTrainer):
             val_metric = metrics_dict['frame_acc'] / counter
         else:
             val_metric = 0
-        return bar.desc, val_metric
+        return desc, val_metric
 
 
