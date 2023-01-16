@@ -13,9 +13,9 @@ python main.py \
 --load_words False \
 --load_subtitles True \
 --lr 1e-5 \
---save_path 'inference_output_srf_lr/finetune_subtitles' \
+--save_path 'inference_output_srf/finetune_subtitles' \
 --train_videos_txt 'data/srf_align_train.txt' \
---val_videos_txt 'data/srf_align_test.txt' \
+--val_videos_txt 'data/srf_align_val.txt' \
 --test_videos_txt 'data/srf_align_test.txt' \
 --n_epochs 100 \
 --concatenate_prior True \

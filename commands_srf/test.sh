@@ -39,5 +39,5 @@ python main.py \
 --save_probs_folder 'inference_output_srf/probabilities' \
 --save_subs_folder 'inference_output_srf/subtitles' \
 --save_postpro_subs_folder 'inference_output_srf/subtitles_postprocessing' \
---resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_srf_lr/finetune_subtitles/checkpoints/model_0000271941.pt' \
+--resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_srf/finetune_subtitles/checkpoints/model_0000271941.pt' \
 --bert_model 'bert-base-multilingual-cased' \

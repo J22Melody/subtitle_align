@@ -1,16 +1,11 @@
-# python misc/evaluate_sub_alignment.py \
-# --gt_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles' \
-# --pred_path_root '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles_audio_aligned' \
-# --test_videos_txt 'data/srf_align_test_1.txt' \
-
-# python misc/evaluate_sub_alignment.py \
-# --gt_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles' \
-# --pred_path_root '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles_median_aligned' \
-# --test_videos_txt 'data/srf_align_test_1.txt' \
-
 python misc/evaluate_sub_alignment.py \
 --gt_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles' \
 --pred_path_root '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles_audio_aligned' \
+--test_videos_txt 'data/srf_align_test.txt' \
+
+python misc/evaluate_sub_alignment.py \
+--gt_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles' \
+--pred_path_root '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles_mean_aligned' \
 --test_videos_txt 'data/srf_align_test.txt' \
 
 python misc/evaluate_sub_alignment.py \
@@ -27,16 +22,6 @@ python misc/evaluate_sub_alignment.py \
 # --gt_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles' \
 # --pred_path_root './inference_output_srf/subtitles_postprocessing' \
 # --test_videos_txt 'data/srf_align_test.txt' \
-
-
-# data; test_1
-# on audio/median aligned
-
-# total  39656 subs 252
-# Computed over 39656 frames, 252 sentences - Frame-level accuracy: 48.37 F1@0.10: 71.23 F1@0.25: 59.96 F1@0.50: 31.79
-
-# total  39656 subs 252
-# Computed over 39656 frames, 252 sentences - Frame-level accuracy: 63.70 F1@0.10: 81.53 F1@0.25: 76.71 F1@0.50: 60.24
 
 # data: all
 # on audio/median aligned 
@@ -72,11 +57,12 @@ python misc/evaluate_sub_alignment.py \
 
 # total  147952 subs 863
 # Computed over 147952 frames, 863 sentences - Frame-level accuracy: 64.06 F1@0.10: 84.81 F1@0.25: 75.70 F1@0.50: 46.85
-
+# total  147952 subs 863
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 76.94 F1@0.10: 93.47 F1@0.25: 88.58 F1@0.50: 72.38
 # total  147952 subs 863
 # Computed over 147952 frames, 863 sentences - Frame-level accuracy: 77.66 F1@0.10: 93.36 F1@0.25: 89.74 F1@0.50: 74.83
 
-# on predictions from the bobsl checkpoint (bert-multilingual)
+# on predictions from the bobsl checkpoint (zero-shot)
 
 # before DTW output
 # total  147952 subs 863
@@ -86,8 +72,7 @@ python misc/evaluate_sub_alignment.py \
 # total  147952 subs 863
 # Computed over 147952 frames, 863 sentences - Frame-level accuracy: 77.50 F1@0.10: 89.92 F1@0.25: 85.17 F1@0.50: 69.52
 
-# on predictions from the bobsl checkpoint (bert-multilingual) after fine-tuning
-# lr 10e-6
+# on predictions from the bobsl checkpoint (fine-tuned) 
 
 # before DTW output
 # total  147952 subs 863
@@ -96,13 +81,3 @@ python misc/evaluate_sub_alignment.py \
 # after DTW output
 # total  147952 subs 863
 # Computed over 147952 frames, 863 sentences - Frame-level accuracy: 78.75 F1@0.10: 91.66 F1@0.25: 87.37 F1@0.50: 74.39
-
-# lr 10e-5
-
-# before DTW output
-# total  147952 subs 863
-# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 77.52 F1@0.10: 92.07 F1@0.25: 87.40 F1@0.50: 73.05
-
-# after DTW output
-# total  147952 subs 863
-# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 78.67 F1@0.10: 91.43 F1@0.25: 87.14 F1@0.50: 73.46
