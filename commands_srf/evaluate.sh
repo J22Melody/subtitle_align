@@ -74,7 +74,17 @@ python misc/evaluate_sub_alignment.py \
 
 # on predictions from the bobsl checkpoint (bert-multilingual)
 
+# before DTW output
+# total  147952 subs 863
+# Mean and median start offset: -0.43 / -0.04 
+# Mean and median end offset: -0.10 / 0.14 
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 72.53 F1@0.10: 89.42 F1@0.25: 82.29 F1@0.50: 66.86
 
+# after DTW output
+# total  147952 subs 863
+# Mean and median start offset: -0.40 / 0.00 
+# Mean and median end offset: -0.20 / 0.12 
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 75.88 F1@0.10: 87.72 F1@0.25: 82.73 F1@0.50: 69.76
 
 # on predictions from the bobsl checkpoint (bert-multilingual + fine-tuned) 
 
