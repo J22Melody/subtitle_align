@@ -25,3 +25,4 @@ python main.py \
 --drop_words_subs 0.15 \
 --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/checkpoints_subtitle_align/finetune_subtitles/checkpoints/model_0000264041.pt' \
 --bert_model 'bert-base-multilingual-cased' \
+--finetune_bert True \
