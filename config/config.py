@@ -68,6 +68,8 @@ def load_opts():
     parser.add_argument('--shuffle_getitem', type = bool, default = False, help = "Shuffle get item")
 
     parser.add_argument('--pr_subs_delta_bias', type=float, default=0, help='Bias to add to prior subtitles in seconds')
+    parser.add_argument('--pr_subs_delta_bias_start', type=float, default=0, help='Bias to add to prior subtitles in seconds')
+    parser.add_argument('--pr_subs_delta_bias_end', type=float, default=0, help='Bias to add to prior subtitles in seconds')
     parser.add_argument('--gt_subs_delta_bias', type=float, default=0, help='Bias to add to GT subtitles in seconds')
     parser.add_argument('--words_delta_bias', type=float, default=0, help='Bias to add to words in seconds')
     parser.add_argument('--shift_spottings', type=bool, default=True, help='Shift spottings to pre-defined location')

@@ -21,6 +21,7 @@ from pathlib import Path
 
 import os 
 import tqdm
+from statistics import mean, median
 import numpy as np
 import webvtt
 from beartype import beartype
@@ -158,7 +159,8 @@ def eval_subtitle_alignment(
         gt_anno_path_root: Path,
         list_videos: List,
         fps: int, 
-        shift = 0,
+        shift_start = 0,
+        shift_end = 0,
 ):
 
     if os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.vtt')): 
@@ -187,6 +189,8 @@ def eval_subtitle_alignment(
     correct = 0
     total = 0
     total_subs = 0
+    all_offset_start = []
+    all_offset_end = []
     BACKGROUND_LABEL = -1
     MAX_TIME_PAD_SECS = 10
     overlaps = [0.1, 0.25, 0.5]
@@ -200,10 +204,9 @@ def eval_subtitle_alignment(
         gt_subs = list(webvtt.from_srt(gt_path) if ext_gt == '.srt' else webvtt.read(gt_path))
         pred_subs = list(webvtt.from_srt(pred_path) if ext_pred == '.srt' else webvtt.read(pred_path))
 
-        if shift!=0: 
-            for sub_idx in range(len(pred_subs)): 
-                pred_subs[sub_idx]._start += shift
-                pred_subs[sub_idx]._end += shift
+        for sub_idx in range(len(pred_subs)): 
+            pred_subs[sub_idx]._start += shift_start
+            pred_subs[sub_idx]._end += shift_end
 
         msg = (f"Expected num. preds {len(pred_subs)} to match num. gt {len(gt_subs)} for"
                f" {pred_path}")
@@ -234,6 +237,9 @@ def eval_subtitle_alignment(
                 exclude_subs.append(sub_idx)
             # if sub._end - sub._start < 0.01:
             #     exclude_subs.append(sub_idx)
+            else:
+                all_offset_start.append(sub._start - pred_subs[sub_idx]._start)
+                all_offset_end.append(sub._end - pred_subs[sub_idx]._end)
         total_subs -= len(exclude_subs)
 
         # To compute metrics, we convert all the subtitles into a sequence of frame-level
@@ -280,8 +286,11 @@ def eval_subtitle_alignment(
 
     # Provide a summary of the computed metrics
     print('total ', total, 'subs', total_subs)
-    msg = ( f"Computed over {total} frames, {total_subs} sentences - "
-            f"Frame-level accuracy: {100 * float(correct)/total:.2f}"
+    msg = ( 
+            f"Mean and median start offset: {mean(all_offset_start):.2f} / {median(all_offset_start):.2f} \n"
+            f"Mean and median end offset: {mean(all_offset_end):.2f} / {median(all_offset_end):.2f} \n"
+            f"Computed over {total} frames, {total_subs} sentences - "
+            f"Frame-level accuracy: {100 * float(correct)/total:.2f}"            
            )
     for ii, overlap in enumerate(overlaps):
         precision = tp[ii] / float(tp[ii] + fp[ii])
@@ -324,6 +333,8 @@ def main():
         gt_anno_path_root=Path(f'{opts.gt_sub_path}'),
         list_videos=test_files,
         fps=25,
+        shift_start=opts.pr_subs_delta_bias_start,
+        shift_end=opts.pr_subs_delta_bias_end,
     )
 
 

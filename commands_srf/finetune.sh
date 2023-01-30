@@ -12,8 +12,8 @@ python main.py \
 --jitter_loc_quantity 2. \
 --load_words False \
 --load_subtitles True \
---lr 1e-5 \
---save_path 'inference_output_srf/finetune_subtitles' \
+--lr 1e-6 \
+--save_path 'inference_output_srf/' \
 --train_videos_txt 'data/srf_align_train.txt' \
 --val_videos_txt 'data/srf_align_val.txt' \
 --test_videos_txt 'data/srf_align_test.txt' \

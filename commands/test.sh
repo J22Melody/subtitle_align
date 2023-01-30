@@ -19,7 +19,7 @@ python main.py \
 --features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
 --gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
 --pr_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/audio-aligned-heuristic-correction/' \
---test_videos_txt 'data/bobsl_align_test_1.txt' \
+--test_videos_txt 'data/bobsl_align_test.txt' \
 --gpu_id 0 \
 --n_workers 32 \
 --batch_size 1 \
