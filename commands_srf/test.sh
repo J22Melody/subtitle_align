@@ -23,9 +23,12 @@
 # our checkpoint
 python main.py \
 --features_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/videos_i3d/' \
+--segmentation_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/videos_256/' \
 --gt_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles/' \
 --pr_sub_path '/shares/easier.volk.cl.uzh/WMT_Shared_Task/srf/parallel/subtitles_median_aligned/' \
 --test_videos_txt 'data/srf_align_test.txt' \
+--load_segmentation True \
+--concatenate_segmentation True \
 --gpu_id 0 \
 --n_workers 32 \
 --batch_size 1 \

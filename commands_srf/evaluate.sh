@@ -115,3 +115,17 @@
 # Mean and median start offset: -0.45 / 0.00 
 # Mean and median end offset: -0.43 / -0.08 
 # Computed over 147952 frames, 863 sentences - Frame-level accuracy: 78.64 F1@0.10: 90.50 F1@0.25: 86.79 F1@0.50: 75.20
+
+# on predictions from the bobsl checkpoint (bert-multilingual fine-tuned + fine-tuned + segmentation) 
+
+# before DTW output
+# total  147952 subs 863
+# Mean and median start offset: -0.36 / 0.01 
+# Mean and median end offset: -0.15 / 0.14 
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 76.61 F1@0.10: 93.12 F1@0.25: 89.03 F1@0.50: 73.98
+
+# after DTW output
+# total  147952 subs 863
+# Mean and median start offset: -0.44 / 0.00 
+# Mean and median end offset: -0.23 / 0.08 
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 76.92 F1@0.10: 90.15 F1@0.25: 86.56 F1@0.50: 72.89

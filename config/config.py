@@ -43,11 +43,16 @@ def load_opts():
     parser.add_argument('--load_subtitles', type = bool, default=True, help='Load subtitles texts and times (e.g. for training on subtitles)')
     parser.add_argument('--load_words', type = bool, default=False, help='Load word spottings texts and times (e.g. for word pre-training)')
     parser.add_argument('--load_features',  type = bool, default=True, help='Load features')
+    parser.add_argument('--load_segmentation',  type = bool, default=False, help='Load segmentation features')
 
     parser.add_argument('--features_path', 
                             type = str, 
                             default = '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/', 
                             help = 'Path to I3D features directory')
+    parser.add_argument('--segmentation_path', 
+                            type = str, 
+                            default = '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/', 
+                            help = 'Path to segmentation features directory')
     parser.add_argument('--gt_sub_path', 
                             type = str, 
                             default = '/scratch/shared/beegfs/albanie/shared-datasets/bobsl/public_dataset_release/subtitles/manually-aligned/', 
@@ -116,6 +121,7 @@ def load_opts():
     parser.add_argument('--positional_encoding_text', type=bool, default=False, help='Add positional encodings to text')
 
     parser.add_argument('--concatenate_prior', type=bool, default=True, help='Concatenate prior location')
+    parser.add_argument('--concatenate_segmentation', type=bool, default=False, help='Concatenate segmentation signal')
     parser.add_argument('--finetune_bert', type=bool, default=False, help='Finetune Bert')
     parser.add_argument('--bert_model', type=str, default='bert-base-uncased', help='Bert model to use')
 

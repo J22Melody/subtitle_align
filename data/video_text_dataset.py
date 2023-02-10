@@ -104,6 +104,14 @@ class VideoTextDataset(Dataset):
         else: 
             vid_episode_keys = data_paths
 
+        ### Loading segmentation features
+        print('Loading segmentation features...')
+        if self.opts.load_segmentation:
+            self.segmentation_features = {}
+            for path in tqdm(data_paths):
+                full_path = os.path.join(self.opts.segmentation_path, data_paths[0]) + '.seg.npy'
+                self.segmentation_features[path] = np.load(full_path, allow_pickle=True)[()]
+
         ### Loading subtitles 
         if self.opts.load_subtitles:
             print('Adding bias to prior subtitle times ', str(self.opts.pr_subs_delta_bias))
@@ -265,6 +273,8 @@ class VideoTextDataset(Dataset):
         gt_to = self.data_dict["gt_to"][index]
         if self.opts.load_features: 
             ep_feats = self.features[ep]
+        if self.opts.load_segmentation: 
+            seg_feats = self.segmentation_features[ep]
 
         # if text == 'round': 
         #     print(text, ep, gt_fr, gt_to, ep_feats.shape ep_feats[12285:12291,15])
@@ -301,6 +311,10 @@ class VideoTextDataset(Dataset):
                 out_dict["feats_len"] = np.where((np.sum(out_dict["feats"],1)==0)*1==1)[0][0]
             else:
                 out_dict["feats_len"]=0
+        
+        if self.opts.load_segmentation:
+            out_dict["seg_sign_feats"] = self.return_seg_feats(seg_feats['sign'], wind_fr, wind_to).astype(np.single)
+            out_dict["seg_sent_feats"] = self.return_seg_feats(seg_feats['sentence'], wind_fr, wind_to).astype(np.single)
 
         out_dict["pr_fr_to"] = np.array([pr_fr, pr_to]).astype(np.single)  
         out_dict["gt_fr_to"] = np.array([gt_fr, gt_to]).astype(np.single)  
@@ -310,7 +324,7 @@ class VideoTextDataset(Dataset):
             out_dict['pr_vec'] = self.times_to_labels_vec(out_dict["pr_fr_to"], out_dict["wind_fr_to"], out_dict["feats"]).astype(np.single)
             out_dict['gt_vec'] = self.times_to_labels_vec(out_dict["gt_fr_to"], out_dict["wind_fr_to"], out_dict["feats"]).astype(np.single)  
         out_dict['path'] = ep
-            
+
         return out_dict
 
     def jitter_pr_fr_to(self, pr_fr, pr_to):
@@ -379,6 +393,31 @@ class VideoTextDataset(Dataset):
             # import pdb; pdb.set_trace()
             npad = 0
             feats = feats[:self.wind_len, :]
+        if self.opts.pad_start_features:
+            feats = np.pad(feats, [(int(npad), 0), (0, 0)])
+        else:
+            feats = np.pad(feats, [(0, int(npad)), (0, 0)])
+        return feats
+
+    ### Index into episode for segmentation features
+    def return_seg_feats(self, ep_feats, wind_fr, wind_to):
+        _, _, feats = get_feature_interval(
+                            ep_feats.squeeze(),
+                            t0_sec=wind_fr,
+                            t1_sec=wind_to,
+                            clip_stride=1,
+                        )
+
+        wind_len = self.wind_len * self.opts.input_features_stride
+        npad = wind_len - feats.shape[0]
+        # TODO debug check 
+        # if self.opts.fixed_feat_len: 
+        #     assert npad == 0
+        if npad < 0 :
+            # print(f"WARNING - padding should not be less than 0. npad, wind len, feats = ", npad, self.wind_len, feats.shape[0])
+            # import pdb; pdb.set_trace()
+            npad = 0
+            feats = feats[:wind_len, :]
         if self.opts.pad_start_features:
             feats = np.pad(feats, [(int(npad), 0), (0, 0)])
         else:
