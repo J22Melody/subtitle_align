@@ -120,12 +120,12 @@
 
 # before DTW output
 # total  147952 subs 863
-# Mean and median start offset: -0.36 / 0.01 
-# Mean and median end offset: -0.15 / 0.14 
-# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 76.61 F1@0.10: 93.12 F1@0.25: 89.03 F1@0.50: 73.98
+# Mean and median start offset: -0.29 / 0.06 
+# Mean and median end offset: -0.48 / -0.13 
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 77.68 F1@0.10: 92.48 F1@0.25: 89.45 F1@0.50: 74.64
 
 # after DTW output
 # total  147952 subs 863
-# Mean and median start offset: -0.44 / 0.00 
-# Mean and median end offset: -0.23 / 0.08 
-# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 76.92 F1@0.10: 90.15 F1@0.25: 86.56 F1@0.50: 72.89
+# Mean and median start offset: -0.38 / 0.04 
+# Mean and median end offset: -0.45 / -0.04 
+# Computed over 147952 frames, 863 sentences - Frame-level accuracy: 78.67 F1@0.10: 92.47 F1@0.25: 87.95 F1@0.50: 74.97

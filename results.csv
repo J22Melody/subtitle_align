@@ -16,3 +16,5 @@ SRF,audio_aligned + median + SAT (BERT + finetune),77.69,92.53,89.15,73.98,just 
 SRF,audio_aligned + median + SAT (BERT + finetune) + DTW,78.75,91.66,87.37,74.39,^
 SRF,audio_aligned + median + SAT (finetune BERT + finetune),76.74,92.43,87.89,72.88,finetune BERT does not improve
 SRF,audio_aligned + median + SAT (finetune BERT + finetune) + DTW,78.64,90.50,86.79,75.20,^
+SRF,audio_aligned + median + SAT (BERT + finetune + segmentation),77.68,92.48,89.45,74.64,segmentation does not improve
+SRF,audio_aligned + median + SAT (BERT + finetune + segmentation) + DTW,78.67,92.47,87.95,74.97,^
