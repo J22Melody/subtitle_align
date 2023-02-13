@@ -2,7 +2,7 @@
 # --features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
 # --gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
 # --pr_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/audio-aligned-heuristic-correction/' \
-# --test_videos_txt 'data/bobsl_align_test_1.txt' \
+# --test_videos_txt 'data/bobsl_align_test.txt' \
 # --gpu_id 0 \
 # --n_workers 32 \
 # --batch_size 1 \
@@ -13,24 +13,7 @@
 # --save_vtt True \
 # --save_probs True \
 # --dtw_postpro True \
-# --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output/finetune_subtitles/checkpoints/model_0000264841.pt' \
-
-python main.py \
---features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
---gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
---pr_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/audio-aligned-heuristic-correction/' \
---test_videos_txt 'data/bobsl_align_test.txt' \
---gpu_id 0 \
---n_workers 32 \
---batch_size 1 \
---pr_subs_delta_bias 2.7 \
---fixed_feat_len 20 \
---centre_window \
---test_only \
---save_vtt True \
---save_probs True \
---dtw_postpro True \
---resume '/shares/volk.cl.uzh/zifjia/subtitle_align/checkpoints_subtitle_align/finetune_subtitles/checkpoints/model_0000264041.pt' \
+# --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/checkpoints_subtitle_align/finetune_subtitles/checkpoints/model_0000264041.pt' \
 
 
 # before DTW output
@@ -44,3 +27,26 @@ python main.py \
 # f1_25: 64.08
 # f1_50: 44.60
 
+python main.py \
+--features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
+--segmentation_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/videos/' \
+--gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
+--pr_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/audio-aligned-heuristic-correction/' \
+--test_videos_txt 'data/bobsl_align_test.txt' \
+--load_segmentation True \
+--concatenate_segmentation True \
+--gpu_id 0 \
+--n_workers 32 \
+--batch_size 1 \
+--pr_subs_delta_bias 2.7 \
+--fixed_feat_len 20 \
+--centre_window \
+--test_only \
+--save_vtt True \
+--save_probs True \
+--dtw_postpro True \
+--save_path 'inference_output/' \
+--save_probs_folder 'inference_output/probabilities' \
+--save_subs_folder 'inference_output/subtitles' \
+--save_postpro_subs_folder 'inference_output/subtitles_postprocessing' \
+--resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output/checkpoints/model_0000277741.pt' \

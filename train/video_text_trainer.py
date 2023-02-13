@@ -163,22 +163,22 @@ class VideoTextTrainer(BaseTrainer):
             # metrics for prediction
             if 'tp' in model_out:
                 self.f1_logger.update(model_out)
-                # metrics_dict['frame_acc'] = self.f1_logger.accuracy * (counter + 1) # hack
-                metrics_dict['frame_acc'] += self.f1_logger.accuracy
+                metrics_dict['frame_acc'] = self.f1_logger.accuracy * (counter + 1) # hack
+                # metrics_dict['frame_acc'] += self.f1_logger.accuracy
                 f1s, overlaps = self.f1_logger.f1
                 for f1, ov in zip(f1s, overlaps):
-                    # metrics_dict[f'f1@{ov}'] = f1 * (counter+1) # hack
-                    metrics_dict[f'f1@{ov}'] += f1
+                    metrics_dict[f'f1@{ov}'] = f1 * (counter+1) # hack
+                    # metrics_dict[f'f1@{ov}'] += f1
 
             # metrics for base
             if 'tp_b' in model_out:
                 self.f1_logger_b.update(model_out)
-                # metrics_dict['frame_acc_b'] = self.f1_logger_b.accuracy * (counter + 1) # hack 
-                metrics_dict['frame_acc_b'] += self.f1_logger_b.accuracy 
+                metrics_dict['frame_acc_b'] = self.f1_logger_b.accuracy * (counter + 1) # hack 
+                # metrics_dict['frame_acc_b'] += self.f1_logger_b.accuracy 
                 f1s, overlaps = self.f1_logger_b.f1
                 for f1, ov in zip(f1s, overlaps):
-                    # metrics_dict[f'f1@{ov}_b'] = f1 * (counter+1) # hack
-                    metrics_dict[f'f1@{ov}_b'] += f1
+                    metrics_dict[f'f1@{ov}_b'] = f1 * (counter+1) # hack
+                    # metrics_dict[f'f1@{ov}_b'] += f1
 
             # - tb summaries
             if (self.opts.test_only or
