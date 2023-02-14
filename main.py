@@ -115,8 +115,11 @@ def main(opts):
             res_val, best_metric = trainer.train(
                 dataloader_val, mode='val', epoch=-1)  # initialize metric
 
+            if opts.lr_reduce:
+                scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(trainer.optimizer, 'max')
+
             for epoch in range(opts.n_epochs):
-                print('Epoch {:d}/{:d}'.format(epoch, opts.n_epochs))
+                print('Epoch {:d}/{:d}'.format(epoch+1, opts.n_epochs))
                 
                 res_tr, _ = trainer.train(dataloader,
                                         mode='train',
@@ -129,13 +132,19 @@ def main(opts):
                                                             mode='val',
                                                             epoch=epoch)
 
+                        if opts.lr_reduce:
+                            scheduler.step(val_metric)
+                        
+                        if val_metric > best_metric:
+                            best_metric = val_metric
+                            print(f"best checkpoint so far!")
+
                         scorefile.write("{} | {}\n".format(res_tr, res_val))
                         scorefile.flush()
 
                         print('saving model ', "model_{:010d}.pt".format(trainer.global_step))
                         model_ckpt = "model_{:010d}.pt".format(trainer.global_step)
                         trainer.save_checkpoint(model_ckpt)
-                        
 
             scorefile.close()
         else:

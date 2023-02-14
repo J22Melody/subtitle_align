@@ -78,6 +78,8 @@
 # total  147952 subs 863
 # Computed over 147952 frames, 863 sentences - Frame-level accuracy: 77.50 F1@0.10: 89.92 F1@0.25: 85.17 F1@0.50: 69.52
 
+######## to be removed after rerun #######
+
 # on predictions from the bobsl checkpoint (bert-multilingual)
 
 # before DTW output

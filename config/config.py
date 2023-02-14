@@ -128,6 +128,7 @@ def load_opts():
     # --- trainer
     parser.add_argument('--optimizer', type=str, default='adam', help='adam or adamw optimizer')
     parser.add_argument('--lr', type=float, default=1e-5, help='Learning rate')
+    parser.add_argument('--lr_reduce', type=bool, default=False, help='Reduce learning rate when a metric has stopped improving')
     parser.add_argument('--pos_weight', type=float, default=0, help='Add pos weights to CrossEntropyLoss')
     parser.add_argument('--n_epochs', type=int, default=10, help='Number of epochs')
     parser.add_argument('--batch_size', type=int, default=32, help='Batch size')
@@ -142,9 +143,12 @@ def load_opts():
     parser.add_argument('--save_probs', type = bool, default = False, help = "Save CE softmax outputs ")
     parser.add_argument("--dtw_postpro", type = bool, default = False, help='Run DTW postprocessing')
 
-    parser.add_argument('--save_probs_folder', type=str, default='inference_output/probabilities', help='Folder to save probabilities')
-    parser.add_argument('--save_subs_folder', type=str, default='inference_output/subtitles', help='Folder to save subtitles')
-    parser.add_argument('--save_postpro_subs_folder', type=str, default='inference_output/subtitles_postprocessing', help='Folder to save subtitles with postprocessing to remove overlaps')
+    # parser.add_argument('--save_probs_folder', type=str, default='inference_output/probabilities', help='Folder to save probabilities')
+    # parser.add_argument('--save_subs_folder', type=str, default='inference_output/subtitles', help='Folder to save subtitles')
+    # parser.add_argument('--save_postpro_subs_folder', type=str, default='inference_output/subtitles_postprocessing', help='Folder to save subtitles with postprocessing to remove overlaps')
+    parser.add_argument('--save_probs_folder', type=str, help='Folder to save probabilities')
+    parser.add_argument('--save_subs_folder', type=str, help='Folder to save subtitles')
+    parser.add_argument('--save_postpro_subs_folder', type=str, help='Folder to save subtitles with postprocessing to remove overlaps')
 
     # --- evaluation
     parser.add_argument('--pred_path_root', 
@@ -153,5 +157,14 @@ def load_opts():
         help = 'Path to predicted subtitles')
     
     args = parser.parse_args()
+
+    if args.save_probs_folder is None:
+        args.save_probs_folder = args.save_path + 'probabilities'
+
+    if args.save_subs_folder is None:
+        args.save_subs_folder = args.save_path + 'subtitles'
+
+    if args.save_postpro_subs_folder is None:
+        args.save_postpro_subs_folder = args.save_path + 'subtitles_postprocessing'
 
     return args

@@ -15,7 +15,6 @@
 # --dtw_postpro True \
 # --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/checkpoints_subtitle_align/finetune_subtitles/checkpoints/model_0000264041.pt' \
 
-
 # before DTW output
 # Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 65.09 F1@0.10: 71.47 F1@0.25: 63.61 F1@0.50: 46.41
 # after DTW output

@@ -131,10 +131,11 @@ class GtInvAlignTransformer(nn.Module):
 
         pr_vec = None
         seg_vec = None
+        ref_inp_lst = []
 
         if self.opts.concatenate_prior:
             pr_vec = data_dict['pr_vec'].type(torch.FloatTensor).cuda()
-            
+            ref_inp_lst.append(pr_vec)
 
         if self.opts.concatenate_segmentation:
             seg_vec = torch.cat((data_dict['seg_sign_feats'], data_dict['seg_sent_feats']), dim=2)
@@ -142,9 +143,14 @@ class GtInvAlignTransformer(nn.Module):
             seg_vec = torch.exp(seg_vec)
             seg_vec = seg_vec.view(seg_vec.shape[0], pr_vec.shape[1], -1, seg_vec.shape[2])
             seg_vec = seg_vec.mean(dim=2)
+            ref_inp_lst.append(seg_vec)
 
-        if self.opts.concatenate_prior or self.opts.concatenate_segmentation: 
-            ref_inp = self.ref_vec_embedding(torch.cat((pr_vec, seg_vec), dim=2)) 
+        if len(ref_inp_lst) > 0:
+            if len(ref_inp_lst) > 1:
+                ref_inp = torch.cat(ref_inp_lst, dim=2)
+            else:
+                ref_inp = ref_inp_lst[0]
+            ref_inp = self.ref_vec_embedding(ref_inp)
             ref_inp = ref_inp.permute([1,0,2])
             vid_emb = torch.cat((vid_emb,ref_inp),2)
             vid_emb = self.reproject_concatenate(vid_emb)
