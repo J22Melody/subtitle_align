@@ -191,6 +191,8 @@ def eval_subtitle_alignment(
     total_subs = 0
     all_offset_start = []
     all_offset_end = []
+    all_offset_start_abs = []
+    all_offset_end_abs = []
     BACKGROUND_LABEL = -1
     MAX_TIME_PAD_SECS = 10
     overlaps = [0.1, 0.25, 0.5]
@@ -240,6 +242,8 @@ def eval_subtitle_alignment(
             else:
                 all_offset_start.append(sub._start - pred_subs[sub_idx]._start)
                 all_offset_end.append(sub._end - pred_subs[sub_idx]._end)
+                all_offset_start_abs.append(abs(sub._start - pred_subs[sub_idx]._start))
+                all_offset_end_abs.append(abs(sub._end - pred_subs[sub_idx]._end))
         total_subs -= len(exclude_subs)
 
         # To compute metrics, we convert all the subtitles into a sequence of frame-level
@@ -289,6 +293,8 @@ def eval_subtitle_alignment(
     msg = ( 
             f"Mean and median start offset: {mean(all_offset_start):.2f} / {median(all_offset_start):.2f} \n"
             f"Mean and median end offset: {mean(all_offset_end):.2f} / {median(all_offset_end):.2f} \n"
+            f"Mean and median start offset (abs): {mean(all_offset_start_abs):.2f} / {median(all_offset_start_abs):.2f} \n"
+            f"Mean and median end offset (abs): {mean(all_offset_end_abs):.2f} / {median(all_offset_end_abs):.2f} \n"
             f"Computed over {total} frames, {total_subs} sentences - "
             f"Frame-level accuracy: {100 * float(correct)/total:.2f}"            
            )

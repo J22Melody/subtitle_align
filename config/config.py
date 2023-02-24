@@ -91,6 +91,7 @@ def load_opts():
     parser.add_argument('--jitter_location', action='store_true', help='Whether to jitter forward or backward in time')
     parser.add_argument('--jitter_loc_quantity', type=float, default=0, help='Percentage of subtitle width to jitter by OR if jitter_abs maximum shift in seconds')
     parser.add_argument('--jitter_width_secs', type=int, default=0, help='jitter width of prior sub in s')
+    parser.add_argument('--jitter_towards_gt', action='store_true', help='Whether to jitter towards the ground truth')
 
     parser.add_argument('--fixed_feat_len', type = float, default = 20, help = "Feature length in seconds")
 

@@ -285,6 +285,8 @@ class VideoTextDataset(Dataset):
         # in the fixed_feat_len=0 version the start and end of the window are just pr_fr and pr_to
 
         ### Jitter prior 
+        if self.opts.jitter_towards_gt:
+            pr_fr, pr_to = self.jitter_towards_gt(pr_fr, pr_to, gt_fr, gt_to)
         if self.opts.jitter_location:
             pr_fr, pr_to = self.jitter_pr_fr_to(pr_fr, pr_to)
         if self.opts.jitter_width_secs>0:
@@ -326,6 +328,11 @@ class VideoTextDataset(Dataset):
         out_dict['path'] = ep
 
         return out_dict
+
+    def jitter_towards_gt(self, pr_fr, pr_to, gt_fr, gt_to):
+        pr_fr = random.uniform(pr_fr, gt_fr)
+        pr_to = random.uniform(pr_to, gt_to)
+        return pr_fr, pr_to 
 
     def jitter_pr_fr_to(self, pr_fr, pr_to):
         if self.opts.jitter_abs: 
