@@ -287,6 +287,8 @@ class VideoTextDataset(Dataset):
         ### Jitter prior 
         if self.opts.jitter_towards_gt:
             pr_fr, pr_to = self.jitter_towards_gt(pr_fr, pr_to, gt_fr, gt_to)
+        if self.opts.jitter_mirror_gt:
+            pr_fr, pr_to = self.jitter_mirror_gt(pr_fr, pr_to, gt_fr, gt_to)
         if self.opts.jitter_location:
             pr_fr, pr_to = self.jitter_pr_fr_to(pr_fr, pr_to)
         if self.opts.jitter_width_secs>0:
@@ -330,8 +332,21 @@ class VideoTextDataset(Dataset):
         return out_dict
 
     def jitter_towards_gt(self, pr_fr, pr_to, gt_fr, gt_to):
-        pr_fr = random.uniform(pr_fr, gt_fr)
-        pr_to = random.uniform(pr_to, gt_to)
+        # jitter fr and to separately
+        # pr_fr = random.uniform(pr_fr, gt_fr)
+        # pr_to = random.uniform(pr_to, gt_to)
+
+        # jitter fr and to together
+        shift_ratio = random.uniform(0, 1)
+        pr_fr = pr_fr + shift_ratio * (gt_fr - pr_fr)
+        pr_to = pr_to + shift_ratio * (gt_to - pr_to)
+
+        return pr_fr, pr_to 
+
+    def jitter_mirror_gt(self, pr_fr, pr_to, gt_fr, gt_t, probability=0.5):
+        if random.uniform(0, 1) > probability:
+            pr_fr = pr_fr + 2 * (gt_fr - pr_fr)
+            pr_to = pr_to + 2 * (gt_to - pr_to)
         return pr_fr, pr_to 
 
     def jitter_pr_fr_to(self, pr_fr, pr_to):
