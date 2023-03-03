@@ -75,7 +75,64 @@
 # --save_path 'inference_output_2/' \
 # --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/checkpoints_subtitle_align/finetune_subtitles/checkpoints/model_0000264041.pt' \
 
-# test all (jitter gt)
+# # test all (jitter gt)
+# python main.py \
+# --features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
+# --gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
+# --pr_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/audio-aligned-heuristic-correction/' \
+# --test_videos_txt 'data/bobsl_align_test.txt' \
+# --gpu_id 0 \
+# --n_workers 32 \
+# --batch_size 1 \
+# --pr_subs_delta_bias 2.7 \
+# --fixed_feat_len 20 \
+# --centre_window \
+# --test_only \
+# --save_vtt True \
+# --save_probs True \
+# --dtw_postpro False \
+# --save_path 'inference_output_jitter_gt_to/' \
+# --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt_to/checkpoints/model_0000258424.pt' \
+
+# # again
+# python main.py \
+# --features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
+# --gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
+# --pr_sub_path 'inference_output_jitter_gt_to/subtitles/' \
+# --test_videos_txt 'data/bobsl_align_test.txt' \
+# --gpu_id 0 \
+# --n_workers 32 \
+# --batch_size 1 \
+# --pr_subs_delta_bias 2.7 \
+# --fixed_feat_len 20 \
+# --centre_window \
+# --test_only \
+# --save_vtt True \
+# --save_probs True \
+# --dtw_postpro False \
+# --save_path 'inference_output_jitter_gt_to_1/' \
+# --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt_to/checkpoints/model_0000258424.pt' \
+
+# # and again
+# python main.py \
+# --features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
+# --gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
+# --pr_sub_path 'inference_output_jitter_gt_to_1/subtitles/' \
+# --test_videos_txt 'data/bobsl_align_test.txt' \
+# --gpu_id 0 \
+# --n_workers 32 \
+# --batch_size 1 \
+# --pr_subs_delta_bias 2.7 \
+# --fixed_feat_len 20 \
+# --centre_window \
+# --test_only \
+# --save_vtt True \
+# --save_probs True \
+# --dtw_postpro False \
+# --save_path 'inference_output_jitter_gt_to_2/' \
+# --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt_to/checkpoints/model_0000258424.pt' \
+
+# test all (jitter gt mi)
 python main.py \
 --features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
 --gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
@@ -90,47 +147,47 @@ python main.py \
 --test_only \
 --save_vtt True \
 --save_probs True \
---dtw_postpro True \
---save_path 'inference_output_jitter_gt/' \
---resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt/checkpoints/model_0000261027.pt' \
+--dtw_postpro False \
+--save_path 'inference_output_jitter_gt_mi/' \
+--resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt_mi/checkpoints/model_0000261986.pt' \
 
-# # again
-# python main.py \
-# --features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
-# --gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
-# --pr_sub_path 'inference_output_jitter_gt/subtitles/' \
-# --test_videos_txt 'data/bobsl_align_test.txt' \
-# --gpu_id 0 \
-# --n_workers 32 \
-# --batch_size 1 \
-# --pr_subs_delta_bias 2.7 \
-# --fixed_feat_len 20 \
-# --centre_window \
-# --test_only \
-# --save_vtt True \
-# --save_probs True \
-# --dtw_postpro False \
-# --save_path 'inference_output_jitter_gt_1/' \
-# --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt/checkpoints/model_0000261027.pt' \
+# again
+python main.py \
+--features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
+--gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
+--pr_sub_path 'inference_output_jitter_gt_mi/subtitles/' \
+--test_videos_txt 'data/bobsl_align_test.txt' \
+--gpu_id 0 \
+--n_workers 32 \
+--batch_size 1 \
+--pr_subs_delta_bias 2.7 \
+--fixed_feat_len 20 \
+--centre_window \
+--test_only \
+--save_vtt True \
+--save_probs True \
+--dtw_postpro False \
+--save_path 'inference_output_jitter_gt_mi_1/' \
+--resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt_mi/checkpoints/model_0000261986.pt' \
 
-# # and again
-# python main.py \
-# --features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
-# --gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
-# --pr_sub_path 'inference_output_jitter_gt_1/subtitles/' \
-# --test_videos_txt 'data/bobsl_align_test.txt' \
-# --gpu_id 0 \
-# --n_workers 32 \
-# --batch_size 1 \
-# --pr_subs_delta_bias 2.7 \
-# --fixed_feat_len 20 \
-# --centre_window \
-# --test_only \
-# --save_vtt True \
-# --save_probs True \
-# --dtw_postpro True \
-# --save_path 'inference_output_jitter_gt_2/' \
-# --resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt/checkpoints/model_0000261027.pt' \
+# and again
+python main.py \
+--features_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/features/i3d_c2281_16f_m8_-15_4_d0.8_-3_22/' \
+--gt_sub_path '/shares/volk.cl.uzh/zifjia/bobsl/bobsl/subtitles/manually-aligned/' \
+--pr_sub_path 'inference_output_jitter_gt_mi_1/subtitles/' \
+--test_videos_txt 'data/bobsl_align_test.txt' \
+--gpu_id 0 \
+--n_workers 32 \
+--batch_size 1 \
+--pr_subs_delta_bias 2.7 \
+--fixed_feat_len 20 \
+--centre_window \
+--test_only \
+--save_vtt True \
+--save_probs True \
+--dtw_postpro False \
+--save_path 'inference_output_jitter_gt_mi_2/' \
+--resume '/shares/volk.cl.uzh/zifjia/subtitle_align/inference_output_jitter_gt_mi/checkpoints/model_0000261986.pt' \
 
 # their results
 # before DTW output

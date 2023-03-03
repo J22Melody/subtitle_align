@@ -343,7 +343,7 @@ class VideoTextDataset(Dataset):
 
         return pr_fr, pr_to 
 
-    def jitter_mirror_gt(self, pr_fr, pr_to, gt_fr, gt_t, probability=0.5):
+    def jitter_mirror_gt(self, pr_fr, pr_to, gt_fr, gt_to, probability=0.5):
         if random.uniform(0, 1) > probability:
             pr_fr = pr_fr + 2 * (gt_fr - pr_fr)
             pr_to = pr_to + 2 * (gt_to - pr_to)
