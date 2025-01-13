@@ -21,6 +21,8 @@ def postprocessing_remove_intersections(test_file, path_subtitles = '/scratch/sh
             sub_ext = '/signhd.vtt'
         elif os.path.exists(os.path.join(path_subtitles, test_file + '.vtt')):
             sub_ext = '.vtt'
+        elif os.path.exists(os.path.join(path_subtitles, test_file + '.srt')):
+            sub_ext = '.srt'
         else: 
             print('cannot find file ', os.path.join(path_subtitles, test_file))
         path_pred = os.path.join(path_subtitles, test_file + sub_ext)
@@ -165,6 +167,7 @@ def postprocessing_remove_intersections(test_file, path_subtitles = '/scratch/sh
             parsed_pred[chrono_order_noconflict[i]][1] = start_frame/25
             parsed_pred[chrono_order_noconflict[i]][2] = end_frame/25
 
+        sub_ext = '/signhd.vtt'
         out_file = os.path.join(path_postpro_subs, test_file+sub_ext)
         os.makedirs(os.path.dirname(out_file), exist_ok=True)
 

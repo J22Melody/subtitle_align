@@ -59,21 +59,24 @@ class GtInvAlignTransformer(nn.Module):
 
         # text embedding model 
         if not self.opts.finetune_bert:
-            self.text_model = BertTextModel().requires_grad_(False)
+            self.text_model = BertTextModel(opts.bert_model).requires_grad_(False)
         else:
-            self.text_model = BertTextModel()
+            self.text_model = BertTextModel(opts.bert_model)
 
         # input projections for 2 modalities 
         self.input_proj_vid = nn.Conv1d(self.d_vid, opts.d_model, kernel_size=1)
         self.input_proj_txt = nn.Conv1d(self.d_txt, opts.d_model, kernel_size=1)
 
         # embedding for original subtitle 
-        reproject_dim = opts.d_model
+        ref_vec_dim = 0
         if self.opts.concatenate_prior:
-            self.ref_vec_embedding = nn.Linear(1, opts.d_model)
-            reproject_dim += opts.d_model
+            ref_vec_dim = ref_vec_dim + 1
+        if self.opts.concatenate_segmentation:
+            ref_vec_dim = ref_vec_dim + 6
 
-        self.reproject_concatenate = nn.Linear(reproject_dim, opts.d_model)
+        if ref_vec_dim > 0:
+            self.ref_vec_embedding = nn.Linear(ref_vec_dim, opts.d_model)
+            self.reproject_concatenate = nn.Linear(opts.d_model * 2, opts.d_model)
 
         # self positional enc
         self.positional_enc = PositionalEncoding(d_model=opts.d_model)
@@ -126,14 +129,30 @@ class GtInvAlignTransformer(nn.Module):
         vid_emb = self.input_proj_vid(vid_inp) # (B, C, T)
         vid_emb = vid_emb.permute([2,0,1]) # (T, B, C)       
 
+        pr_vec = None
+        seg_vec = None
+        ref_inp_lst = []
+
         if self.opts.concatenate_prior:
             pr_vec = data_dict['pr_vec'].type(torch.FloatTensor).cuda()
-            pr_vec = pr_vec.cuda()
-            ref_inp = self.ref_vec_embedding(pr_vec) 
+            ref_inp_lst.append(pr_vec)
+
+        if self.opts.concatenate_segmentation:
+            seg_vec = torch.cat((data_dict['seg_sign_feats'], data_dict['seg_sent_feats']), dim=2)
+            seg_vec = seg_vec.type(torch.FloatTensor).cuda()
+            seg_vec = torch.exp(seg_vec)
+            seg_vec = seg_vec.view(seg_vec.shape[0], pr_vec.shape[1], -1, seg_vec.shape[2])
+            seg_vec = seg_vec.mean(dim=2)
+            ref_inp_lst.append(seg_vec)
+
+        if len(ref_inp_lst) > 0:
+            if len(ref_inp_lst) > 1:
+                ref_inp = torch.cat(ref_inp_lst, dim=2)
+            else:
+                ref_inp = ref_inp_lst[0]
+            ref_inp = self.ref_vec_embedding(ref_inp)
             ref_inp = ref_inp.permute([1,0,2])
-            vid_emb = torch.cat((vid_emb,ref_inp),2)       
-                    
-        if self.opts.concatenate_prior: 
+            vid_emb = torch.cat((vid_emb,ref_inp),2)
             vid_emb = self.reproject_concatenate(vid_emb)
 
         vid_emb = vid_emb * math.sqrt(self.opts.d_model)

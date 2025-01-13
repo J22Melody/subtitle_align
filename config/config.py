@@ -43,11 +43,16 @@ def load_opts():
     parser.add_argument('--load_subtitles', type = bool, default=True, help='Load subtitles texts and times (e.g. for training on subtitles)')
     parser.add_argument('--load_words', type = bool, default=False, help='Load word spottings texts and times (e.g. for word pre-training)')
     parser.add_argument('--load_features',  type = bool, default=True, help='Load features')
+    parser.add_argument('--load_segmentation',  type = bool, default=False, help='Load segmentation features')
 
     parser.add_argument('--features_path', 
                             type = str, 
                             default = '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/', 
                             help = 'Path to I3D features directory')
+    parser.add_argument('--segmentation_path', 
+                            type = str, 
+                            default = '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/', 
+                            help = 'Path to segmentation features directory')
     parser.add_argument('--gt_sub_path', 
                             type = str, 
                             default = '/scratch/shared/beegfs/albanie/shared-datasets/bobsl/public_dataset_release/subtitles/manually-aligned/', 
@@ -68,6 +73,8 @@ def load_opts():
     parser.add_argument('--shuffle_getitem', type = bool, default = False, help = "Shuffle get item")
 
     parser.add_argument('--pr_subs_delta_bias', type=float, default=0, help='Bias to add to prior subtitles in seconds')
+    parser.add_argument('--pr_subs_delta_bias_start', type=float, default=0, help='Bias to add to prior subtitles in seconds')
+    parser.add_argument('--pr_subs_delta_bias_end', type=float, default=0, help='Bias to add to prior subtitles in seconds')
     parser.add_argument('--gt_subs_delta_bias', type=float, default=0, help='Bias to add to GT subtitles in seconds')
     parser.add_argument('--words_delta_bias', type=float, default=0, help='Bias to add to words in seconds')
     parser.add_argument('--shift_spottings', type=bool, default=True, help='Shift spottings to pre-defined location')
@@ -84,6 +91,8 @@ def load_opts():
     parser.add_argument('--jitter_location', action='store_true', help='Whether to jitter forward or backward in time')
     parser.add_argument('--jitter_loc_quantity', type=float, default=0, help='Percentage of subtitle width to jitter by OR if jitter_abs maximum shift in seconds')
     parser.add_argument('--jitter_width_secs', type=int, default=0, help='jitter width of prior sub in s')
+    parser.add_argument('--jitter_towards_gt', action='store_true', help='Whether to jitter towards the ground truth')
+    parser.add_argument('--jitter_mirror_gt', action='store_true', help='Whether to jitter mirroring the ground truth')
 
     parser.add_argument('--fixed_feat_len', type = float, default = 20, help = "Feature length in seconds")
 
@@ -114,11 +123,14 @@ def load_opts():
     parser.add_argument('--positional_encoding_text', type=bool, default=False, help='Add positional encodings to text')
 
     parser.add_argument('--concatenate_prior', type=bool, default=True, help='Concatenate prior location')
+    parser.add_argument('--concatenate_segmentation', type=bool, default=False, help='Concatenate segmentation signal')
     parser.add_argument('--finetune_bert', type=bool, default=False, help='Finetune Bert')
+    parser.add_argument('--bert_model', type=str, default='bert-base-uncased', help='Bert model to use')
 
     # --- trainer
     parser.add_argument('--optimizer', type=str, default='adam', help='adam or adamw optimizer')
     parser.add_argument('--lr', type=float, default=1e-5, help='Learning rate')
+    parser.add_argument('--lr_reduce', type=bool, default=False, help='Reduce learning rate when a metric has stopped improving')
     parser.add_argument('--pos_weight', type=float, default=0, help='Add pos weights to CrossEntropyLoss')
     parser.add_argument('--n_epochs', type=int, default=10, help='Number of epochs')
     parser.add_argument('--batch_size', type=int, default=32, help='Batch size')
@@ -133,11 +145,28 @@ def load_opts():
     parser.add_argument('--save_probs', type = bool, default = False, help = "Save CE softmax outputs ")
     parser.add_argument("--dtw_postpro", type = bool, default = False, help='Run DTW postprocessing')
 
-    parser.add_argument('--save_probs_folder', type=str, default='inference_output/probabilities', help='Folder to save probabilities')
-    parser.add_argument('--save_subs_folder', type=str, default='inference_output/subtitles', help='Folder to save subtitles')
-    parser.add_argument('--save_postpro_subs_folder', type=str, default='inference_output/subtitles_postprocessing', help='Folder to save subtitles with postprocessing to remove overlaps')
+    # parser.add_argument('--save_probs_folder', type=str, default='inference_output/probabilities', help='Folder to save probabilities')
+    # parser.add_argument('--save_subs_folder', type=str, default='inference_output/subtitles', help='Folder to save subtitles')
+    # parser.add_argument('--save_postpro_subs_folder', type=str, default='inference_output/subtitles_postprocessing', help='Folder to save subtitles with postprocessing to remove overlaps')
+    parser.add_argument('--save_probs_folder', type=str, help='Folder to save probabilities')
+    parser.add_argument('--save_subs_folder', type=str, help='Folder to save subtitles')
+    parser.add_argument('--save_postpro_subs_folder', type=str, help='Folder to save subtitles with postprocessing to remove overlaps')
 
-
+    # --- evaluation
+    parser.add_argument('--pred_path_root', 
+        type = str, 
+        default = 'inference_output/subtitles', 
+        help = 'Path to predicted subtitles')
+    
     args = parser.parse_args()
+
+    if args.save_probs_folder is None:
+        args.save_probs_folder = args.save_path + 'probabilities'
+
+    if args.save_subs_folder is None:
+        args.save_subs_folder = args.save_path + 'subtitles'
+
+    if args.save_postpro_subs_folder is None:
+        args.save_postpro_subs_folder = args.save_path + 'subtitles_postprocessing'
 
     return args

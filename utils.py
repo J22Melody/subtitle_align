@@ -541,7 +541,7 @@ def seconds_to_string(seconds):
 
 
 def parse_vtt_sub_file(vtt_path):
-    subs = webvtt.read(vtt_path)
+    subs = webvtt.from_srt(vtt_path) if vtt_path.endswith('.srt') else webvtt.read(vtt_path)
 
     subs_parsed = []
 

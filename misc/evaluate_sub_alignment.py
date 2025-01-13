@@ -11,6 +11,9 @@ Example usage:
 python misc/sub_align/evaluate_sub_alignment.py \
     --pred_subtitle_dir /scratch/shared/beegfs/albanie/shared-datasets/bbcsl_raw/subtitles/subtitles-vtt-text-normalized-aligned/heuristic-aligned-subs-05_01_2021-mouth-padding4_all
 """
+import sys
+sys.path.append('/net/cephfs/shares/volk.cl.uzh/zifjia/subtitle_align') #hack
+
 import argparse
 from pickle import SHORT_BINSTRING
 from typing import List, Tuple
@@ -18,6 +21,7 @@ from pathlib import Path
 
 import os 
 import tqdm
+from statistics import mean, median
 import numpy as np
 import webvtt
 from beartype import beartype
@@ -155,16 +159,21 @@ def eval_subtitle_alignment(
         gt_anno_path_root: Path,
         list_videos: List,
         fps: int, 
-        shift = 0,
+        shift_start = 0,
+        shift_end = 0,
 ):
 
     if os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.vtt')): 
         ext_gt = '.vtt'
+    elif os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.srt')): 
+        ext_gt = '.srt'
     else: 
         ext_gt = '/signhd.vtt'
 
     if os.path.exists(os.path.join(pred_path_root, list_videos[0]+'.vtt')): 
         ext_pred = '.vtt'
+    elif os.path.exists(os.path.join(pred_path_root, list_videos[0]+'.srt')): 
+        ext_pred = '.srt'
     else: 
         ext_pred = '/signhd.vtt'
     gt_anno_paths = [Path(f'{gt_anno_path_root}/{p}{ext_gt}') for p in list_videos]
@@ -180,6 +189,10 @@ def eval_subtitle_alignment(
     correct = 0
     total = 0
     total_subs = 0
+    all_offset_start = []
+    all_offset_end = []
+    all_offset_start_abs = []
+    all_offset_end_abs = []
     BACKGROUND_LABEL = -1
     MAX_TIME_PAD_SECS = 10
     overlaps = [0.1, 0.25, 0.5]
@@ -190,13 +203,12 @@ def eval_subtitle_alignment(
         # if 'natural' in str(pred_path):
         #     continue
 
-        pred_subs = list(webvtt.read(pred_path))
-        gt_subs = list(webvtt.read(gt_path))
+        gt_subs = list(webvtt.from_srt(gt_path) if ext_gt == '.srt' else webvtt.read(gt_path))
+        pred_subs = list(webvtt.from_srt(pred_path) if ext_pred == '.srt' else webvtt.read(pred_path))
 
-        if shift!=0: 
-            for sub_idx in range(len(pred_subs)): 
-                pred_subs[sub_idx]._start += shift
-                pred_subs[sub_idx]._end += shift
+        for sub_idx in range(len(pred_subs)): 
+            pred_subs[sub_idx]._start += shift_start
+            pred_subs[sub_idx]._end += shift_end
 
         msg = (f"Expected num. preds {len(pred_subs)} to match num. gt {len(gt_subs)} for"
                f" {pred_path}")
@@ -227,6 +239,11 @@ def eval_subtitle_alignment(
                 exclude_subs.append(sub_idx)
             # if sub._end - sub._start < 0.01:
             #     exclude_subs.append(sub_idx)
+            else:
+                all_offset_start.append(sub._start - pred_subs[sub_idx]._start)
+                all_offset_end.append(sub._end - pred_subs[sub_idx]._end)
+                all_offset_start_abs.append(abs(sub._start - pred_subs[sub_idx]._start))
+                all_offset_end_abs.append(abs(sub._end - pred_subs[sub_idx]._end))
         total_subs -= len(exclude_subs)
 
         # To compute metrics, we convert all the subtitles into a sequence of frame-level
@@ -273,8 +290,13 @@ def eval_subtitle_alignment(
 
     # Provide a summary of the computed metrics
     print('total ', total, 'subs', total_subs)
-    msg = ( f"Computed over {total} frames, {total_subs} sentences - "
-            f"Frame-level accuracy: {100 * float(correct)/total:.2f}"
+    msg = ( 
+            f"Mean and median start offset: {mean(all_offset_start):.2f} / {median(all_offset_start):.2f} \n"
+            f"Mean and median end offset: {mean(all_offset_end):.2f} / {median(all_offset_end):.2f} \n"
+            f"Mean and median start offset (abs): {mean(all_offset_start_abs):.2f} / {median(all_offset_start_abs):.2f} \n"
+            f"Mean and median end offset (abs): {mean(all_offset_end_abs):.2f} / {median(all_offset_end_abs):.2f} \n"
+            f"Computed over {total} frames, {total_subs} sentences - "
+            f"Frame-level accuracy: {100 * float(correct)/total:.2f}"            
            )
     for ii, overlap in enumerate(overlaps):
         precision = tp[ii] / float(tp[ii] + fp[ii])
@@ -298,18 +320,28 @@ def parse_args():
 
 
 def main():
-    args = parse_args()
-    gt_anno_paths = list(args.gt_anno_dir.glob("**/*.vtt"))
-    print(f"Found {len(gt_anno_paths)} ground truth annotation files in {args.gt_anno_dir}")
-    pred_paths = [args.pred_subtitle_dir / path.relative_to(args.gt_anno_dir) for path
-                  in gt_anno_paths]
+    # args = parse_args()
+    # gt_anno_paths = list(args.gt_anno_dir.glob("**/*.vtt"))
+    # print(f"Found {len(gt_anno_paths)} ground truth annotation files in {args.gt_anno_dir}")
+    # pred_paths = [args.pred_subtitle_dir / path.relative_to(args.gt_anno_dir) for path
+    #               in gt_anno_paths]
 
-    #import ipdb; ipdb.set_trace(context=20)
+    # #import ipdb; ipdb.set_trace(context=20)
 
-    eval_subtitle_alignment(
-        pred_paths=pred_paths,
-        fps=args.fps,
-        gt_anno_paths=gt_anno_paths,
+    # eval_subtitle_alignment(
+    #     pred_paths=pred_paths,
+    #     fps=args.fps,
+    #     gt_anno_paths=gt_anno_paths,
+    # )
+
+    test_files = open(opts.test_videos_txt, "r").read().split('\n')
+    eval_str = eval_subtitle_alignment(
+        pred_path_root=Path(f'{opts.pred_path_root}'),
+        gt_anno_path_root=Path(f'{opts.gt_sub_path}'),
+        list_videos=test_files,
+        fps=opts.fps,
+        shift_start=opts.pr_subs_delta_bias_start,
+        shift_end=opts.pr_subs_delta_bias_end,
     )
 
 

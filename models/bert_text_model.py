@@ -8,11 +8,11 @@ __all__ = ['VidTextModel']
 
 class BertTextModel(torch.nn.Module):
 
-    def __init__(self, multi_queries=0):
+    def __init__(self, model_name, multi_queries=0):
         super().__init__()
 
-        self.bert_tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-        self.bert_model = BertModel.from_pretrained('bert-base-uncased')
+        self.bert_tokenizer = BertTokenizer.from_pretrained(model_name)
+        self.bert_model = BertModel.from_pretrained(model_name)
 
     def forward(self, text_inp):
 

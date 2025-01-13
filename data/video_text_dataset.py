@@ -77,14 +77,21 @@ class VideoTextDataset(Dataset):
 
         ### Loading features
         print('Loading features...')
-        if self.opts.load_features: 
-            if 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
+        if self.opts.load_features:
+            is_flat = False
+            if os.path.exists(os.path.join(self.opts.features_path, data_paths[0]) + '.npy'):
+                ext='.npy'
+                is_flat = True
+            elif 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
                 ext='.npy'
             else:
                 ext='.mat'
             self.features = {}
             for path in tqdm(data_paths):
-                full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
+                if is_flat:
+                    full_path = os.path.join(self.opts.features_path, data_paths[0]) + '.npy'
+                else:
+                    full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
                 if os.path.exists(full_path):
                     if ext=='.npy':
                         self.features[path] = np.load(full_path)
@@ -96,6 +103,14 @@ class VideoTextDataset(Dataset):
             vid_episode_keys = self.features.keys()
         else: 
             vid_episode_keys = data_paths
+
+        ### Loading segmentation features
+        print('Loading segmentation features...')
+        if self.opts.load_segmentation:
+            self.segmentation_features = {}
+            for path in tqdm(data_paths):
+                full_path = os.path.join(self.opts.segmentation_path, data_paths[0]) + '.seg.npy'
+                self.segmentation_features[path] = np.load(full_path, allow_pickle=True)[()]
 
         ### Loading subtitles 
         if self.opts.load_subtitles:
@@ -110,6 +125,8 @@ class VideoTextDataset(Dataset):
                     sub_ext_pr = '/signhd.vtt'
                 elif os.path.exists(os.path.join(self.opts.pr_sub_path, ep + '.vtt')):
                     sub_ext_pr = '.vtt'
+                elif os.path.exists(os.path.join(self.opts.pr_sub_path, ep + '.srt')):
+                    sub_ext_pr = '.srt'
                 else:
                     sub_ext_pr = ''
                     print(f"Cannot find subtitle file for: {ep}")
@@ -120,6 +137,8 @@ class VideoTextDataset(Dataset):
                         sub_ext_gt = '/signhd.vtt'
                     elif os.path.exists(os.path.join(self.opts.gt_sub_path, ep + '.vtt')):
                         sub_ext_gt = '.vtt'
+                    elif os.path.exists(os.path.join(self.opts.gt_sub_path, ep + '.srt')):
+                        sub_ext_gt = '.srt'
                     else:
                         sub_ext_gt = ''
                         print(f"Cannot find subtitle file for: {ep}")
@@ -128,9 +147,9 @@ class VideoTextDataset(Dataset):
                 else:
                     gt_vtt_path = pr_vtt_path
 
-                pr_subs = webvtt.read(pr_vtt_path)
+                pr_subs = webvtt.from_srt(pr_vtt_path) if sub_ext_pr == '.srt' else webvtt.read(pr_vtt_path)
                 if self.opts.gt_sub_path:
-                    gt_subs = webvtt.read(gt_vtt_path)
+                    gt_subs = webvtt.from_srt(gt_vtt_path) if sub_ext_gt == '.srt' else webvtt.read(gt_vtt_path)
                     assert len(gt_subs) == len(pr_subs), 'Ground truth subs not the same length as prior subs'    
                 else: 
                     gt_subs = pr_subs.copy()
@@ -254,6 +273,8 @@ class VideoTextDataset(Dataset):
         gt_to = self.data_dict["gt_to"][index]
         if self.opts.load_features: 
             ep_feats = self.features[ep]
+        if self.opts.load_segmentation: 
+            seg_feats = self.segmentation_features[ep]
 
         # if text == 'round': 
         #     print(text, ep, gt_fr, gt_to, ep_feats.shape ep_feats[12285:12291,15])
@@ -264,6 +285,10 @@ class VideoTextDataset(Dataset):
         # in the fixed_feat_len=0 version the start and end of the window are just pr_fr and pr_to
 
         ### Jitter prior 
+        if self.opts.jitter_towards_gt:
+            pr_fr, pr_to = self.jitter_towards_gt(pr_fr, pr_to, gt_fr, gt_to)
+        if self.opts.jitter_mirror_gt:
+            pr_fr, pr_to = self.jitter_mirror_gt(pr_fr, pr_to, gt_fr, gt_to)
         if self.opts.jitter_location:
             pr_fr, pr_to = self.jitter_pr_fr_to(pr_fr, pr_to)
         if self.opts.jitter_width_secs>0:
@@ -290,6 +315,10 @@ class VideoTextDataset(Dataset):
                 out_dict["feats_len"] = np.where((np.sum(out_dict["feats"],1)==0)*1==1)[0][0]
             else:
                 out_dict["feats_len"]=0
+        
+        if self.opts.load_segmentation:
+            out_dict["seg_sign_feats"] = self.return_seg_feats(seg_feats['sign'], wind_fr, wind_to).astype(np.single)
+            out_dict["seg_sent_feats"] = self.return_seg_feats(seg_feats['sentence'], wind_fr, wind_to).astype(np.single)
 
         out_dict["pr_fr_to"] = np.array([pr_fr, pr_to]).astype(np.single)  
         out_dict["gt_fr_to"] = np.array([gt_fr, gt_to]).astype(np.single)  
@@ -299,8 +328,26 @@ class VideoTextDataset(Dataset):
             out_dict['pr_vec'] = self.times_to_labels_vec(out_dict["pr_fr_to"], out_dict["wind_fr_to"], out_dict["feats"]).astype(np.single)
             out_dict['gt_vec'] = self.times_to_labels_vec(out_dict["gt_fr_to"], out_dict["wind_fr_to"], out_dict["feats"]).astype(np.single)  
         out_dict['path'] = ep
-            
+
         return out_dict
+
+    def jitter_towards_gt(self, pr_fr, pr_to, gt_fr, gt_to):
+        # jitter fr and to separately
+        # pr_fr = random.uniform(pr_fr, gt_fr)
+        # pr_to = random.uniform(pr_to, gt_to)
+
+        # jitter fr and to together
+        shift_ratio = random.uniform(0, 1)
+        pr_fr = pr_fr + shift_ratio * (gt_fr - pr_fr)
+        pr_to = pr_to + shift_ratio * (gt_to - pr_to)
+
+        return pr_fr, pr_to 
+
+    def jitter_mirror_gt(self, pr_fr, pr_to, gt_fr, gt_to, probability=0.5):
+        if random.uniform(0, 1) > probability:
+            pr_fr = pr_fr + 2 * (gt_fr - pr_fr)
+            pr_to = pr_to + 2 * (gt_to - pr_to)
+        return pr_fr, pr_to 
 
     def jitter_pr_fr_to(self, pr_fr, pr_to):
         if self.opts.jitter_abs: 
@@ -368,6 +415,31 @@ class VideoTextDataset(Dataset):
             # import pdb; pdb.set_trace()
             npad = 0
             feats = feats[:self.wind_len, :]
+        if self.opts.pad_start_features:
+            feats = np.pad(feats, [(int(npad), 0), (0, 0)])
+        else:
+            feats = np.pad(feats, [(0, int(npad)), (0, 0)])
+        return feats
+
+    ### Index into episode for segmentation features
+    def return_seg_feats(self, ep_feats, wind_fr, wind_to):
+        _, _, feats = get_feature_interval(
+                            ep_feats.squeeze(),
+                            t0_sec=wind_fr,
+                            t1_sec=wind_to,
+                            clip_stride=1,
+                        )
+
+        wind_len = self.wind_len * self.opts.input_features_stride
+        npad = wind_len - feats.shape[0]
+        # TODO debug check 
+        # if self.opts.fixed_feat_len: 
+        #     assert npad == 0
+        if npad < 0 :
+            # print(f"WARNING - padding should not be less than 0. npad, wind len, feats = ", npad, self.wind_len, feats.shape[0])
+            # import pdb; pdb.set_trace()
+            npad = 0
+            feats = feats[:wind_len, :]
         if self.opts.pad_start_features:
             feats = np.pad(feats, [(int(npad), 0), (0, 0)])
         else:

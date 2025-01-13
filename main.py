@@ -108,8 +108,11 @@ def main(opts):
             res_val, best_metric = trainer.train(
                 dataloader_val, mode='val', epoch=-1)  # initialize metric
 
+            if opts.lr_reduce:
+                scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(trainer.optimizer, 'max')
+
             for epoch in range(opts.n_epochs):
-                print('Epoch {:d}/{:d}'.format(epoch, opts.n_epochs))
+                print('Epoch {:d}/{:d}'.format(epoch+1, opts.n_epochs))
                 
                 res_tr, _ = trainer.train(dataloader,
                                         mode='train',
@@ -122,13 +125,19 @@ def main(opts):
                                                             mode='val',
                                                             epoch=epoch)
 
+                        if opts.lr_reduce:
+                            scheduler.step(val_metric)
+                        
+                        if val_metric > best_metric:
+                            best_metric = val_metric
+                            print(f"best checkpoint so far!")
+
                         scorefile.write("{} | {}\n".format(res_tr, res_val))
                         scorefile.flush()
 
                         print('saving model ', "model_{:010d}.pt".format(trainer.global_step))
                         model_ckpt = "model_{:010d}.pt".format(trainer.global_step)
                         trainer.save_checkpoint(model_ckpt)
-                        
 
             scorefile.close()
         else:
@@ -146,14 +155,24 @@ def main(opts):
             random.seed(opts.random_subset_data_seed)
             test_files = random.sample(test_files, opts.random_subset_data)
 
-        if os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '/signhd.vtt')):
-            sub_ext = '/signhd.vtt'
-        elif os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '.vtt')):
-            sub_ext = '.vtt'
-        else: 
-            print('cannot find file')
+        # if os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '/signhd.vtt')):
+        #     sub_ext = '/signhd.vtt'
+        # elif os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '.vtt')):
+        #     sub_ext = '.vtt'
+        # elif os.path.exists(os.path.join(opts.gt_sub_path, test_files[0] + '.srt')):
+        #     sub_ext = '.srt'
+        # else: 
+        #     print('cannot find file')
 
-        gt_anno_paths = [Path(os.path.join(opts.gt_sub_path, p+sub_ext)) for p in test_files]
+        # gt_anno_paths = [Path(os.path.join(opts.gt_sub_path, p+sub_ext)) for p in test_files]
+
+        print("before DTW output")
+        eval_str = eval_subtitle_alignment(
+            pred_path_root=Path(f'{opts.save_subs_folder}'),
+            gt_anno_path_root=Path(f'{opts.gt_sub_path}'),
+            list_videos=test_files,
+            fps=25,
+        )
         
         if opts.dtw_postpro:
             with Pool(opts.n_workers) as pool:
