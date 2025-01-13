@@ -333,12 +333,13 @@ def main():
     #     fps=args.fps,
     #     gt_anno_paths=gt_anno_paths,
     # )
+
     test_files = open(opts.test_videos_txt, "r").read().split('\n')
     eval_str = eval_subtitle_alignment(
         pred_path_root=Path(f'{opts.pred_path_root}'),
         gt_anno_path_root=Path(f'{opts.gt_sub_path}'),
         list_videos=test_files,
-        fps=25,
+        fps=opts.fps,
         shift_start=opts.pr_subs_delta_bias_start,
         shift_end=opts.pr_subs_delta_bias_end,
     )

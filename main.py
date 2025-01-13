@@ -52,13 +52,6 @@ def main(opts):
 
     print('Cuda current device ', torch.cuda.current_device())
 
-    # print(torch.cuda.memory_summary())
-    # os.system('nvidia-smi')
-    # test = torch.full((16,), 3.141592).to(torch.device('cuda:0'))
-    # print(torch.cuda.memory_summary())
-    # test = torch.full((16356609,), 3.141592).to(torch.device('cuda:0'))
-    # print(torch.cuda.memory_summary())
-
     set_seed(42)
 
     if opts.test_only: 
