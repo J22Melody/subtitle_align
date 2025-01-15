@@ -12,7 +12,9 @@ python main.py \
 --save_vtt True \
 --save_probs True \
 --dtw_postpro True \
---resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align/finetune_subtitles/checkpoints/model_0000264041.pt' \
+--resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_reproduce/finetune_subtitles/checkpoints/model_0000252141.pt' \
+# --resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_reproduce/finetune_subtitles/checkpoints/model_0000251439.pt' \
+# --resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align/finetune_subtitles/checkpoints/model_0000264041.pt' \
 
 # Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 70.89 F1@0.10: 74.08 F1@0.25: 66.78 F1@0.50: 53.22
 

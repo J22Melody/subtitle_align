@@ -97,6 +97,7 @@ class VideoTextDataset(Dataset):
                         self.features[path] = np.load(full_path)
                     else:
                         self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
+                        # print('feature shape:', self.features[path].shape)
                 else:
                     print(f"Not found: {full_path}")
 
