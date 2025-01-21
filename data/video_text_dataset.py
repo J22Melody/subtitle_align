@@ -9,6 +9,8 @@ from utils import remove_stopwords, get_feature_interval, shift_spottings
 
 from scipy import io
 import webvtt
+import lmdb
+import cv2
 
 import torch
 
@@ -16,6 +18,9 @@ from nltk.stem.porter import *
 from nltk.stem import WordNetLemmatizer 
 from nltk.corpus import wordnet
 from nltk.corpus import stopwords
+
+from .lmdb_loader import LMDBLoader
+
 
 stop_words = set(stopwords.words('english'))
 lemmatizer = WordNetLemmatizer()
@@ -33,6 +38,30 @@ def print_stats(stat, arr):
     print(f'80\% percentile {stat} length', np.percentile(arr, 80))
     print(f'90\% percentile {stat} length', np.percentile(arr, 90))
     print(f'95\% percentile {stat} length', np.percentile(arr, 95))
+
+def get_video_frame_count(videos_path, video_name):
+    # Ensure the video name has the .mp4 extension
+    if not video_name.lower().endswith('.mp4'):
+        video_name += '.mp4'
+    
+    # Complete path to the video file
+    video_file = os.path.join(videos_path, video_name)
+    
+    # Open the video file
+    cap = cv2.VideoCapture(video_file)
+    
+    # Check if the video was opened successfully
+    if not cap.isOpened():
+        print("Error: Could not open the video file.")
+        return None
+    else:
+        # Get the total number of frames
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    
+    # Release the video capture object
+    cap.release()
+    
+    return total_frames
 
 class VideoTextDataset(Dataset): 
     
@@ -77,30 +106,50 @@ class VideoTextDataset(Dataset):
 
         ### Loading features
         print('Loading features...')
+        self.features = {}
         if self.opts.load_features:
-            is_flat = False
-            if os.path.exists(os.path.join(self.opts.features_path, data_paths[0]) + '.npy'):
-                ext='.npy'
-                is_flat = True
-            elif 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
-                ext='.npy'
-            else:
-                ext='.mat'
-            self.features = {}
-            for path in tqdm(data_paths):
-                if is_flat:
-                    full_path = os.path.join(self.opts.features_path, data_paths[0]) + '.npy'
-                else:
-                    full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
-                if os.path.exists(full_path):
-                    if ext=='.npy':
-                        self.features[path] = np.load(full_path)
-                    else:
-                        self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
-                        # print('feature shape:', self.features[path].shape)
-                else:
-                    print(f"Not found: {full_path}")
+            if self.opts.load_features_from_lmdb:
+                lmdb_loader = LMDBLoader(
+                    lmdb_path=self.opts.features_path,
+                    load_type="feats",
+                    feat_dim=768,
+                    lmdb_stride=self.opts.input_features_stride,
+                )
 
+                for path in tqdm(data_paths):
+                    video_name = path
+                    end_frame_num = get_video_frame_count(self.opts.videos_path, video_name) - 1
+
+                    episode_features = lmdb_loader.load_sequence(
+                        episode_name=video_name,
+                        begin_frame=0,
+                        end_frame=end_frame_num,
+                    )
+                    self.features[path] = episode_features
+            else:
+                is_flat = False
+                if os.path.exists(os.path.join(self.opts.features_path, data_paths[0]) + '.npy'):
+                    ext='.npy'
+                    is_flat = True
+                elif 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
+                    ext='.npy'
+                else:
+                    ext='.mat'
+                
+                for path in tqdm(data_paths):
+                    if is_flat:
+                        full_path = os.path.join(self.opts.features_path, data_paths[0]) + '.npy'
+                    else:
+                        full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
+                    if os.path.exists(full_path):
+                        if ext=='.npy':
+                            self.features[path] = np.load(full_path)
+                        else:
+                            self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
+                            print(self.features[path].shape)
+                    else:
+                        print(f"Not found: {full_path}")
+                    
             vid_episode_keys = self.features.keys()
         else: 
             vid_episode_keys = data_paths

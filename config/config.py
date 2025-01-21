@@ -42,9 +42,14 @@ def load_opts():
     # load subtitles or load words
     parser.add_argument('--load_subtitles', type = bool, default=True, help='Load subtitles texts and times (e.g. for training on subtitles)')
     parser.add_argument('--load_words', type = bool, default=False, help='Load word spottings texts and times (e.g. for word pre-training)')
-    parser.add_argument('--load_features',  type = bool, default=True, help='Load features')
+    parser.add_argument('--load_features', type = bool, default=True, help='Load features')
+    parser.add_argument('--load_features_from_lmdb', type = bool, default=False, help='Load features from lmdb')
     parser.add_argument('--load_segmentation',  type = bool, default=False, help='Load segmentation features')
 
+    parser.add_argument('--videos_path', 
+                            type = str, 
+                            default = '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/', 
+                            help = 'Path to videos directory')
     parser.add_argument('--features_path', 
                             type = str, 
                             default = '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/', 
@@ -71,6 +76,8 @@ def load_opts():
     parser.add_argument('--pad_start_features', action='store_true', help='Pad START rather than END of features if necessary')
     parser.add_argument("--fps", type=int, default=25)
     parser.add_argument('--shuffle_getitem', type = bool, default = False, help = "Shuffle get item")
+    parser.add_argument("--feature_dim", type=int, default=1024)
+    parser.add_argument("--feature_dim_adapt", type = int, help='Adapt different visual feature dim to pretrained I3D')
 
     parser.add_argument('--pr_subs_delta_bias', type=float, default=0, help='Bias to add to prior subtitles in seconds')
     parser.add_argument('--pr_subs_delta_bias_start', type=float, default=0, help='Bias to add to prior subtitles in seconds')

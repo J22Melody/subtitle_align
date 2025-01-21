@@ -1,0 +1,118 @@
+Cuda current device  0
+Loading features...
+Loading segmentation features...
+Adding bias to prior subtitle times  2.7
+Adding bias to GT subtitle times  0
+Loading subtitles associated to sentences...
+mode  test
+number of samples 21640
+Mean feats length samples 24.16072088724584
+Standard deviation feats length samples 19.01171325486284
+Min feats length samples 0
+Max feats length samples 267
+80\% percentile feats length 37.0
+90\% percentile feats length 49.0
+95\% percentile feats length 60.0
+Mean texts length samples 57.960120147874306
+Standard deviation texts length samples 46.369492978663445
+Min texts length samples 2
+Max texts length samples 549
+80\% percentile texts length 91.0
+90\% percentile texts length 119.0
+95\% percentile texts length 146.0
+Model's state_dict:
+[32mAdam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 1e-05
+    weight_decay: 0
+)[0m
+Number of parameters: 16225537
+[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/checkpoints/model_0000000837.pt loaded![0m
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5130659699728866130/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5130659699728866130
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5276110913861331583/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5276110913861331583
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5402656112283796519/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5402656112283796519
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5468695099930362251/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5468695099930362251
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5475374633069107138/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5475374633069107138
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5913604319680134251/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5913604319680134251
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5952613360146027617/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5952613360146027617
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6003446875091426252/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6003446875091426252
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6040895553921856506/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6040895553921856506
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6065139785314331208/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6065139785314331208
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6111542182483565918/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6111542182483565918
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6144064963339075095/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6144064963339075095
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6157795114790944374/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6157795114790944374
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6164207930460576679/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6164207930460576679
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6177195911563690266/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6177195911563690266
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6182391104004934170/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6182391104004934170
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6184988700225556709/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6184988700225556709
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6186362230766820709/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6186362230766820709
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6212378136168874626/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6212378136168874626
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6220140001066210692/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6220140001066210692
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6230660523457743887/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6230660523457743887
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6231758317098601501/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6231758317098601501
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6233237503835343920/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6233237503835343920
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6233245234776476721/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6233245234776476721
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6237606774065566357/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6237606774065566357
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6238338636492809272/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6238338636492809272
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6240919482340977071/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6240919482340977071
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6242043045785611181/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6242043045785611181
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6243537694404620461/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6243537694404620461
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6262857316295504035/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6262857316295504035
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6313643157087037540/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6313643157087037540
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6342696033864091923/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6342696033864091923
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6358668158244469679/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6358668158244469679
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6368304776366513150/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6368304776366513150
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6372027224521959778/signhd.vtt
+saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6372027224521959778
+Epoch end: test: dt 0.02 dt/total 0.96 f1@0.5 43.78 f1@0.5_b 43.31 frame_acc 46.98 frame_acc_b 46.92 loss 0.38 t 0.02 
+before DTW output
+total  2642663 subs 20338
+Mean and median start offset: 0.21 / 0.21 
+Mean and median end offset: 0.83 / 0.82 
+Mean and median start offset (abs): 2.02 / 1.27 
+Mean and median end offset (abs): 2.25 / 1.45 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 61.15 F1@0.10: 71.76 F1@0.25: 62.99 F1@0.50: 43.19
+after DTW output
+total  2642663 subs 20338
+Mean and median start offset: 0.23 / 0.23 
+Mean and median end offset: 0.71 / 0.70 
+Mean and median start offset (abs): 2.02 / 1.27 
+Mean and median end offset (abs): 2.22 / 1.43 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 62.05 F1@0.10: 72.42 F1@0.25: 63.74 F1@0.50: 44.12

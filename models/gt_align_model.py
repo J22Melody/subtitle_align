@@ -54,7 +54,7 @@ class GtInvAlignTransformer(nn.Module):
         self.dataloader = dataloader
             
         # TODO: Add as params 
-        self.d_vid = 1024 # I3D feature dim 
+        self.d_vid = opts.feature_dim # visual backbone (I3D, Swin, pose, etc.) feature dim 
         self.d_txt = 768 # BERT feature dim
 
         # text embedding model 
@@ -66,6 +66,11 @@ class GtInvAlignTransformer(nn.Module):
         # input projections for 2 modalities 
         self.input_proj_vid = nn.Conv1d(self.d_vid, opts.d_model, kernel_size=1)
         self.input_proj_txt = nn.Conv1d(self.d_txt, opts.d_model, kernel_size=1)
+
+        # adapter from different visual feature dim to pretrained dim
+        self.input_proj_vid_adapt = None
+        if opts.feature_dim_adapt:
+            self.input_proj_vid_adapt = nn.Conv1d(opts.feature_dim_adapt, self.d_vid, kernel_size=1)
 
         # embedding for original subtitle 
         ref_vec_dim = 0
@@ -126,6 +131,8 @@ class GtInvAlignTransformer(nn.Module):
             txt_emb = self.positional_enc(txt_emb)
 
         # -- project vid  
+        if self.input_proj_vid_adapt:
+            vid_inp = self.input_proj_vid_adapt(vid_inp)
         vid_emb = self.input_proj_vid(vid_inp) # (B, C, T)
         vid_emb = vid_emb.permute([2,0,1]) # (T, B, C)       
 
