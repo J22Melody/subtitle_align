@@ -44,6 +44,7 @@ def load_opts():
     parser.add_argument('--load_words', type = bool, default=False, help='Load word spottings texts and times (e.g. for word pre-training)')
     parser.add_argument('--load_features', type = bool, default=True, help='Load features')
     parser.add_argument('--load_features_from_lmdb', type = bool, default=False, help='Load features from lmdb')
+    parser.add_argument('--load_features_from_pose', type = bool, default=False, help='Load features from pose')
     parser.add_argument('--load_segmentation',  type = bool, default=False, help='Load segmentation features')
 
     parser.add_argument('--videos_path', 

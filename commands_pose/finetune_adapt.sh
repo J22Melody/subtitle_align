@@ -1,11 +1,14 @@
 python main.py \
---features_path '/users/zifan/BOBSL/derivatives/video_features/swin_v2/lmdb-feats_vswin_t-bs256_float16' \
+--features_path '/users/zifan/BOBSL/derivatives/video_features/mediapipe' \
 --videos_path '/users/zifan/BOBSL/derivatives/original_videos' \
 --gt_sub_path '/users/zifan/BOBSL/v1.4/manual_annotations/signing_aligned_subtitles' \
 --pr_sub_path '/users/zifan/BOBSL/v1.4/automatic_annotations/signing_aligned_subtitles/audio_aligned_heuristic_correction' \
 --gpu_id 0 \
---feature_dim 768 \
---load_features_from_lmdb True \
+--feature_dim 1024 \
+--feature_dim_adapt 534 \
+--load_features_from_pose True \
+--input_features_stride 1 \
+--subsample_stride 4 \
 --batch_size 256 \
 --n_workers 8 \
 --pr_subs_delta_bias 2.7 \
@@ -16,7 +19,7 @@ python main.py \
 --load_words False \
 --load_subtitles True \
 --lr 1e-6 \
---save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/' \
+--save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/' \
 --n_epochs 100 \
 --concatenate_prior True \
 --min_sent_len_filter 0.5 \

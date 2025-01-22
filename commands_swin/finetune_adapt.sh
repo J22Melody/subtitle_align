@@ -7,7 +7,7 @@ python main.py \
 --feature_dim 1024 \
 --feature_dim_adapt 768 \
 --load_features_from_lmdb True \
---batch_size 1024 \
+--batch_size 256 \
 --n_workers 8 \
 --pr_subs_delta_bias 2.7 \
 --fixed_feat_len 20 \

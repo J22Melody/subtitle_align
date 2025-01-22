@@ -17,8 +17,7 @@ python main.py \
 --save_probs True \
 --dtw_postpro True \
 --save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles_adapt/' \
---resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles_adapt/checkpoints/model_0000251241.pt' \
-# --resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles_adapt/checkpoints/model_0000250539.pt' \
+--resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles_adapt/checkpoints/model_0000253841.pt' \
 
 
 # Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 70.89 F1@0.10: 74.08 F1@0.25: 66.78 F1@0.50: 53.22

@@ -6,7 +6,7 @@ python main.py \
 --gpu_id 0 \
 --feature_dim 768 \
 --load_features_from_lmdb True \
---batch_size 1024 \
+--batch_size 256 \
 --n_workers 8 \
 --pr_subs_delta_bias 2.7 \
 --fixed_feat_len 20 \
@@ -16,7 +16,7 @@ python main.py \
 --load_words False \
 --load_subtitles True \
 --lr 1e-6 \
---save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/scratch/' \
+--save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles_scratch/' \
 --n_epochs 100 \
 --concatenate_prior True \
 --min_sent_len_filter 0.5 \

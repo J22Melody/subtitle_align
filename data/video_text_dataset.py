@@ -19,6 +19,9 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
 from nltk.corpus import stopwords
 
+from pose_format import Pose
+from pose_format.utils.generic import pose_normalization_info, reduce_holistic
+
 from .lmdb_loader import LMDBLoader
 
 
@@ -62,6 +65,19 @@ def get_video_frame_count(videos_path, video_name):
     cap.release()
     
     return total_frames
+
+def load_pose_features(pose_path):
+    with open(pose_path, "rb") as f:
+        buffer = f.read()
+        pose = Pose.read(buffer)
+
+    pose = reduce_holistic(pose)
+    pose = pose.normalize()
+
+    feat = np.nan_to_num(pose.body.data)
+    feat = feat.reshape(feat.shape[0], -1)
+
+    return feat
 
 class VideoTextDataset(Dataset): 
     
@@ -109,11 +125,13 @@ class VideoTextDataset(Dataset):
         self.features = {}
         if self.opts.load_features:
             if self.opts.load_features_from_lmdb:
+                lmdb_stride = 2
                 lmdb_loader = LMDBLoader(
                     lmdb_path=self.opts.features_path,
                     load_type="feats",
                     feat_dim=768,
-                    lmdb_stride=self.opts.input_features_stride,
+                    lmdb_stride=lmdb_stride,
+                    load_stride=int(self.opts.input_features_stride / lmdb_stride),
                 )
 
                 for path in tqdm(data_paths):
@@ -128,7 +146,10 @@ class VideoTextDataset(Dataset):
                     self.features[path] = episode_features
             else:
                 is_flat = False
-                if os.path.exists(os.path.join(self.opts.features_path, data_paths[0]) + '.npy'):
+                if self.opts.load_features_from_pose:
+                    ext='.pose'
+                    is_flat = True
+                elif os.path.exists(os.path.join(self.opts.features_path, data_paths[0]) + '.npy'):
                     ext='.npy'
                     is_flat = True
                 elif 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
@@ -138,15 +159,16 @@ class VideoTextDataset(Dataset):
                 
                 for path in tqdm(data_paths):
                     if is_flat:
-                        full_path = os.path.join(self.opts.features_path, data_paths[0]) + '.npy'
+                        full_path = os.path.join(self.opts.features_path, data_paths[0]) + ext
                     else:
                         full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
                     if os.path.exists(full_path):
-                        if ext=='.npy':
+                        if ext=='.pose':
+                            self.features[path] = load_pose_features(full_path)
+                        elif ext=='.npy':
                             self.features[path] = np.load(full_path)
                         else:
                             self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
-                            print(self.features[path].shape)
                     else:
                         print(f"Not found: {full_path}")
                     
@@ -451,7 +473,7 @@ class VideoTextDataset(Dataset):
                         )
         if self.opts.subsample_stride > 1:
             # TODO: check this 
-            print("WARNING check implementation of stride > 1")
+            # print("WARNING check implementation of stride > 1")
             feats = feats[0:len(feats):self.opts.subsample_stride]
         if self.mode == "train":
             feats = self.augment_feats(feats)
@@ -505,7 +527,7 @@ class VideoTextDataset(Dataset):
                 )
         if self.opts.subsample_stride > 1:
             # TODO: check this 
-            print("WARNING check implementation of stride > 1")
+            # print("WARNING check implementation of stride > 1")
             feats = feats[0:len(feats):self.opts.subsample_stride]
         if self.mode == "train":
             feats = self.augment_feats(feats)

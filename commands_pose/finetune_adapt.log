@@ -1,0 +1,356 @@
+Cuda current device  0
+Loading features...
+Loading segmentation features...
+Adding bias to prior subtitle times  2.7
+Adding bias to GT subtitle times  0
+Loading subtitles associated to sentences...
+mode  train
+number of samples 8757
+Mean feats length samples 23.819230330021696
+Standard deviation feats length samples 17.478824009448534
+Min feats length samples 3
+Max feats length samples 123
+80\% percentile feats length 35.80000000000018
+90\% percentile feats length 48.0
+95\% percentile feats length 60.0
+Mean texts length samples 53.13269384492406
+Standard deviation texts length samples 41.76429919432809
+Min texts length samples 3
+Max texts length samples 323
+80\% percentile texts length 82.0
+90\% percentile texts length 111.0
+95\% percentile texts length 137.0
+Loading features...
+Loading segmentation features...
+Adding bias to prior subtitle times  2.7
+Adding bias to GT subtitle times  0
+Loading subtitles associated to sentences...
+mode  val
+number of samples 1885
+Mean feats length samples 26.616445623342177
+Standard deviation feats length samples 18.274617351829736
+Min feats length samples 3
+Max feats length samples 123
+80\% percentile feats length 41.0
+90\% percentile feats length 51.0
+95\% percentile feats length 62.0
+Mean texts length samples 63.36074270557029
+Standard deviation texts length samples 45.7253401816422
+Min texts length samples 3
+Max texts length samples 326
+80\% percentile texts length 97.0
+90\% percentile texts length 126.0
+95\% percentile texts length 148.79999999999995
+Model's state_dict:
+[32mAdam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1e-06
+    maximize: False
+    weight_decay: 0
+)[0m
+Number of parameters: 16904449
+[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align/train_coarse_subtitles/checkpoints/model_0000250341.pt loaded![0m
+Epoch end: val: dt 0.91 dt/total 1.00 f1@0.5 2.68 f1@0.5_b 52.76 frame_acc 7.78 frame_acc_b 54.66 loss 0.40 t 0.91 
+Epoch 1/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 1.95 f1@0.5_b 43.60 frame_acc 14.51 frame_acc_b 46.02 loss 0.33 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 14.55 f1@0.5_b 51.70 frame_acc 30.10 frame_acc_b 53.89 loss 0.35 t 0.93 
+best checkpoint so far!
+saving model  model_0000250376.pt
+Epoch 2/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 5.70 f1@0.5_b 43.36 frame_acc 31.80 frame_acc_b 46.23 loss 0.29 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 28.19 f1@0.5_b 51.44 frame_acc 48.45 frame_acc_b 54.08 loss 0.32 t 0.93 
+best checkpoint so far!
+saving model  model_0000250411.pt
+Epoch 3/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 10.16 f1@0.5_b 44.36 frame_acc 41.07 frame_acc_b 46.34 loss 0.28 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 36.03 f1@0.5_b 51.75 frame_acc 51.25 frame_acc_b 53.77 loss 0.31 t 0.93 
+best checkpoint so far!
+saving model  model_0000250446.pt
+Epoch 4/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.27 f1@0.5_b 44.45 frame_acc 43.07 frame_acc_b 46.13 loss 0.28 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 40.98 f1@0.5_b 53.19 frame_acc 53.22 frame_acc_b 54.38 loss 0.30 t 0.93 
+best checkpoint so far!
+saving model  model_0000250481.pt
+Epoch 5/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.95 f1@0.5_b 43.56 frame_acc 43.37 frame_acc_b 45.83 loss 0.27 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 42.73 f1@0.5_b 52.53 frame_acc 53.70 frame_acc_b 54.76 loss 0.29 t 0.93 
+best checkpoint so far!
+saving model  model_0000250516.pt
+Epoch 6/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.67 f1@0.5_b 43.35 frame_acc 43.55 frame_acc_b 45.82 loss 0.27 t 1.55 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 43.95 f1@0.5_b 52.73 frame_acc 52.92 frame_acc_b 53.71 loss 0.29 t 0.93 
+saving model  model_0000250551.pt
+Epoch 7/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 15.77 f1@0.5_b 42.89 frame_acc 43.50 frame_acc_b 45.56 loss 0.27 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 44.65 f1@0.5_b 52.34 frame_acc 53.99 frame_acc_b 54.57 loss 0.28 t 0.93 
+best checkpoint so far!
+saving model  model_0000250586.pt
+Epoch 8/100
+Epoch end: train: dt 1.10 dt/total 0.72 f1@0.5 16.75 f1@0.5_b 43.59 frame_acc 44.05 frame_acc_b 46.06 loss 0.26 t 1.53 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.83 f1@0.5_b 53.49 frame_acc 54.29 frame_acc_b 54.49 loss 0.28 t 0.94 
+best checkpoint so far!
+saving model  model_0000250621.pt
+Epoch 9/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 17.22 f1@0.5_b 43.33 frame_acc 43.94 frame_acc_b 46.11 loss 0.26 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 45.86 f1@0.5_b 50.85 frame_acc 52.66 frame_acc_b 52.89 loss 0.28 t 0.93 
+saving model  model_0000250656.pt
+Epoch 10/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 17.85 f1@0.5_b 44.67 frame_acc 44.55 frame_acc_b 46.59 loss 0.26 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 45.88 f1@0.5_b 51.46 frame_acc 53.88 frame_acc_b 53.98 loss 0.28 t 0.94 
+saving model  model_0000250691.pt
+Epoch 11/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 17.46 f1@0.5_b 43.17 frame_acc 44.11 frame_acc_b 45.86 loss 0.26 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 45.57 f1@0.5_b 50.98 frame_acc 53.06 frame_acc_b 53.13 loss 0.29 t 0.93 
+saving model  model_0000250726.pt
+Epoch 12/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.51 f1@0.5_b 43.75 frame_acc 44.27 frame_acc_b 46.13 loss 0.26 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 46.41 f1@0.5_b 52.73 frame_acc 53.46 frame_acc_b 53.89 loss 0.28 t 0.93 
+saving model  model_0000250761.pt
+Epoch 13/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.58 f1@0.5_b 43.99 frame_acc 44.49 frame_acc_b 46.29 loss 0.26 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.30 f1@0.5_b 53.35 frame_acc 54.36 frame_acc_b 54.38 loss 0.27 t 0.94 
+best checkpoint so far!
+saving model  model_0000250796.pt
+Epoch 14/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.30 f1@0.5_b 44.31 frame_acc 44.42 frame_acc_b 46.53 loss 0.26 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 47.64 f1@0.5_b 52.92 frame_acc 54.51 frame_acc_b 54.71 loss 0.27 t 0.93 
+best checkpoint so far!
+saving model  model_0000250831.pt
+Epoch 15/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.70 f1@0.5_b 44.39 frame_acc 44.60 frame_acc_b 46.24 loss 0.26 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.29 f1@0.5_b 53.75 frame_acc 54.11 frame_acc_b 54.49 loss 0.27 t 0.94 
+saving model  model_0000250866.pt
+Epoch 16/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 19.17 f1@0.5_b 43.91 frame_acc 44.50 frame_acc_b 46.29 loss 0.25 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 48.35 f1@0.5_b 52.31 frame_acc 54.61 frame_acc_b 54.53 loss 0.27 t 0.93 
+best checkpoint so far!
+saving model  model_0000250901.pt
+Epoch 17/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 19.01 f1@0.5_b 43.85 frame_acc 44.37 frame_acc_b 46.22 loss 0.25 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 45.54 f1@0.5_b 51.70 frame_acc 53.36 frame_acc_b 53.76 loss 0.28 t 0.94 
+saving model  model_0000250936.pt
+Epoch 18/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 19.21 f1@0.5_b 43.82 frame_acc 44.18 frame_acc_b 46.09 loss 0.25 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.55 f1@0.5_b 51.49 frame_acc 53.54 frame_acc_b 54.03 loss 0.27 t 0.94 
+saving model  model_0000250971.pt
+Epoch 19/100
+Epoch end: train: dt 1.10 dt/total 0.72 f1@0.5 18.16 f1@0.5_b 43.65 frame_acc 43.60 frame_acc_b 45.69 loss 0.25 t 1.53 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.50 f1@0.5_b 52.68 frame_acc 54.03 frame_acc_b 54.58 loss 0.27 t 0.94 
+saving model  model_0000251006.pt
+Epoch 20/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.72 f1@0.5_b 43.92 frame_acc 44.36 frame_acc_b 45.99 loss 0.25 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 46.85 f1@0.5_b 50.98 frame_acc 53.99 frame_acc_b 54.20 loss 0.28 t 0.93 
+saving model  model_0000251041.pt
+Epoch 21/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.68 f1@0.5_b 43.87 frame_acc 44.45 frame_acc_b 46.21 loss 0.25 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.55 f1@0.5_b 52.61 frame_acc 53.45 frame_acc_b 53.67 loss 0.27 t 0.95 
+saving model  model_0000251076.pt
+Epoch 22/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.74 f1@0.5_b 44.31 frame_acc 44.37 frame_acc_b 46.19 loss 0.25 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 48.76 f1@0.5_b 53.22 frame_acc 54.53 frame_acc_b 54.97 loss 0.27 t 0.93 
+saving model  model_0000251111.pt
+Epoch 23/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.74 f1@0.5_b 43.37 frame_acc 43.87 frame_acc_b 45.72 loss 0.25 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 47.66 f1@0.5_b 51.94 frame_acc 53.60 frame_acc_b 53.56 loss 0.28 t 0.93 
+saving model  model_0000251146.pt
+Epoch 24/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.12 f1@0.5_b 43.62 frame_acc 44.40 frame_acc_b 46.21 loss 0.25 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 48.45 f1@0.5_b 53.33 frame_acc 54.26 frame_acc_b 54.74 loss 0.27 t 0.93 
+saving model  model_0000251181.pt
+Epoch 25/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.98 f1@0.5_b 43.84 frame_acc 44.21 frame_acc_b 46.09 loss 0.25 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 47.21 f1@0.5_b 52.98 frame_acc 53.30 frame_acc_b 53.73 loss 0.27 t 0.93 
+saving model  model_0000251216.pt
+Epoch 26/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 18.01 f1@0.5_b 43.94 frame_acc 44.15 frame_acc_b 46.13 loss 0.25 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 47.51 f1@0.5_b 53.51 frame_acc 54.40 frame_acc_b 54.56 loss 0.27 t 0.93 
+saving model  model_0000251251.pt
+Epoch 27/100
+Epoch end: train: dt 1.10 dt/total 0.72 f1@0.5 18.13 f1@0.5_b 44.05 frame_acc 44.72 frame_acc_b 46.36 loss 0.24 t 1.53 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 47.89 f1@0.5_b 53.06 frame_acc 53.89 frame_acc_b 54.31 loss 0.27 t 0.93 
+saving model  model_0000251286.pt
+Epoch 28/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 17.76 f1@0.5_b 44.07 frame_acc 44.70 frame_acc_b 46.43 loss 0.24 t 1.54 
+Epoch end: val: dt 0.92 dt/total 1.00 f1@0.5 48.24 f1@0.5_b 52.31 frame_acc 54.73 frame_acc_b 54.83 loss 0.26 t 0.92 
+best checkpoint so far!
+saving model  model_0000251321.pt
+Epoch 29/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 17.40 f1@0.5_b 43.45 frame_acc 44.24 frame_acc_b 45.95 loss 0.24 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 45.75 f1@0.5_b 51.04 frame_acc 52.83 frame_acc_b 53.41 loss 0.27 t 0.94 
+saving model  model_0000251356.pt
+Epoch 30/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 16.55 f1@0.5_b 44.20 frame_acc 44.49 frame_acc_b 46.37 loss 0.24 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.81 f1@0.5_b 52.53 frame_acc 54.41 frame_acc_b 54.92 loss 0.26 t 0.94 
+saving model  model_0000251391.pt
+Epoch 31/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 16.05 f1@0.5_b 43.44 frame_acc 44.07 frame_acc_b 45.82 loss 0.24 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 46.02 f1@0.5_b 51.01 frame_acc 53.69 frame_acc_b 53.93 loss 0.26 t 0.93 
+saving model  model_0000251426.pt
+Epoch 32/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 15.37 f1@0.5_b 43.47 frame_acc 44.31 frame_acc_b 45.96 loss 0.24 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 47.78 f1@0.5_b 51.44 frame_acc 54.15 frame_acc_b 54.10 loss 0.26 t 0.93 
+saving model  model_0000251461.pt
+Epoch 33/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 15.00 f1@0.5_b 43.65 frame_acc 44.58 frame_acc_b 45.99 loss 0.23 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.40 f1@0.5_b 51.97 frame_acc 54.05 frame_acc_b 54.14 loss 0.26 t 0.94 
+saving model  model_0000251496.pt
+Epoch 34/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 14.76 f1@0.5_b 44.58 frame_acc 44.84 frame_acc_b 46.49 loss 0.23 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 48.76 f1@0.5_b 54.19 frame_acc 54.56 frame_acc_b 54.88 loss 0.25 t 0.94 
+saving model  model_0000251531.pt
+Epoch 35/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.32 f1@0.5_b 43.92 frame_acc 44.67 frame_acc_b 46.16 loss 0.23 t 1.55 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 46.83 f1@0.5_b 52.45 frame_acc 53.49 frame_acc_b 54.00 loss 0.25 t 0.93 
+saving model  model_0000251566.pt
+Epoch 36/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.78 f1@0.5_b 43.93 frame_acc 44.49 frame_acc_b 46.05 loss 0.23 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.72 f1@0.5_b 53.00 frame_acc 53.72 frame_acc_b 53.90 loss 0.25 t 0.94 
+saving model  model_0000251601.pt
+Epoch 37/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.42 f1@0.5_b 44.19 frame_acc 44.82 frame_acc_b 46.48 loss 0.23 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 45.21 f1@0.5_b 51.20 frame_acc 53.53 frame_acc_b 53.80 loss 0.25 t 0.94 
+saving model  model_0000251636.pt
+Epoch 38/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 14.05 f1@0.5_b 44.28 frame_acc 44.87 frame_acc_b 46.32 loss 0.23 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.05 f1@0.5_b 53.22 frame_acc 54.26 frame_acc_b 54.26 loss 0.25 t 0.94 
+saving model  model_0000251671.pt
+Epoch 39/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.03 f1@0.5_b 44.71 frame_acc 44.86 frame_acc_b 46.29 loss 0.23 t 1.55 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 47.53 f1@0.5_b 54.07 frame_acc 53.85 frame_acc_b 54.43 loss 0.25 t 0.93 
+saving model  model_0000251706.pt
+Epoch 40/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.05 f1@0.5_b 43.54 frame_acc 44.85 frame_acc_b 46.12 loss 0.23 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.64 f1@0.5_b 51.30 frame_acc 53.39 frame_acc_b 53.54 loss 0.26 t 0.94 
+saving model  model_0000251741.pt
+Epoch 41/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.23 f1@0.5_b 44.22 frame_acc 45.31 frame_acc_b 46.45 loss 0.23 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.58 f1@0.5_b 52.10 frame_acc 54.05 frame_acc_b 54.23 loss 0.25 t 0.94 
+saving model  model_0000251776.pt
+Epoch 42/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.20 f1@0.5_b 44.62 frame_acc 45.26 frame_acc_b 46.29 loss 0.23 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.67 f1@0.5_b 52.23 frame_acc 53.95 frame_acc_b 53.86 loss 0.25 t 0.94 
+saving model  model_0000251811.pt
+Epoch 43/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.80 f1@0.5_b 43.81 frame_acc 44.95 frame_acc_b 46.41 loss 0.23 t 1.55 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 45.95 f1@0.5_b 52.98 frame_acc 53.83 frame_acc_b 54.29 loss 0.25 t 0.93 
+saving model  model_0000251846.pt
+Epoch 44/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.76 f1@0.5_b 43.05 frame_acc 44.67 frame_acc_b 45.94 loss 0.23 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.45 f1@0.5_b 52.89 frame_acc 54.54 frame_acc_b 54.54 loss 0.25 t 0.94 
+saving model  model_0000251881.pt
+Epoch 45/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.01 f1@0.5_b 43.96 frame_acc 44.87 frame_acc_b 46.19 loss 0.23 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 44.77 f1@0.5_b 52.18 frame_acc 53.21 frame_acc_b 53.77 loss 0.25 t 0.94 
+saving model  model_0000251916.pt
+Epoch 46/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.97 f1@0.5_b 43.26 frame_acc 44.70 frame_acc_b 45.93 loss 0.23 t 1.55 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 45.17 f1@0.5_b 53.54 frame_acc 53.60 frame_acc_b 54.01 loss 0.25 t 0.93 
+saving model  model_0000251951.pt
+Epoch 47/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 14.09 f1@0.5_b 44.38 frame_acc 45.00 frame_acc_b 46.32 loss 0.22 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.45 f1@0.5_b 50.98 frame_acc 53.85 frame_acc_b 53.75 loss 0.25 t 0.94 
+saving model  model_0000251986.pt
+Epoch 48/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.15 f1@0.5_b 43.19 frame_acc 45.10 frame_acc_b 45.91 loss 0.23 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.77 f1@0.5_b 52.42 frame_acc 54.47 frame_acc_b 54.41 loss 0.24 t 0.94 
+saving model  model_0000252021.pt
+Epoch 49/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.59 f1@0.5_b 43.00 frame_acc 44.92 frame_acc_b 46.10 loss 0.23 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.60 f1@0.5_b 52.15 frame_acc 53.72 frame_acc_b 53.90 loss 0.25 t 0.94 
+saving model  model_0000252056.pt
+Epoch 50/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.49 f1@0.5_b 44.56 frame_acc 45.34 frame_acc_b 46.40 loss 0.22 t 1.55 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 44.98 f1@0.5_b 51.09 frame_acc 53.49 frame_acc_b 53.54 loss 0.25 t 0.93 
+saving model  model_0000252091.pt
+Epoch 51/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.91 f1@0.5_b 44.26 frame_acc 45.19 frame_acc_b 46.44 loss 0.22 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.62 f1@0.5_b 53.27 frame_acc 53.85 frame_acc_b 54.01 loss 0.25 t 0.94 
+saving model  model_0000252126.pt
+Epoch 52/100
+Epoch end: train: dt 1.14 dt/total 0.73 f1@0.5 13.38 f1@0.5_b 43.45 frame_acc 44.63 frame_acc_b 45.81 loss 0.23 t 1.57 
+Epoch end: val: dt 0.95 dt/total 1.00 f1@0.5 43.90 f1@0.5_b 51.81 frame_acc 53.02 frame_acc_b 53.57 loss 0.25 t 0.95 
+saving model  model_0000252161.pt
+Epoch 53/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.70 f1@0.5_b 43.23 frame_acc 44.87 frame_acc_b 46.09 loss 0.23 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 44.80 f1@0.5_b 52.07 frame_acc 53.94 frame_acc_b 54.24 loss 0.25 t 0.93 
+saving model  model_0000252196.pt
+Epoch 54/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.18 f1@0.5_b 44.04 frame_acc 45.25 frame_acc_b 46.40 loss 0.22 t 1.55 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 44.95 f1@0.5_b 52.89 frame_acc 53.51 frame_acc_b 53.95 loss 0.25 t 0.93 
+saving model  model_0000252231.pt
+Epoch 55/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 14.30 f1@0.5_b 43.81 frame_acc 44.93 frame_acc_b 46.01 loss 0.22 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 45.49 f1@0.5_b 51.57 frame_acc 53.66 frame_acc_b 53.89 loss 0.25 t 0.94 
+saving model  model_0000252266.pt
+Epoch 56/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.79 f1@0.5_b 44.62 frame_acc 44.59 frame_acc_b 46.13 loss 0.22 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.14 f1@0.5_b 54.12 frame_acc 54.52 frame_acc_b 54.93 loss 0.24 t 0.94 
+saving model  model_0000252301.pt
+Epoch 57/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.85 f1@0.5_b 43.43 frame_acc 44.99 frame_acc_b 46.18 loss 0.22 t 1.55 
+Epoch end: val: dt 0.95 dt/total 1.00 f1@0.5 45.22 f1@0.5_b 52.20 frame_acc 53.94 frame_acc_b 54.11 loss 0.24 t 0.95 
+saving model  model_0000252336.pt
+Epoch 58/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.60 f1@0.5_b 44.04 frame_acc 45.06 frame_acc_b 46.09 loss 0.22 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 45.32 f1@0.5_b 52.29 frame_acc 53.74 frame_acc_b 54.08 loss 0.24 t 0.93 
+saving model  model_0000252371.pt
+Epoch 59/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.97 f1@0.5_b 43.98 frame_acc 44.91 frame_acc_b 46.16 loss 0.22 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 47.20 f1@0.5_b 52.66 frame_acc 53.98 frame_acc_b 53.86 loss 0.25 t 0.94 
+saving model  model_0000252406.pt
+Epoch 60/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.74 f1@0.5_b 43.51 frame_acc 44.53 frame_acc_b 45.96 loss 0.22 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 45.29 f1@0.5_b 52.47 frame_acc 54.05 frame_acc_b 54.22 loss 0.25 t 0.94 
+saving model  model_0000252441.pt
+Epoch 61/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.63 f1@0.5_b 43.43 frame_acc 45.14 frame_acc_b 46.10 loss 0.22 t 1.55 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.13 f1@0.5_b 52.68 frame_acc 54.33 frame_acc_b 54.39 loss 0.24 t 0.94 
+saving model  model_0000252476.pt
+Epoch 62/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.66 f1@0.5_b 43.74 frame_acc 44.91 frame_acc_b 46.11 loss 0.22 t 1.54 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 45.54 f1@0.5_b 53.09 frame_acc 54.02 frame_acc_b 54.12 loss 0.24 t 0.93 
+saving model  model_0000252511.pt
+Epoch 63/100
+Epoch end: train: dt 1.13 dt/total 0.72 f1@0.5 13.74 f1@0.5_b 43.24 frame_acc 44.75 frame_acc_b 45.91 loss 0.22 t 1.56 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 45.99 f1@0.5_b 53.24 frame_acc 53.85 frame_acc_b 54.18 loss 0.25 t 0.94 
+saving model  model_0000252546.pt
+Epoch 64/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 14.15 f1@0.5_b 44.65 frame_acc 45.68 frame_acc_b 46.84 loss 0.22 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 46.37 f1@0.5_b 52.05 frame_acc 53.88 frame_acc_b 54.19 loss 0.24 t 0.94 
+saving model  model_0000252581.pt
+Epoch 65/100
+Epoch end: train: dt 1.13 dt/total 0.72 f1@0.5 13.79 f1@0.5_b 43.09 frame_acc 44.82 frame_acc_b 45.86 loss 0.22 t 1.56 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 45.70 f1@0.5_b 52.74 frame_acc 53.69 frame_acc_b 54.07 loss 0.24 t 0.94 
+saving model  model_0000252616.pt
+Epoch 66/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.75 f1@0.5_b 43.75 frame_acc 44.78 frame_acc_b 46.04 loss 0.22 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 44.76 f1@0.5_b 52.05 frame_acc 54.01 frame_acc_b 53.79 loss 0.24 t 0.94 
+saving model  model_0000252651.pt
+Epoch 67/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.82 f1@0.5_b 43.71 frame_acc 45.25 frame_acc_b 46.37 loss 0.22 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 44.25 f1@0.5_b 51.22 frame_acc 52.62 frame_acc_b 52.87 loss 0.25 t 0.94 
+saving model  model_0000252686.pt
+Epoch 68/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.97 f1@0.5_b 43.62 frame_acc 45.31 frame_acc_b 46.20 loss 0.22 t 1.55 
+Epoch end: val: dt 0.95 dt/total 1.00 f1@0.5 43.96 f1@0.5_b 52.53 frame_acc 53.94 frame_acc_b 54.08 loss 0.25 t 0.95 
+saving model  model_0000252721.pt
+Epoch 69/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.71 f1@0.5_b 44.35 frame_acc 44.95 frame_acc_b 46.22 loss 0.22 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 44.97 f1@0.5_b 50.69 frame_acc 53.34 frame_acc_b 53.27 loss 0.25 t 0.94 
+saving model  model_0000252756.pt
+Epoch 70/100
+Epoch end: train: dt 1.12 dt/total 0.72 f1@0.5 13.63 f1@0.5_b 44.01 frame_acc 45.12 frame_acc_b 46.22 loss 0.22 t 1.55 
+Epoch end: val: dt 0.93 dt/total 1.00 f1@0.5 46.13 f1@0.5_b 52.82 frame_acc 54.41 frame_acc_b 54.31 loss 0.24 t 0.93 
+saving model  model_0000252791.pt
+Epoch 71/100
+Epoch end: train: dt 1.11 dt/total 0.72 f1@0.5 13.60 f1@0.5_b 44.01 frame_acc 44.98 frame_acc_b 46.08 loss 0.22 t 1.54 
+Epoch end: val: dt 0.94 dt/total 1.00 f1@0.5 45.58 f1@0.5_b 52.69 frame_acc 53.31 frame_acc_b 53.80 loss 0.24 t 0.94 
+saving model  model_0000252826.pt
+Epoch 72/100
