@@ -46,7 +46,8 @@ def pp(test_file, opts=opts):
     return postprocessing_remove_intersections(test_file, 
     path_subtitles=opts.pr_sub_path, 
     path_probabilities=opts.save_probs_folder, 
-    path_postpro_subs=opts.save_postpro_subs_folder)   
+    path_postpro_subs=opts.save_postpro_subs_folder,
+    stride=opts.input_features_stride)   
 
 def main(opts):
 

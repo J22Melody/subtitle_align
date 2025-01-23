@@ -114,3 +114,10 @@ Mean and median end offset: 0.71 / 0.71
 Mean and median start offset (abs): 2.02 / 1.27 
 Mean and median end offset (abs): 2.22 / 1.45 
 Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 61.92 F1@0.10: 71.57 F1@0.25: 62.89 F1@0.50: 43.71
+after DTW output
+total  2642663 subs 20338
+Mean and median start offset: 0.26 / 0.23 
+Mean and median end offset: 0.86 / 0.80 
+Mean and median start offset (abs): 2.19 / 1.33 
+Mean and median end offset (abs): 2.40 / 1.53 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 62.06 F1@0.10: 68.74 F1@0.25: 59.88 F1@0.50: 42.26
