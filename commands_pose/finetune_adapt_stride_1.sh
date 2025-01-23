@@ -7,7 +7,7 @@ python main.py \
 --feature_dim 1024 \
 --feature_dim_adapt 534 \
 --load_features_from_pose True \
---input_features_stride 4 \
+--input_features_stride 1 \
 --batch_size 256 \
 --n_workers 8 \
 --pr_subs_delta_bias 2.7 \
@@ -18,7 +18,7 @@ python main.py \
 --load_words False \
 --load_subtitles True \
 --lr 1e-6 \
---save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/' \
+--save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt_stride_1/' \
 --n_epochs 100 \
 --concatenate_prior True \
 --min_sent_len_filter 0.5 \

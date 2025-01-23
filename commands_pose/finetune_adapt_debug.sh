@@ -7,6 +7,7 @@ python main.py \
 --feature_dim 1024 \
 --feature_dim_adapt 534 \
 --load_features_from_pose True \
+--input_features_stride 4 \
 --batch_size 128 \
 --n_workers 1 \
 --pr_subs_delta_bias 2.7 \
@@ -24,9 +25,8 @@ python main.py \
 --max_sent_len_filter 20 \
 --shuffle_words_subs 0.5 \
 --drop_words_subs 0.15 \
---input_features_stride 1 \
---subsample_stride 4 \
 --resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align/train_coarse_subtitles/checkpoints/model_0000250341.pt' \
 --train_videos_txt 'data/bobsl_align_test_1.txt' \
 --val_videos_txt 'data/bobsl_align_test_1.txt' \
 --test_videos_txt 'data/bobsl_align_test_1.txt' \
+--debug

@@ -66,7 +66,7 @@ def get_video_frame_count(videos_path, video_name):
     
     return total_frames
 
-def load_pose_features(pose_path):
+def load_pose_features(pose_path, stride=1):
     with open(pose_path, "rb") as f:
         buffer = f.read()
         pose = Pose.read(buffer)
@@ -76,6 +76,8 @@ def load_pose_features(pose_path):
 
     feat = np.nan_to_num(pose.body.data)
     feat = feat.reshape(feat.shape[0], -1)
+
+    feat = feat[::stride]
 
     return feat
 
@@ -164,7 +166,7 @@ class VideoTextDataset(Dataset):
                         full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
                     if os.path.exists(full_path):
                         if ext=='.pose':
-                            self.features[path] = load_pose_features(full_path)
+                            self.features[path] = load_pose_features(full_path, stride=self.opts.input_features_stride)
                         elif ext=='.npy':
                             self.features[path] = np.load(full_path)
                         else:
@@ -401,6 +403,13 @@ class VideoTextDataset(Dataset):
             out_dict['gt_vec'] = self.times_to_labels_vec(out_dict["gt_fr_to"], out_dict["wind_fr_to"], out_dict["feats"]).astype(np.single)  
         out_dict['path'] = ep
 
+        if self.opts.debug:
+            print(out_dict["orig_txt"])
+            print(out_dict["feats"].shape)
+            print(out_dict['pr_vec'].shape)
+            print(out_dict['gt_vec'].shape)
+            exit()
+
         return out_dict
 
     def jitter_towards_gt(self, pr_fr, pr_to, gt_fr, gt_to):
@@ -465,7 +474,7 @@ class VideoTextDataset(Dataset):
 
     ### Index into episode for features, subsample, augment, and add padding
     def return_samp_feats(self, ep_feats, wind_fr, wind_to):
-        _, _, feats = get_feature_interval(
+        t0_ix, t1_ix, feats = get_feature_interval(
                             ep_feats,
                             t0_sec=wind_fr,
                             t1_sec=wind_to,
@@ -473,10 +482,19 @@ class VideoTextDataset(Dataset):
                         )
         if self.opts.subsample_stride > 1:
             # TODO: check this 
-            # print("WARNING check implementation of stride > 1")
+            print("WARNING check implementation of stride > 1")
             feats = feats[0:len(feats):self.opts.subsample_stride]
         if self.mode == "train":
             feats = self.augment_feats(feats)
+
+        if self.opts.debug:
+            print(wind_fr)
+            print(wind_to)
+            print(ep_feats.shape)
+
+            print(t0_ix)
+            print(t1_ix)
+            print(feats.shape)
         
         npad = self.wind_len - feats.shape[0]
         # TODO debug check 
@@ -527,7 +545,7 @@ class VideoTextDataset(Dataset):
                 )
         if self.opts.subsample_stride > 1:
             # TODO: check this 
-            # print("WARNING check implementation of stride > 1")
+            print("WARNING check implementation of stride > 1")
             feats = feats[0:len(feats):self.opts.subsample_stride]
         if self.mode == "train":
             feats = self.augment_feats(feats)

@@ -27,6 +27,8 @@ def load_opts():
     parser.add_argument('--test_only', action='store_true', help='Run only evaluation')
     parser.add_argument('--n_workers', type=int, default=0, help='Num data workers')
 
+    parser.add_argument('--debug', action='store_true', help='Debug')
+
     parser.add_argument('--model', type=str, default='gt_align_invtransformer', help='Model type')
     parser.add_argument('--dataset', type=str, default='video_text', help='Dataset type')
     parser.add_argument('--trainer', type=str, default='video_text', help='Trainer type')

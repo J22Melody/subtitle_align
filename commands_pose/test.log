@@ -35,7 +35,7 @@ Parameter Group 0
     weight_decay: 0
 )[0m
 Number of parameters: 16904449
-[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/checkpoints/model_0000252826.pt loaded![0m
+[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/checkpoints/model_0000253841.pt loaded![0m
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/subtitles/5130659699728866130/signhd.vtt
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/probabilities/5130659699728866130
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/subtitles/5276110913861331583/signhd.vtt
@@ -106,11 +106,18 @@ saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_su
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/probabilities/6368304776366513150
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/subtitles/6372027224521959778/signhd.vtt
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/finetune_subtitles_adapt/probabilities/6372027224521959778
-Epoch end: test: dt 0.02 dt/total 0.96 f1@0.5 31.40 f1@0.5_b 42.81 frame_acc 48.69 frame_acc_b 46.97 loss 0.33 t 0.02 
+Epoch end: test: dt 0.02 dt/total 0.96 f1@0.5 46.36 f1@0.5_b 43.38 frame_acc 49.46 frame_acc_b 46.97 loss 0.31 t 0.02 
 before DTW output
 total  2642663 subs 20338
-Mean and median start offset: 0.27 / 0.27 
-Mean and median end offset: 0.35 / 0.35 
-Mean and median start offset (abs): 2.04 / 1.28 
-Mean and median end offset (abs): 2.12 / 1.42 
-Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 63.29 F1@0.10: 72.14 F1@0.25: 63.42 F1@0.50: 44.56
+Mean and median start offset: 0.13 / 0.16 
+Mean and median end offset: 0.38 / 0.40 
+Mean and median start offset (abs): 2.03 / 1.29 
+Mean and median end offset (abs): 2.13 / 1.41 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 62.62 F1@0.10: 71.50 F1@0.25: 62.70 F1@0.50: 44.09
+after DTW output
+total  2642663 subs 20338
+Mean and median start offset: 0.11 / 0.15 
+Mean and median end offset: 0.40 / 0.39 
+Mean and median start offset (abs): 2.15 / 1.35 
+Mean and median end offset (abs): 2.27 / 1.49 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 65.24 F1@0.10: 67.86 F1@0.25: 59.33 F1@0.50: 43.69
