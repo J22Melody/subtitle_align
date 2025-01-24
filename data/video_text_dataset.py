@@ -146,6 +146,12 @@ class VideoTextDataset(Dataset):
                         end_frame=end_frame_num,
                     )
                     self.features[path] = episode_features
+
+                    if self.opts.debug:
+                        print(path)
+                        print(episode_features.shape)
+                        print(episode_features[0][:10])
+                        exit()
             else:
                 is_flat = False
                 if self.opts.load_features_from_pose:
@@ -168,11 +174,17 @@ class VideoTextDataset(Dataset):
                         if ext=='.pose':
                             self.features[path] = load_pose_features(full_path, stride=self.opts.input_features_stride)
                         elif ext=='.npy':
-                            self.features[path] = np.load(full_path)
+                            self.features[path] = np.load(full_path)[::self.opts.input_features_stride]
                         else:
                             self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
                     else:
                         print(f"Not found: {full_path}")
+
+                    if self.opts.debug:
+                        print(path)
+                        print(self.features[path].shape)
+                        print(self.features[path][0][:10])
+                        exit()
                     
             vid_episode_keys = self.features.keys()
         else: 

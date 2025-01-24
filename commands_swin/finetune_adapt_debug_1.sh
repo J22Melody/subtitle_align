@@ -1,12 +1,11 @@
 python main.py \
---features_path '/users/zifan/BOBSL/derivatives/video_features/swin_v2/lmdb-feats_vswin_t-bs256_float16' \
+--features_path '/users/zifan/BOBSL/derivatives/video_features/swin_v2_1' \
 --videos_path '/users/zifan/BOBSL/derivatives/original_videos' \
 --gt_sub_path '/users/zifan/BOBSL/v1.4/manual_annotations/signing_aligned_subtitles' \
 --pr_sub_path '/users/zifan/BOBSL/v1.4/automatic_annotations/signing_aligned_subtitles/audio_aligned_heuristic_correction' \
 --gpu_id 0 \
 --feature_dim 1024 \
 --feature_dim_adapt 768 \
---load_features_from_lmdb True \
 --batch_size 128 \
 --n_workers 1 \
 --pr_subs_delta_bias 2.7 \
