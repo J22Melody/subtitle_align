@@ -72,9 +72,9 @@ def process_logs_to_csv(output_csv="results.csv"):
                     # Extract the metrics from 'test.log' first
                     frame_acc, f1_10, f1_25, f1_50, frame_acc_dtw, f1_10_dtw, f1_25_dtw, f1_50_dtw = extract_metrics_from_log(test_log_path)
                     
-                    # Write the data to the CSV, removing the 'commands_' prefix from the folder name
+                    # Write the data to the CSV, removing the 'commands_' prefix from the folder name and '.log' suffix
                     writer.writerow({
-                        'method': f'{folder.replace("commands_", "")}/test.log',
+                        'method': f'{folder.replace("commands_", "")}/test',
                         'frame-acc': frame_acc,
                         'F1@.10': f1_10,
                         'F1@.25': f1_25,
@@ -94,9 +94,9 @@ def process_logs_to_csv(output_csv="results.csv"):
                         # Extract the metrics from the log file
                         frame_acc, f1_10, f1_25, f1_50, frame_acc_dtw, f1_10_dtw, f1_25_dtw, f1_50_dtw = extract_metrics_from_log(log_file_path)
                         
-                        # Write the data to the CSV, removing the 'commands_' prefix from the folder name
+                        # Write the data to the CSV, removing the 'commands_' prefix from the folder name and '.log' suffix
                         writer.writerow({
-                            'method': f'{folder.replace("commands_", "")}/{file_name}',
+                            'method': f'{folder.replace("commands_", "")}/{file_name.replace(".log", "")}',  # Remove the ".log" suffix
                             'frame-acc': frame_acc,
                             'F1@.10': f1_10,
                             'F1@.25': f1_25,
