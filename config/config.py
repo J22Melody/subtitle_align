@@ -63,7 +63,7 @@ def load_opts():
                             help = 'Path to segmentation features directory')
     parser.add_argument('--gt_sub_path', 
                             type = str, 
-                            default = '/scratch/shared/beegfs/albanie/shared-datasets/bobsl/public_dataset_release/subtitles/manually-aligned/', 
+                            # default = '/scratch/shared/beegfs/albanie/shared-datasets/bobsl/public_dataset_release/subtitles/manually-aligned/', 
                             help = 'Path to aligned subtitles directory')
     parser.add_argument('--pr_sub_path',
                             type = str, 
@@ -100,7 +100,7 @@ def load_opts():
     parser.add_argument('--jitter_abs', action='store_true', help='Whether to jitter absolutely or relative to length of sub/spotting')
     parser.add_argument('--jitter_location', action='store_true', help='Whether to jitter forward or backward in time')
     parser.add_argument('--jitter_loc_quantity', type=float, default=0, help='Percentage of subtitle width to jitter by OR if jitter_abs maximum shift in seconds')
-    parser.add_argument('--jitter_width_secs', type=int, default=0, help='jitter width of prior sub in s')
+    parser.add_argument('--jitter_width_secs', type=float, default=0, help='jitter width of prior sub in s')
     parser.add_argument('--jitter_towards_gt', action='store_true', help='Whether to jitter towards the ground truth')
     parser.add_argument('--jitter_mirror_gt', action='store_true', help='Whether to jitter mirroring the ground truth')
 

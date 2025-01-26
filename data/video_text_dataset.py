@@ -211,6 +211,10 @@ class VideoTextDataset(Dataset):
                     sub_ext_pr = '/signhd.vtt'
                 elif os.path.exists(os.path.join(self.opts.pr_sub_path, ep + '.vtt')):
                     sub_ext_pr = '.vtt'
+                elif os.path.exists(os.path.join(self.opts.pr_sub_path, ep + '.en.vtt')):
+                    sub_ext_pr = '.en.vtt'
+                elif os.path.exists(os.path.join(self.opts.pr_sub_path, ep + '.en-GB.vtt')):
+                    sub_ext_pr = '.en-GB.vtt'
                 elif os.path.exists(os.path.join(self.opts.pr_sub_path, ep + '.srt')):
                     sub_ext_pr = '.srt'
                 else:
@@ -223,6 +227,10 @@ class VideoTextDataset(Dataset):
                         sub_ext_gt = '/signhd.vtt'
                     elif os.path.exists(os.path.join(self.opts.gt_sub_path, ep + '.vtt')):
                         sub_ext_gt = '.vtt'
+                    elif os.path.exists(os.path.join(self.opts.gt_sub_path, ep + '.en.vtt')):
+                        sub_ext_gt = '.en.vtt'
+                    elif os.path.exists(os.path.join(self.opts.gt_sub_path, ep + '.en-GB.vtt')):
+                        sub_ext_gt = '.en-GB.vtt'
                     elif os.path.exists(os.path.join(self.opts.gt_sub_path, ep + '.srt')):
                         sub_ext_gt = '.srt'
                     else:
@@ -232,7 +240,7 @@ class VideoTextDataset(Dataset):
 
                 else:
                     gt_vtt_path = pr_vtt_path
-
+                
                 pr_subs = webvtt.from_srt(pr_vtt_path) if sub_ext_pr == '.srt' else webvtt.read(pr_vtt_path)
                 if self.opts.gt_sub_path:
                     gt_subs = webvtt.from_srt(gt_vtt_path) if sub_ext_gt == '.srt' else webvtt.read(gt_vtt_path)
