@@ -59,7 +59,7 @@ def process_logs_to_csv(output_csv="results.csv"):
         writer.writeheader()
 
         # Define the specific order of folders to search
-        folders = ['commands_reproduce', 'commands_swin', 'commands_pose']
+        folders = ['commands_reproduce', 'commands_swin', 'commands_pose', 'commands_pose_youtube']
 
         # Loop through the specific folder order
         for folder in folders:
