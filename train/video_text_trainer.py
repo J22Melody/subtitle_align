@@ -203,6 +203,16 @@ class VideoTextTrainer(BaseTrainer):
             self.data_tic = time.time(
             )  # this counts how long we are waiting for data
 
+            if self.opts.debug:
+                print(model_out['gt_vec'].shape)
+                print(model_out['pr_vec'].shape)
+                print(model_out['preds'].shape)
+                for key, value in model_out.items():
+                    if key not in ['gt_vec', 'pr_vec', 'preds']:
+                        print(key, value)
+                print(metrics_dict)
+                exit()
+
         # bar.close()
 
         if mode=='test':

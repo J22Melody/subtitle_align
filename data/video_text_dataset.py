@@ -136,7 +136,7 @@ class VideoTextDataset(Dataset):
                     load_stride=int(self.opts.input_features_stride / lmdb_stride),
                 )
 
-                for path in tqdm(data_paths):
+                for i, path in tqdm(enumerate(data_paths)):
                     video_name = path
                     end_frame_num = get_video_frame_count(self.opts.videos_path, video_name) - 1
 
@@ -147,11 +147,11 @@ class VideoTextDataset(Dataset):
                     )
                     self.features[path] = episode_features
 
-                    if self.opts.debug:
+                    if i == 0:
+                        print('Example feature for episode:')
                         print(path)
                         print(episode_features.shape)
                         print(episode_features[0][:10])
-                        exit()
             else:
                 is_flat = False
                 if self.opts.load_features_from_pose:
@@ -165,7 +165,7 @@ class VideoTextDataset(Dataset):
                 else:
                     ext='.mat'
                 
-                for path in tqdm(data_paths):
+                for i, path in tqdm(enumerate(data_paths)):
                     if is_flat:
                         full_path = os.path.join(self.opts.features_path, data_paths[0]) + ext
                     else:
@@ -180,11 +180,11 @@ class VideoTextDataset(Dataset):
                     else:
                         print(f"Not found: {full_path}")
 
-                    if self.opts.debug:
+                    if i == 0:
+                        print('Example feature for episode:')
                         print(path)
                         print(self.features[path].shape)
                         print(self.features[path][0][:10])
-                        exit()
                     
             vid_episode_keys = self.features.keys()
         else: 
@@ -423,12 +423,12 @@ class VideoTextDataset(Dataset):
             out_dict['gt_vec'] = self.times_to_labels_vec(out_dict["gt_fr_to"], out_dict["wind_fr_to"], out_dict["feats"]).astype(np.single)  
         out_dict['path'] = ep
 
-        if self.opts.debug:
-            print(out_dict["orig_txt"])
-            print(out_dict["feats"].shape)
-            print(out_dict['pr_vec'].shape)
-            print(out_dict['gt_vec'].shape)
-            exit()
+        # if self.opts.debug:
+        #     print(out_dict["orig_txt"])
+        #     print(out_dict["feats"].shape)
+        #     print(out_dict['pr_vec'].shape)
+        #     print(out_dict['gt_vec'].shape)
+        #     exit()
 
         return out_dict
 
@@ -507,14 +507,14 @@ class VideoTextDataset(Dataset):
         if self.mode == "train":
             feats = self.augment_feats(feats)
 
-        if self.opts.debug:
-            print(wind_fr)
-            print(wind_to)
-            print(ep_feats.shape)
+        # if self.opts.debug:
+        #     print(wind_fr)
+        #     print(wind_to)
+        #     print(ep_feats.shape)
 
-            print(t0_ix)
-            print(t1_ix)
-            print(feats.shape)
+        #     print(t0_ix)
+        #     print(t1_ix)
+        #     print(feats.shape)
         
         npad = self.wind_len - feats.shape[0]
         # TODO debug check 
