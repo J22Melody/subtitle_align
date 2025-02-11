@@ -40,7 +40,7 @@ Parameter Group 0
     weight_decay: 0
 )[0m
 Number of parameters: 16225537
-[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/checkpoints/model_0000122121.pt loaded![0m
+[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/checkpoints/model_0000122814.pt loaded![0m
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5130659699728866130/signhd.vtt
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5130659699728866130
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5276110913861331583/signhd.vtt
@@ -111,11 +111,18 @@ saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_su
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6368304776366513150
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6372027224521959778/signhd.vtt
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6372027224521959778
-Epoch end: test: dt 0.01 dt/total 0.95 f1@0.5 51.15 f1@0.5_b 43.31 frame_acc 55.08 frame_acc_b 46.92 loss 0.27 t 0.02 
+Epoch end: test: dt 0.01 dt/total 0.95 f1@0.5 51.26 f1@0.5_b 43.31 frame_acc 55.90 frame_acc_b 46.92 loss 0.27 t 0.02 
 before DTW output
 total  2642663 subs 20338
-Mean and median start offset: -0.16 / -0.02 
-Mean and median end offset: 0.31 / 0.46 
-Mean and median start offset (abs): 1.76 / 0.95 
-Mean and median end offset (abs): 1.92 / 1.15 
-Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 65.95 F1@0.10: 72.88 F1@0.25: 65.62 F1@0.50: 48.45
+Mean and median start offset: -0.21 / -0.02 
+Mean and median end offset: 0.19 / 0.37 
+Mean and median start offset (abs): 1.74 / 0.89 
+Mean and median end offset (abs): 1.88 / 1.10 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 67.11 F1@0.10: 73.70 F1@0.25: 66.53 F1@0.50: 50.18
+after DTW output
+total  2642663 subs 20338
+Mean and median start offset: -0.39 / -0.06 
+Mean and median end offset: 0.17 / 0.27 
+Mean and median start offset (abs): 1.62 / 0.78 
+Mean and median end offset (abs): 1.70 / 0.88 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 72.33 F1@0.10: 75.23 F1@0.25: 67.61 F1@0.50: 54.49

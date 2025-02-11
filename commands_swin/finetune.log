@@ -468,3 +468,10 @@ Epoch end: train: dt 1.30 dt/total 0.79 f1@0.5 46.54 f1@0.5_b 45.94 frame_acc 61
 Epoch end: val: dt 0.71 dt/total 1.00 f1@0.5 65.01 f1@0.5_b 52.26 frame_acc 64.03 frame_acc_b 53.91 loss 0.18 t 0.71 
 saving model  model_0000122796.pt
 Epoch 99/100
+Epoch end: train: dt 1.28 dt/total 0.78 f1@0.5 46.91 f1@0.5_b 46.98 frame_acc 61.76 frame_acc_b 48.12 loss 0.18 t 1.63 
+Epoch end: val: dt 0.82 dt/total 1.00 f1@0.5 63.85 f1@0.5_b 52.34 frame_acc 63.83 frame_acc_b 53.77 loss 0.19 t 0.82 
+saving model  model_0000122805.pt
+Epoch 100/100
+Epoch end: train: dt 1.29 dt/total 0.78 f1@0.5 46.35 f1@0.5_b 46.23 frame_acc 61.27 frame_acc_b 47.93 loss 0.18 t 1.65 
+Epoch end: val: dt 0.83 dt/total 1.00 f1@0.5 64.10 f1@0.5_b 54.65 frame_acc 64.03 frame_acc_b 54.37 loss 0.18 t 0.83 
+saving model  model_0000122814.pt
