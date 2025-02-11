@@ -1,11 +1,6 @@
 Cuda current device  0
 Loading features...
-Example feature for episode:
-5130659699728866130
-torch.Size([22488, 768])
-torch.float32
-tensor([-0.1333, -0.0678, -0.1147, -0.1791,  0.0418, -0.6655,  0.0467, -0.0177,
-        -0.1109,  0.2103])
+Loading segmentation features...
 Adding bias to prior subtitle times  2.7
 Adding bias to GT subtitle times  0
 Loading subtitles associated to sentences...
@@ -40,7 +35,7 @@ Parameter Group 0
     weight_decay: 0
 )[0m
 Number of parameters: 16225537
-[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/checkpoints/model_0000122121.pt loaded![0m
+[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/checkpoints/model_0000253841.pt loaded![0m
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5130659699728866130/signhd.vtt
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/5130659699728866130
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/5276110913861331583/signhd.vtt
@@ -111,11 +106,18 @@ saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_su
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6368304776366513150
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/subtitles/6372027224521959778/signhd.vtt
 saving  /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/probabilities/6372027224521959778
-Epoch end: test: dt 0.01 dt/total 0.95 f1@0.5 51.15 f1@0.5_b 43.31 frame_acc 55.08 frame_acc_b 46.92 loss 0.27 t 0.02 
+Epoch end: test: dt 0.02 dt/total 0.96 f1@0.5 39.16 f1@0.5_b 43.31 frame_acc 51.87 frame_acc_b 46.92 loss 0.32 t 0.02 
 before DTW output
 total  2642663 subs 20338
-Mean and median start offset: -0.16 / -0.02 
-Mean and median end offset: 0.31 / 0.46 
-Mean and median start offset (abs): 1.76 / 0.95 
-Mean and median end offset (abs): 1.92 / 1.15 
-Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 65.95 F1@0.10: 72.88 F1@0.25: 65.62 F1@0.50: 48.45
+Mean and median start offset: 0.24 / 0.20 
+Mean and median end offset: 0.36 / 0.45 
+Mean and median start offset (abs): 2.00 / 1.20 
+Mean and median end offset (abs): 2.06 / 1.29 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 64.55 F1@0.10: 70.28 F1@0.25: 61.69 F1@0.50: 44.25
+after DTW output
+total  2642663 subs 20338
+Mean and median start offset: 0.04 / 0.11 
+Mean and median end offset: 0.46 / 0.44 
+Mean and median start offset (abs): 1.92 / 1.09 
+Mean and median end offset (abs): 2.01 / 1.17 
+Computed over 2642663 frames, 20338 sentences - Frame-level accuracy: 69.01 F1@0.10: 70.79 F1@0.25: 62.04 F1@0.50: 47.27

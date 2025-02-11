@@ -1,0 +1,159 @@
+Cuda current device  0
+Loading features...
+Example feature for episode:
+5085344787448740525
+torch.Size([18395, 768])
+tensor([-0.1823, -0.3162, -0.0901, -0.0639, -0.2421, -0.6182,  0.1642, -0.0652,
+         0.3706,  0.3118])
+Loading word spottings...
+Adding bias to word spottings  0
+mode  train
+number of samples 1752714
+Mean feats length samples 6.0
+Standard deviation feats length samples 0.0
+Min feats length samples 6
+Max feats length samples 6
+80\% percentile feats length 6.0
+90\% percentile feats length 6.0
+95\% percentile feats length 6.0
+Mean texts length samples 5.455297898002755
+Standard deviation texts length samples 2.0557668357452528
+Min texts length samples 1
+Max texts length samples 30
+80\% percentile texts length 7.0
+90\% percentile texts length 8.0
+95\% percentile texts length 9.0
+Loading features...
+Example feature for episode:
+5213407827313563421
+torch.Size([11023, 768])
+tensor([-0.6646,  0.3145, -0.7246,  0.1469,  0.5708, -0.3022, -0.3760, -0.2878,
+         0.2761,  0.5640])
+Loading word spottings...
+Adding bias to word spottings  0
+mode  val
+number of samples 56222
+Mean feats length samples 6.0
+Standard deviation feats length samples 0.0
+Min feats length samples 6
+Max feats length samples 6
+80\% percentile feats length 6.0
+90\% percentile feats length 6.0
+95\% percentile feats length 6.0
+Mean texts length samples 5.415246700579845
+Standard deviation texts length samples 2.1027620166714196
+Min texts length samples 1
+Max texts length samples 20
+80\% percentile texts length 7.0
+90\% percentile texts length 8.0
+95\% percentile texts length 9.0
+Model's state_dict:
+[32mAdam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1e-05
+    maximize: False
+    weight_decay: 0
+)[0m
+Number of parameters: 16225537
+Epoch end: val: dt 1.65 dt/total 1.00 f1@0.5 0.26 f1@0.5_b 3.28 frame_acc 0.31 frame_acc_b 2.65 loss 1.31 t 1.65 
+Epoch 1/100
+Epoch end: train: dt 1.97 dt/total 0.85 f1@0.5 11.27 f1@0.5_b 3.38 frame_acc 11.90 frame_acc_b 2.73 loss 0.98 t 2.31 
+Epoch end: val: dt 1.80 dt/total 1.00 f1@0.5 21.45 f1@0.5_b 3.39 frame_acc 18.45 frame_acc_b 2.70 loss 0.85 t 1.80 
+best checkpoint so far!
+saving model  model_0000001712.pt
+Epoch 2/100
+Epoch end: train: dt 1.91 dt/total 0.85 f1@0.5 17.54 f1@0.5_b 3.38 frame_acc 17.87 frame_acc_b 2.72 loss 0.79 t 2.24 
+Epoch end: val: dt 1.78 dt/total 1.00 f1@0.5 25.39 f1@0.5_b 3.44 frame_acc 21.23 frame_acc_b 2.78 loss 0.78 t 1.79 
+best checkpoint so far!
+saving model  model_0000003424.pt
+Epoch 3/100
+Epoch end: train: dt 1.88 dt/total 0.85 f1@0.5 19.61 f1@0.5_b 3.40 frame_acc 19.96 frame_acc_b 2.73 loss 0.71 t 2.22 
+Epoch end: val: dt 1.75 dt/total 1.00 f1@0.5 26.59 f1@0.5_b 3.40 frame_acc 22.21 frame_acc_b 2.69 loss 0.69 t 1.75 
+best checkpoint so far!
+saving model  model_0000005136.pt
+Epoch 4/100
+Epoch end: train: dt 1.85 dt/total 0.85 f1@0.5 22.56 f1@0.5_b 3.41 frame_acc 22.20 frame_acc_b 2.74 loss 0.63 t 2.18 
+Epoch end: val: dt 1.73 dt/total 1.00 f1@0.5 31.17 f1@0.5_b 3.43 frame_acc 24.18 frame_acc_b 2.75 loss 0.61 t 1.73 
+best checkpoint so far!
+saving model  model_0000006848.pt
+Epoch 5/100
+Epoch end: train: dt 1.82 dt/total 0.84 f1@0.5 24.86 f1@0.5_b 3.40 frame_acc 23.62 frame_acc_b 2.73 loss 0.58 t 2.16 
+Epoch end: val: dt 1.71 dt/total 1.00 f1@0.5 32.80 f1@0.5_b 3.46 frame_acc 25.00 frame_acc_b 2.74 loss 0.58 t 1.71 
+best checkpoint so far!
+saving model  model_0000008560.pt
+Epoch 6/100
+Epoch end: train: dt 1.82 dt/total 0.84 f1@0.5 26.69 f1@0.5_b 3.38 frame_acc 24.66 frame_acc_b 2.72 loss 0.55 t 2.16 
+Epoch end: val: dt 1.71 dt/total 1.00 f1@0.5 35.06 f1@0.5_b 3.41 frame_acc 25.98 frame_acc_b 2.76 loss 0.56 t 1.71 
+best checkpoint so far!
+saving model  model_0000010272.pt
+Epoch 7/100
+Epoch end: train: dt 1.80 dt/total 0.84 f1@0.5 28.54 f1@0.5_b 3.39 frame_acc 25.57 frame_acc_b 2.73 loss 0.53 t 2.14 
+Epoch end: val: dt 1.71 dt/total 1.00 f1@0.5 35.60 f1@0.5_b 3.43 frame_acc 26.46 frame_acc_b 2.72 loss 0.54 t 1.71 
+best checkpoint so far!
+saving model  model_0000011984.pt
+Epoch 8/100
+Epoch end: train: dt 1.79 dt/total 0.84 f1@0.5 30.00 f1@0.5_b 3.39 frame_acc 26.32 frame_acc_b 2.73 loss 0.51 t 2.13 
+Epoch end: val: dt 1.74 dt/total 1.00 f1@0.5 36.60 f1@0.5_b 3.37 frame_acc 26.70 frame_acc_b 2.72 loss 0.52 t 1.74 
+best checkpoint so far!
+saving model  model_0000013696.pt
+Epoch 9/100
+Epoch end: train: dt 1.79 dt/total 0.84 f1@0.5 31.26 f1@0.5_b 3.40 frame_acc 26.96 frame_acc_b 2.73 loss 0.50 t 2.13 
+Epoch end: val: dt 1.68 dt/total 1.00 f1@0.5 38.79 f1@0.5_b 3.34 frame_acc 27.66 frame_acc_b 2.74 loss 0.51 t 1.68 
+best checkpoint so far!
+saving model  model_0000015408.pt
+Epoch 10/100
+Epoch end: train: dt 1.78 dt/total 0.84 f1@0.5 32.43 f1@0.5_b 3.40 frame_acc 27.51 frame_acc_b 2.72 loss 0.48 t 2.12 
+Epoch end: val: dt 1.70 dt/total 1.00 f1@0.5 39.89 f1@0.5_b 3.32 frame_acc 27.83 frame_acc_b 2.68 loss 0.49 t 1.70 
+best checkpoint so far!
+saving model  model_0000017120.pt
+Epoch 11/100
+Epoch end: train: dt 1.78 dt/total 0.84 f1@0.5 33.60 f1@0.5_b 3.39 frame_acc 28.04 frame_acc_b 2.72 loss 0.47 t 2.12 
+Epoch end: val: dt 1.73 dt/total 1.00 f1@0.5 40.19 f1@0.5_b 3.42 frame_acc 28.15 frame_acc_b 2.73 loss 0.49 t 1.73 
+best checkpoint so far!
+saving model  model_0000018832.pt
+Epoch 12/100
+Epoch end: train: dt 1.78 dt/total 0.84 f1@0.5 34.75 f1@0.5_b 3.40 frame_acc 28.53 frame_acc_b 2.73 loss 0.46 t 2.12 
+Epoch end: val: dt 1.68 dt/total 1.00 f1@0.5 42.06 f1@0.5_b 3.45 frame_acc 28.85 frame_acc_b 2.74 loss 0.48 t 1.68 
+best checkpoint so far!
+saving model  model_0000020544.pt
+Epoch 13/100
+Epoch end: train: dt 1.78 dt/total 0.84 f1@0.5 35.87 f1@0.5_b 3.42 frame_acc 28.97 frame_acc_b 2.74 loss 0.45 t 2.12 
+Epoch end: val: dt 1.70 dt/total 1.00 f1@0.5 42.66 f1@0.5_b 3.47 frame_acc 28.85 frame_acc_b 2.77 loss 0.47 t 1.70 
+best checkpoint so far!
+saving model  model_0000022256.pt
+Epoch 14/100
+Epoch end: train: dt 1.77 dt/total 0.84 f1@0.5 37.05 f1@0.5_b 3.41 frame_acc 29.40 frame_acc_b 2.74 loss 0.44 t 2.11 
+Epoch end: val: dt 1.70 dt/total 1.00 f1@0.5 43.61 f1@0.5_b 3.48 frame_acc 29.16 frame_acc_b 2.83 loss 0.46 t 1.70 
+best checkpoint so far!
+saving model  model_0000023968.pt
+Epoch 15/100
+Epoch end: train: dt 1.78 dt/total 0.84 f1@0.5 38.17 f1@0.5_b 3.38 frame_acc 29.80 frame_acc_b 2.72 loss 0.43 t 2.12 
+Epoch end: val: dt 1.73 dt/total 1.00 f1@0.5 43.58 f1@0.5_b 3.31 frame_acc 29.02 frame_acc_b 2.69 loss 0.46 t 1.73 
+saving model  model_0000025680.pt
+Epoch 16/100
+Epoch end: train: dt 1.79 dt/total 0.84 f1@0.5 39.21 f1@0.5_b 3.41 frame_acc 30.15 frame_acc_b 2.73 loss 0.43 t 2.13 
+Epoch end: val: dt 1.71 dt/total 1.00 f1@0.5 45.41 f1@0.5_b 3.45 frame_acc 29.57 frame_acc_b 2.74 loss 0.45 t 1.71 
+best checkpoint so far!
+saving model  model_0000027392.pt
+Epoch 17/100
+Epoch end: train: dt 1.79 dt/total 0.84 f1@0.5 40.30 f1@0.5_b 3.39 frame_acc 30.53 frame_acc_b 2.73 loss 0.42 t 2.13 
+Epoch end: val: dt 1.71 dt/total 1.00 f1@0.5 45.81 f1@0.5_b 3.40 frame_acc 29.63 frame_acc_b 2.72 loss 0.45 t 1.71 
+best checkpoint so far!
+saving model  model_0000029104.pt
+Epoch 18/100
+Epoch end: train: dt 1.79 dt/total 0.84 f1@0.5 41.31 f1@0.5_b 3.40 frame_acc 30.86 frame_acc_b 2.73 loss 0.41 t 2.13 
+Epoch end: val: dt 1.77 dt/total 1.00 f1@0.5 47.55 f1@0.5_b 3.38 frame_acc 30.37 frame_acc_b 2.69 loss 0.44 t 1.77 
+best checkpoint so far!
+saving model  model_0000030816.pt
+Epoch 19/100
+Epoch end: train: dt 1.80 dt/total 0.84 f1@0.5 42.20 f1@0.5_b 3.42 frame_acc 31.14 frame_acc_b 2.74 loss 0.41 t 2.13 
+Epoch end: val: dt 1.70 dt/total 1.00 f1@0.5 47.45 f1@0.5_b 3.31 frame_acc 30.06 frame_acc_b 2.68 loss 0.44 t 1.70 
+saving model  model_0000032528.pt
+Epoch 20/100

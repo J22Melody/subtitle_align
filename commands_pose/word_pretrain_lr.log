@@ -1,0 +1,110 @@
+Cuda current device  0
+Loading features...
+Example feature for episode:
+5085344787448740525
+(36795, 534)
+float32
+[-4.6243966e-01 -7.7108365e-01  4.8407839e-04 -6.8785423e-01
+ -6.4402676e-01  9.5478934e-04 -3.7152717e-01 -7.6682496e-01
+ -2.6907807e-04 -6.7402273e-01]
+Loading word spottings...
+Adding bias to word spottings  0
+mode  train
+number of samples 1752714
+Mean feats length samples 6.0
+Standard deviation feats length samples 0.0
+Min feats length samples 6
+Max feats length samples 6
+80\% percentile feats length 6.0
+90\% percentile feats length 6.0
+95\% percentile feats length 6.0
+Mean texts length samples 5.455297898002755
+Standard deviation texts length samples 2.0557668357452528
+Min texts length samples 1
+Max texts length samples 30
+80\% percentile texts length 7.0
+90\% percentile texts length 8.0
+95\% percentile texts length 9.0
+Loading features...
+Example feature for episode:
+5213407827313563421
+(22050, 534)
+float32
+[ 4.6581715e-01  1.5135199e-02  8.7896315e-04 -5.5268341e-01
+ -9.3495198e-02  1.4899562e-03  6.5246028e-01  8.9883506e-01
+ -7.3029648e-04 -8.9030623e-01]
+Loading word spottings...
+Adding bias to word spottings  0
+mode  val
+number of samples 56222
+Mean feats length samples 6.0
+Standard deviation feats length samples 0.0
+Min feats length samples 6
+Max feats length samples 6
+80\% percentile feats length 6.0
+90\% percentile feats length 6.0
+95\% percentile feats length 6.0
+Mean texts length samples 5.415246700579845
+Standard deviation texts length samples 2.1027620166714196
+Min texts length samples 1
+Max texts length samples 20
+80\% percentile texts length 7.0
+90\% percentile texts length 8.0
+95\% percentile texts length 9.0
+Model's state_dict:
+[32mAdam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)[0m
+Number of parameters: 16105729
+Epoch end: val: dt 1.08 dt/total 1.00 f1@0.5 0.15 f1@0.5_b 3.29 frame_acc 0.67 frame_acc_b 2.52 loss 1.04 t 1.08 
+Epoch 1/100
+Epoch end: train: dt 1.24 dt/total 0.77 f1@0.5 0.10 f1@0.5_b 3.42 frame_acc 3.20 frame_acc_b 2.53 loss 1.18 t 1.61 
+Epoch end: val: dt 1.07 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.47 frame_acc 0.00 frame_acc_b 2.62 loss 0.79 t 1.08 
+saving model  model_0000003424.pt
+Epoch 2/100
+Epoch end: train: dt 1.13 dt/total 0.75 f1@0.5 0.07 f1@0.5_b 3.39 frame_acc 1.07 frame_acc_b 2.52 loss 1.18 t 1.49 
+Epoch end: val: dt 1.07 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.25 frame_acc 0.00 frame_acc_b 2.48 loss 0.79 t 1.07 
+saving model  model_0000006848.pt
+Epoch 3/100
+Epoch end: train: dt 1.10 dt/total 0.75 f1@0.5 0.00 f1@0.5_b 3.38 frame_acc 0.16 frame_acc_b 2.52 loss 1.18 t 1.47 
+Epoch end: val: dt 1.07 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.49 frame_acc 0.00 frame_acc_b 2.57 loss 0.79 t 1.07 
+saving model  model_0000010272.pt
+Epoch 4/100
+Epoch end: train: dt 1.10 dt/total 0.75 f1@0.5 0.00 f1@0.5_b 3.38 frame_acc 0.01 frame_acc_b 2.51 loss 1.18 t 1.47 
+Epoch end: val: dt 1.07 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.24 frame_acc 0.00 frame_acc_b 2.47 loss 0.79 t 1.07 
+saving model  model_0000013696.pt
+Epoch 5/100
+Epoch end: train: dt 1.10 dt/total 0.75 f1@0.5 0.00 f1@0.5_b 3.38 frame_acc 0.00 frame_acc_b 2.52 loss 1.18 t 1.47 
+Epoch end: val: dt 1.08 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.13 frame_acc 0.00 frame_acc_b 2.48 loss 0.79 t 1.08 
+saving model  model_0000017120.pt
+Epoch 6/100
+Epoch end: train: dt 1.10 dt/total 0.75 f1@0.5 0.00 f1@0.5_b 3.41 frame_acc 0.00 frame_acc_b 2.53 loss 1.18 t 1.46 
+Epoch end: val: dt 1.06 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.63 frame_acc 0.00 frame_acc_b 2.61 loss 0.79 t 1.07 
+saving model  model_0000020544.pt
+Epoch 7/100
+Epoch end: train: dt 1.10 dt/total 0.75 f1@0.5 0.00 f1@0.5_b 3.39 frame_acc 0.00 frame_acc_b 2.53 loss 1.18 t 1.46 
+Epoch end: val: dt 1.07 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.22 frame_acc 0.00 frame_acc_b 2.46 loss 0.79 t 1.07 
+saving model  model_0000023968.pt
+Epoch 8/100
+Epoch end: train: dt 1.10 dt/total 0.75 f1@0.5 0.00 f1@0.5_b 3.40 frame_acc 0.00 frame_acc_b 2.52 loss 1.18 t 1.46 
+Epoch end: val: dt 1.07 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.36 frame_acc 0.00 frame_acc_b 2.51 loss 0.79 t 1.07 
+saving model  model_0000027392.pt
+Epoch 9/100
+Epoch end: train: dt 1.10 dt/total 0.75 f1@0.5 0.00 f1@0.5_b 3.42 frame_acc 0.00 frame_acc_b 2.54 loss 1.18 t 1.46 
+Epoch end: val: dt 1.07 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.48 frame_acc 0.00 frame_acc_b 2.53 loss 0.79 t 1.07 
+saving model  model_0000030816.pt
+Epoch 10/100
+Epoch end: train: dt 1.10 dt/total 0.75 f1@0.5 0.02 f1@0.5_b 3.40 frame_acc 0.26 frame_acc_b 2.53 loss 1.18 t 1.47 
+Epoch end: val: dt 1.07 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 3.50 frame_acc 0.00 frame_acc_b 2.54 loss 0.80 t 1.07 
+saving model  model_0000034240.pt
+Epoch 11/100

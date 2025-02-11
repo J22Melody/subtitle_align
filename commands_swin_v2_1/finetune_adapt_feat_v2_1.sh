@@ -24,6 +24,3 @@ python main.py \
 --shuffle_words_subs 0.5 \
 --drop_words_subs 0.15 \
 --resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align/train_coarse_subtitles/checkpoints/model_0000250341.pt' \
-# --train_videos_txt 'data/bobsl_align_train.txt' \
-# --val_videos_txt 'data/bobsl_align_test.txt' \
-# --test_videos_txt 'data/bobsl_test_254.txt' \

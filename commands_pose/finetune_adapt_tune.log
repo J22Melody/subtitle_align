@@ -1,0 +1,301 @@
+Cuda current device  0
+Loading features...
+Example feature for episode:
+5085344787448740525
+(36795, 249)
+float32
+[-4.6243966e-01 -7.7108365e-01  4.8407839e-04 -6.8785423e-01
+ -6.4402676e-01  9.5478934e-04 -4.0679532e-01 -8.6419642e-01
+ -1.0092253e-03 -5.9658402e-01]
+Adding bias to prior subtitle times  2.7
+Adding bias to GT subtitle times  0
+Loading subtitles associated to sentences...
+mode  train
+number of samples 8757
+Mean feats length samples 23.819230330021696
+Standard deviation feats length samples 17.478824009448534
+Min feats length samples 3
+Max feats length samples 123
+80\% percentile feats length 35.80000000000018
+90\% percentile feats length 48.0
+95\% percentile feats length 60.0
+Mean texts length samples 53.13269384492406
+Standard deviation texts length samples 41.76429919432809
+Min texts length samples 3
+Max texts length samples 323
+80\% percentile texts length 82.0
+90\% percentile texts length 111.0
+95\% percentile texts length 137.0
+Loading features...
+Example feature for episode:
+5242317681679687839
+(41725, 249)
+float32
+[0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+Adding bias to prior subtitle times  2.7
+Adding bias to GT subtitle times  0
+Loading subtitles associated to sentences...
+mode  val
+number of samples 1885
+Mean feats length samples 26.616445623342177
+Standard deviation feats length samples 18.274617351829736
+Min feats length samples 3
+Max feats length samples 123
+80\% percentile feats length 41.0
+90\% percentile feats length 51.0
+95\% percentile feats length 62.0
+Mean texts length samples 63.36074270557029
+Standard deviation texts length samples 45.7253401816422
+Min texts length samples 3
+Max texts length samples 326
+80\% percentile texts length 97.0
+90\% percentile texts length 126.0
+95\% percentile texts length 148.79999999999995
+Model's state_dict:
+[32mAdam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 5e-05
+    maximize: False
+    weight_decay: 0
+)[0m
+Number of parameters: 61377025
+[31mWrong parameter length: input_proj_vid.weight, model: torch.Size([768, 1024, 1]), loaded: torch.Size([512, 1024, 1])[0m
+[31mWrong parameter length: input_proj_vid.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: input_proj_txt.weight, model: torch.Size([768, 768, 1]), loaded: torch.Size([512, 768, 1])[0m
+[31mWrong parameter length: input_proj_txt.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: ref_vec_embedding.weight, model: torch.Size([768, 1]), loaded: torch.Size([512, 1])[0m
+[31mWrong parameter length: ref_vec_embedding.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: reproject_concatenate.weight, model: torch.Size([768, 1536]), loaded: torch.Size([512, 1024])[0m
+[31mWrong parameter length: reproject_concatenate.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: positional_enc.pe, model: torch.Size([5000, 1, 768]), loaded: torch.Size([5000, 1, 512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.self_attn.in_proj_weight, model: torch.Size([2304, 768]), loaded: torch.Size([1536, 512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.self_attn.in_proj_bias, model: torch.Size([2304]), loaded: torch.Size([1536])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.self_attn.out_proj.weight, model: torch.Size([768, 768]), loaded: torch.Size([512, 512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.self_attn.out_proj.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.linear1.weight, model: torch.Size([2048, 768]), loaded: torch.Size([2048, 512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.linear2.weight, model: torch.Size([768, 2048]), loaded: torch.Size([512, 2048])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.linear2.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.norm1.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.norm1.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.norm2.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.0.norm2.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.self_attn.in_proj_weight, model: torch.Size([2304, 768]), loaded: torch.Size([1536, 512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.self_attn.in_proj_bias, model: torch.Size([2304]), loaded: torch.Size([1536])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.self_attn.out_proj.weight, model: torch.Size([768, 768]), loaded: torch.Size([512, 512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.self_attn.out_proj.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.linear1.weight, model: torch.Size([2048, 768]), loaded: torch.Size([2048, 512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.linear2.weight, model: torch.Size([768, 2048]), loaded: torch.Size([512, 2048])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.linear2.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.norm1.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.norm1.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.norm2.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.layers.1.norm2.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.norm.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.encoder.norm.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.self_attn.in_proj_weight, model: torch.Size([2304, 768]), loaded: torch.Size([1536, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.self_attn.in_proj_bias, model: torch.Size([2304]), loaded: torch.Size([1536])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.self_attn.out_proj.weight, model: torch.Size([768, 768]), loaded: torch.Size([512, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.self_attn.out_proj.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.multihead_attn.in_proj_weight, model: torch.Size([2304, 768]), loaded: torch.Size([1536, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.multihead_attn.in_proj_bias, model: torch.Size([2304]), loaded: torch.Size([1536])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.multihead_attn.out_proj.weight, model: torch.Size([768, 768]), loaded: torch.Size([512, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.multihead_attn.out_proj.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.linear1.weight, model: torch.Size([2048, 768]), loaded: torch.Size([2048, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.linear2.weight, model: torch.Size([768, 2048]), loaded: torch.Size([512, 2048])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.linear2.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.norm1.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.norm1.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.norm2.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.norm2.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.norm3.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.0.norm3.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.self_attn.in_proj_weight, model: torch.Size([2304, 768]), loaded: torch.Size([1536, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.self_attn.in_proj_bias, model: torch.Size([2304]), loaded: torch.Size([1536])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.self_attn.out_proj.weight, model: torch.Size([768, 768]), loaded: torch.Size([512, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.self_attn.out_proj.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.multihead_attn.in_proj_weight, model: torch.Size([2304, 768]), loaded: torch.Size([1536, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.multihead_attn.in_proj_bias, model: torch.Size([2304]), loaded: torch.Size([1536])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.multihead_attn.out_proj.weight, model: torch.Size([768, 768]), loaded: torch.Size([512, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.multihead_attn.out_proj.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.linear1.weight, model: torch.Size([2048, 768]), loaded: torch.Size([2048, 512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.linear2.weight, model: torch.Size([768, 2048]), loaded: torch.Size([512, 2048])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.linear2.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.norm1.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.norm1.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.norm2.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.norm2.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.norm3.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.layers.1.norm3.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.norm.weight, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: transformer.decoder.norm.bias, model: torch.Size([768]), loaded: torch.Size([512])[0m
+[31mWrong parameter length: fc.layers.0.weight, model: torch.Size([256, 768]), loaded: torch.Size([256, 512])[0m
+[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align/train_coarse_subtitles/checkpoints/model_0000250341.pt loaded![0m
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 52.76 frame_acc 0.00 frame_acc_b 54.24 loss 0.53 t 0.68 
+Epoch 1/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 0.00 f1@0.5_b 43.79 frame_acc 0.01 frame_acc_b 45.99 loss 0.45 t 1.64 
+Epoch end: val: dt 0.67 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 52.98 frame_acc 0.00 frame_acc_b 54.16 loss 0.49 t 0.67 
+saving model  model_0000250376.pt
+Epoch 2/100
+Epoch end: train: dt 0.81 dt/total 0.50 f1@0.5 0.00 f1@0.5_b 44.17 frame_acc 0.00 frame_acc_b 46.09 loss 0.41 t 1.63 
+Epoch end: val: dt 0.67 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 51.38 frame_acc 0.00 frame_acc_b 54.05 loss 0.47 t 0.67 
+saving model  model_0000250411.pt
+Epoch 3/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 0.00 f1@0.5_b 44.12 frame_acc 0.00 frame_acc_b 46.15 loss 0.41 t 1.65 
+Epoch end: val: dt 0.67 dt/total 1.00 f1@0.5 0.00 f1@0.5_b 52.74 frame_acc 0.00 frame_acc_b 54.19 loss 0.45 t 0.67 
+saving model  model_0000250446.pt
+Epoch 4/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 11.99 f1@0.5_b 44.83 frame_acc 14.09 frame_acc_b 46.38 loss 0.37 t 1.65 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 51.46 f1@0.5_b 51.89 frame_acc 52.43 frame_acc_b 54.04 loss 0.31 t 0.68 
+best checkpoint so far!
+saving model  model_0000250481.pt
+Epoch 5/100
+Epoch end: train: dt 0.86 dt/total 0.51 f1@0.5 31.17 f1@0.5_b 44.09 frame_acc 43.79 frame_acc_b 45.87 loss 0.29 t 1.68 
+Epoch end: val: dt 0.71 dt/total 1.00 f1@0.5 47.93 f1@0.5_b 53.80 frame_acc 48.67 frame_acc_b 54.26 loss 0.30 t 0.71 
+saving model  model_0000250516.pt
+Epoch 6/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 31.33 f1@0.5_b 44.36 frame_acc 43.45 frame_acc_b 46.31 loss 0.29 t 1.65 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 51.28 f1@0.5_b 50.05 frame_acc 53.53 frame_acc_b 53.93 loss 0.30 t 0.68 
+best checkpoint so far!
+saving model  model_0000250551.pt
+Epoch 7/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 32.01 f1@0.5_b 44.21 frame_acc 44.00 frame_acc_b 46.40 loss 0.28 t 1.65 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 50.45 f1@0.5_b 50.53 frame_acc 52.06 frame_acc_b 53.16 loss 0.30 t 0.69 
+saving model  model_0000250586.pt
+Epoch 8/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 30.99 f1@0.5_b 44.22 frame_acc 43.59 frame_acc_b 46.07 loss 0.28 t 1.66 
+Epoch end: val: dt 0.74 dt/total 1.00 f1@0.5 51.09 f1@0.5_b 51.65 frame_acc 52.11 frame_acc_b 54.12 loss 0.30 t 0.74 
+saving model  model_0000250621.pt
+Epoch 9/100
+Epoch end: train: dt 0.85 dt/total 0.51 f1@0.5 31.39 f1@0.5_b 44.00 frame_acc 43.73 frame_acc_b 46.10 loss 0.28 t 1.68 
+Epoch end: val: dt 0.69 dt/total 1.00 f1@0.5 51.88 f1@0.5_b 51.41 frame_acc 52.72 frame_acc_b 53.46 loss 0.30 t 0.69 
+saving model  model_0000250656.pt
+Epoch 10/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 32.56 f1@0.5_b 43.81 frame_acc 44.21 frame_acc_b 46.19 loss 0.28 t 1.65 
+Epoch end: val: dt 0.70 dt/total 1.00 f1@0.5 53.56 f1@0.5_b 52.61 frame_acc 53.53 frame_acc_b 53.91 loss 0.30 t 0.70 
+best checkpoint so far!
+saving model  model_0000250691.pt
+Epoch 11/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 32.07 f1@0.5_b 44.23 frame_acc 44.08 frame_acc_b 46.08 loss 0.28 t 1.64 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 50.59 f1@0.5_b 52.58 frame_acc 51.88 frame_acc_b 54.51 loss 0.30 t 0.68 
+saving model  model_0000250726.pt
+Epoch 12/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 32.15 f1@0.5_b 44.45 frame_acc 43.90 frame_acc_b 46.31 loss 0.28 t 1.64 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 53.74 f1@0.5_b 53.58 frame_acc 53.20 frame_acc_b 54.30 loss 0.30 t 0.69 
+saving model  model_0000250761.pt
+Epoch 13/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 31.72 f1@0.5_b 43.83 frame_acc 43.97 frame_acc_b 46.03 loss 0.28 t 1.65 
+Epoch end: val: dt 0.73 dt/total 1.00 f1@0.5 50.94 f1@0.5_b 53.32 frame_acc 52.18 frame_acc_b 54.56 loss 0.30 t 0.73 
+saving model  model_0000250796.pt
+Epoch 14/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 32.69 f1@0.5_b 44.35 frame_acc 43.55 frame_acc_b 45.82 loss 0.28 t 1.65 
+Epoch end: val: dt 0.70 dt/total 1.00 f1@0.5 51.63 f1@0.5_b 51.78 frame_acc 53.04 frame_acc_b 53.86 loss 0.30 t 0.70 
+saving model  model_0000250831.pt
+Epoch 15/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 32.32 f1@0.5_b 44.46 frame_acc 44.04 frame_acc_b 46.10 loss 0.28 t 1.65 
+Epoch end: val: dt 0.71 dt/total 1.00 f1@0.5 50.69 f1@0.5_b 53.06 frame_acc 51.57 frame_acc_b 54.23 loss 0.30 t 0.71 
+saving model  model_0000250866.pt
+Epoch 16/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 32.00 f1@0.5_b 44.13 frame_acc 44.34 frame_acc_b 46.32 loss 0.28 t 1.64 
+Epoch end: val: dt 0.71 dt/total 1.00 f1@0.5 47.80 f1@0.5_b 50.93 frame_acc 50.02 frame_acc_b 53.38 loss 0.30 t 0.71 
+saving model  model_0000250901.pt
+Epoch 17/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 33.71 f1@0.5_b 44.22 frame_acc 44.20 frame_acc_b 46.29 loss 0.28 t 1.64 
+Epoch end: val: dt 0.72 dt/total 1.00 f1@0.5 52.30 f1@0.5_b 50.64 frame_acc 53.40 frame_acc_b 53.71 loss 0.30 t 0.72 
+saving model  model_0000250936.pt
+Epoch 18/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 35.49 f1@0.5_b 44.80 frame_acc 44.69 frame_acc_b 46.59 loss 0.28 t 1.65 
+Epoch end: val: dt 0.70 dt/total 1.00 f1@0.5 53.20 f1@0.5_b 53.99 frame_acc 52.97 frame_acc_b 54.42 loss 0.30 t 0.71 
+saving model  model_0000250971.pt
+Epoch 19/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 33.88 f1@0.5_b 44.32 frame_acc 44.22 frame_acc_b 46.16 loss 0.28 t 1.64 
+Epoch end: val: dt 0.70 dt/total 1.00 f1@0.5 52.59 f1@0.5_b 53.45 frame_acc 52.90 frame_acc_b 54.37 loss 0.30 t 0.70 
+saving model  model_0000251006.pt
+Epoch 20/100
+Epoch end: train: dt 0.86 dt/total 0.51 f1@0.5 33.27 f1@0.5_b 43.52 frame_acc 43.87 frame_acc_b 45.91 loss 0.28 t 1.68 
+Epoch end: val: dt 0.70 dt/total 1.00 f1@0.5 51.57 f1@0.5_b 52.23 frame_acc 52.06 frame_acc_b 53.67 loss 0.30 t 0.70 
+saving model  model_0000251041.pt
+Epoch 21/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 34.38 f1@0.5_b 44.07 frame_acc 44.23 frame_acc_b 46.08 loss 0.28 t 1.66 
+Epoch end: val: dt 0.71 dt/total 1.00 f1@0.5 50.17 f1@0.5_b 50.90 frame_acc 51.40 frame_acc_b 53.14 loss 0.30 t 0.71 
+saving model  model_0000251076.pt
+Epoch 22/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 34.35 f1@0.5_b 44.29 frame_acc 44.60 frame_acc_b 46.19 loss 0.28 t 1.65 
+Epoch end: val: dt 0.69 dt/total 1.00 f1@0.5 52.23 f1@0.5_b 52.34 frame_acc 53.14 frame_acc_b 54.02 loss 0.30 t 0.69 
+saving model  model_0000251111.pt
+Epoch 23/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 34.59 f1@0.5_b 44.49 frame_acc 45.08 frame_acc_b 46.57 loss 0.28 t 1.65 
+Epoch end: val: dt 0.70 dt/total 1.00 f1@0.5 50.69 f1@0.5_b 51.01 frame_acc 51.19 frame_acc_b 53.38 loss 0.30 t 0.70 
+saving model  model_0000251146.pt
+Epoch 24/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 33.35 f1@0.5_b 44.37 frame_acc 44.07 frame_acc_b 46.08 loss 0.28 t 1.64 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 49.97 f1@0.5_b 52.61 frame_acc 51.44 frame_acc_b 53.98 loss 0.30 t 0.68 
+saving model  model_0000251181.pt
+Epoch 25/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 33.75 f1@0.5_b 43.96 frame_acc 44.29 frame_acc_b 46.13 loss 0.28 t 1.65 
+Epoch end: val: dt 0.69 dt/total 1.00 f1@0.5 50.07 f1@0.5_b 51.91 frame_acc 51.63 frame_acc_b 54.30 loss 0.30 t 0.69 
+saving model  model_0000251216.pt
+Epoch 26/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 33.73 f1@0.5_b 43.98 frame_acc 43.94 frame_acc_b 45.95 loss 0.28 t 1.65 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 54.22 f1@0.5_b 52.79 frame_acc 54.14 frame_acc_b 54.27 loss 0.30 t 0.68 
+best checkpoint so far!
+saving model  model_0000251251.pt
+Epoch 27/100
+Epoch end: train: dt 0.84 dt/total 0.50 f1@0.5 35.39 f1@0.5_b 43.75 frame_acc 44.11 frame_acc_b 46.12 loss 0.28 t 1.66 
+Epoch end: val: dt 0.70 dt/total 1.00 f1@0.5 52.98 f1@0.5_b 52.50 frame_acc 53.34 frame_acc_b 53.70 loss 0.30 t 0.70 
+saving model  model_0000251286.pt
+Epoch 28/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 33.61 f1@0.5_b 43.64 frame_acc 44.11 frame_acc_b 45.99 loss 0.28 t 1.64 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 51.17 f1@0.5_b 53.65 frame_acc 51.81 frame_acc_b 54.49 loss 0.30 t 0.68 
+saving model  model_0000251321.pt
+Epoch 29/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 34.35 f1@0.5_b 44.97 frame_acc 44.47 frame_acc_b 46.47 loss 0.28 t 1.65 
+Epoch end: val: dt 0.70 dt/total 1.00 f1@0.5 52.26 f1@0.5_b 52.42 frame_acc 52.73 frame_acc_b 53.84 loss 0.30 t 0.70 
+saving model  model_0000251356.pt
+Epoch 30/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 34.72 f1@0.5_b 43.68 frame_acc 44.20 frame_acc_b 45.99 loss 0.28 t 1.65 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 52.13 f1@0.5_b 52.00 frame_acc 52.16 frame_acc_b 53.70 loss 0.30 t 0.68 
+saving model  model_0000251391.pt
+Epoch 31/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 34.62 f1@0.5_b 43.54 frame_acc 44.28 frame_acc_b 46.14 loss 0.28 t 1.65 
+Epoch end: val: dt 0.69 dt/total 1.00 f1@0.5 52.74 f1@0.5_b 53.24 frame_acc 53.02 frame_acc_b 54.62 loss 0.30 t 0.69 
+saving model  model_0000251426.pt
+Epoch 32/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 35.11 f1@0.5_b 43.46 frame_acc 44.07 frame_acc_b 45.89 loss 0.28 t 1.64 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 52.92 f1@0.5_b 52.45 frame_acc 53.64 frame_acc_b 54.00 loss 0.30 t 0.68 
+saving model  model_0000251461.pt
+Epoch 33/100
+Epoch end: train: dt 0.81 dt/total 0.50 f1@0.5 33.92 f1@0.5_b 43.98 frame_acc 44.19 frame_acc_b 45.90 loss 0.28 t 1.64 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 51.85 f1@0.5_b 52.79 frame_acc 52.62 frame_acc_b 54.22 loss 0.30 t 0.68 
+saving model  model_0000251496.pt
+Epoch 34/100
+Epoch end: train: dt 0.83 dt/total 0.50 f1@0.5 33.93 f1@0.5_b 43.83 frame_acc 44.40 frame_acc_b 46.20 loss 0.28 t 1.65 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 53.72 f1@0.5_b 53.16 frame_acc 53.28 frame_acc_b 54.07 loss 0.30 t 0.68 
+saving model  model_0000251531.pt
+Epoch 35/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 34.13 f1@0.5_b 43.78 frame_acc 44.15 frame_acc_b 45.95 loss 0.28 t 1.64 
+Epoch end: val: dt 0.73 dt/total 1.00 f1@0.5 52.59 f1@0.5_b 52.47 frame_acc 53.04 frame_acc_b 53.73 loss 0.30 t 0.73 
+saving model  model_0000251566.pt
+Epoch 36/100
+Epoch end: train: dt 0.81 dt/total 0.50 f1@0.5 33.02 f1@0.5_b 43.61 frame_acc 44.02 frame_acc_b 45.78 loss 0.28 t 1.63 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 51.00 f1@0.5_b 51.01 frame_acc 52.13 frame_acc_b 52.75 loss 0.30 t 0.68 
+saving model  model_0000251601.pt
+Epoch 37/100
+Epoch end: train: dt 0.84 dt/total 0.50 f1@0.5 33.39 f1@0.5_b 43.88 frame_acc 44.06 frame_acc_b 45.88 loss 0.28 t 1.66 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 50.40 f1@0.5_b 52.31 frame_acc 52.42 frame_acc_b 54.25 loss 0.30 t 0.68 
+saving model  model_0000251636.pt
+Epoch 38/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 34.21 f1@0.5_b 43.91 frame_acc 44.27 frame_acc_b 46.15 loss 0.28 t 1.64 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 50.69 f1@0.5_b 50.53 frame_acc 52.20 frame_acc_b 53.29 loss 0.30 t 0.68 
+saving model  model_0000251671.pt
+Epoch 39/100
+Epoch end: train: dt 0.82 dt/total 0.50 f1@0.5 34.61 f1@0.5_b 43.85 frame_acc 44.62 frame_acc_b 46.15 loss 0.27 t 1.64 
+Epoch end: val: dt 0.68 dt/total 1.00 f1@0.5 51.95 f1@0.5_b 52.66 frame_acc 52.97 frame_acc_b 53.88 loss 0.30 t 0.68 
+saving model  model_0000251706.pt
+Epoch 40/100

@@ -1,12 +1,11 @@
 python main.py \
---features_path '/users/zifan/BOBSL/derivatives/video_features/mediapipe' \
+--features_path '/users/zifan/BOBSL/derivatives/video_features/swin_v2/lmdb-feats_vswin_t-bs256_float16' \
 --videos_path '/users/zifan/BOBSL/derivatives/original_videos' \
 --spottings_path '/users/zifan/BOBSL/derivatives/annotationsMDAPEN.pkl' \
 --gpu_id 0 \
---feature_dim 534 \
---load_features_from_pose True \
---input_features_stride 2 \
---batch_size 512 \
+--feature_dim 768 \
+--load_features_from_lmdb True \
+--batch_size 2048 \
 --n_workers 8 \
 --pr_subs_delta_bias 0 \
 --fixed_feat_len 20 \
@@ -17,11 +16,11 @@ python main.py \
 --load_subtitles False \
 --lr 1e-5 \
 --centre_window \
---save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/word_pretrain/' \
+--save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/word_pretrain/' \
 --pos_weight 19. \
 --n_epochs 100 \
 --shuffle_getitem True \
 --concatenate_prior True \
---train_videos_txt 'data/bobsl_train_1658.txt' \
---val_videos_txt 'data/bobsl_val_32.txt' \
---test_videos_txt 'data/bobsl_test_250.txt' \
+--train_videos_txt 'data/bobsl_val_32.txt' \
+--val_videos_txt 'data/bobsl_align_test_1.txt' \
+--test_videos_txt 'data/bobsl_align_test_1.txt' \

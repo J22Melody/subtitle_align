@@ -1,0 +1,97 @@
+Cuda current device  0
+Loading features...
+Example feature for episode:
+5085344787448740525
+torch.Size([18395, 768])
+torch.float32
+tensor([-0.1823, -0.3162, -0.0901, -0.0639, -0.2421, -0.6182,  0.1642, -0.0652,
+         0.3706,  0.3118])
+Adding bias to prior subtitle times  2.7
+Adding bias to GT subtitle times  2.7
+Loading subtitles associated to sentences...
+mode  train
+number of samples 938065
+Mean feats length samples 22.25431393346943
+Standard deviation feats length samples 17.130053130196714
+Min feats length samples 3
+Max feats length samples 125
+80\% percentile feats length 34.0
+90\% percentile feats length 45.0
+95\% percentile feats length 57.0
+Mean texts length samples 52.622971755688575
+Standard deviation texts length samples 43.079926939241794
+Min texts length samples 2
+Max texts length samples 521
+80\% percentile texts length 82.0
+90\% percentile texts length 111.0
+95\% percentile texts length 138.0
+Loading features...
+Example feature for episode:
+5213407827313563421
+torch.Size([11023, 768])
+torch.float32
+tensor([-0.6646,  0.3145, -0.7246,  0.1469,  0.5708, -0.3022, -0.3760, -0.2878,
+         0.2761,  0.5640])
+Adding bias to prior subtitle times  2.7
+Adding bias to GT subtitle times  2.7
+Loading subtitles associated to sentences...
+mode  val
+number of samples 19406
+Mean feats length samples 24.284654230650315
+Standard deviation feats length samples 18.154321421464008
+Min feats length samples 3
+Max feats length samples 125
+80\% percentile feats length 37.0
+90\% percentile feats length 49.0
+95\% percentile feats length 62.0
+Mean texts length samples 56.13495826033186
+Standard deviation texts length samples 44.59259135284233
+Min texts length samples 3
+Max texts length samples 343
+80\% percentile texts length 88.0
+90\% percentile texts length 117.0
+95\% percentile texts length 145.0
+Model's state_dict:
+[32mAdam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 5e-06
+    maximize: False
+    weight_decay: 0
+)[0m
+Number of parameters: 16225537
+[31mloss.pos_weight is not in the model.[0m
+[32mModel /scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/word_pretrain/checkpoints/model_0000090736.pt loaded![0m
+Epoch end: val: dt 1.68 dt/total 1.00 f1@0.5 6.55 f1@0.5_b 44.33 frame_acc 17.09 frame_acc_b 49.63 loss 0.69 t 1.68 
+Epoch 1/100
+Epoch end: train: dt 1.76 dt/total 0.79 f1@0.5 24.15 f1@0.5_b 41.18 frame_acc 44.94 frame_acc_b 47.05 loss 0.24 t 2.22 
+Epoch end: val: dt 1.66 dt/total 1.00 f1@0.5 41.74 f1@0.5_b 44.68 frame_acc 51.47 frame_acc_b 49.67 loss 0.22 t 1.66 
+best checkpoint so far!
+saving model  model_0000091653.pt
+Epoch 2/100
+Epoch end: train: dt 1.76 dt/total 0.79 f1@0.5 27.75 f1@0.5_b 41.12 frame_acc 47.30 frame_acc_b 46.99 loss 0.21 t 2.22 
+Epoch end: val: dt 1.65 dt/total 1.00 f1@0.5 43.77 f1@0.5_b 44.47 frame_acc 52.32 frame_acc_b 49.57 loss 0.21 t 1.65 
+best checkpoint so far!
+saving model  model_0000092570.pt
+Epoch 3/100
+Epoch end: train: dt 1.76 dt/total 0.79 f1@0.5 28.83 f1@0.5_b 41.12 frame_acc 48.18 frame_acc_b 46.99 loss 0.21 t 2.22 
+Epoch end: val: dt 1.65 dt/total 1.00 f1@0.5 44.28 f1@0.5_b 44.13 frame_acc 52.72 frame_acc_b 49.70 loss 0.21 t 1.65 
+best checkpoint so far!
+saving model  model_0000093487.pt
+Epoch 4/100
+Epoch end: train: dt 1.76 dt/total 0.79 f1@0.5 29.18 f1@0.5_b 41.13 frame_acc 48.92 frame_acc_b 47.02 loss 0.20 t 2.22 
+Epoch end: val: dt 1.67 dt/total 1.00 f1@0.5 46.02 f1@0.5_b 44.18 frame_acc 53.32 frame_acc_b 49.68 loss 0.20 t 1.67 
+best checkpoint so far!
+saving model  model_0000094404.pt
+Epoch 5/100
+Epoch end: train: dt 1.76 dt/total 0.79 f1@0.5 29.83 f1@0.5_b 41.10 frame_acc 49.56 frame_acc_b 46.99 loss 0.20 t 2.22 
+Epoch end: val: dt 1.63 dt/total 1.00 f1@0.5 47.32 f1@0.5_b 44.23 frame_acc 54.16 frame_acc_b 49.66 loss 0.20 t 1.63 
+best checkpoint so far!
+saving model  model_0000095321.pt
+Epoch 6/100

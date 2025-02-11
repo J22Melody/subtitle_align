@@ -15,9 +15,9 @@ python main.py \
 --jitter_loc_quantity 10. \
 --load_words True \
 --load_subtitles False \
---lr 1e-5 \
+--lr 1e-4 \
 --centre_window \
---save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/word_pretrain/' \
+--save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose/word_pretrain_lr/' \
 --pos_weight 19. \
 --n_epochs 100 \
 --shuffle_getitem True \

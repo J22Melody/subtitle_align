@@ -1,0 +1,125 @@
+Cuda current device  0
+Loading features...
+Example feature for episode:
+5085344787448740525
+(36795, 249)
+float32
+[-4.6243966e-01 -7.7108365e-01  4.8407839e-04 -6.8785423e-01
+ -6.4402676e-01  9.5478934e-04 -4.0679532e-01 -8.6419642e-01
+ -1.0092253e-03 -5.9658402e-01]
+Loading word spottings...
+Adding bias to word spottings  0
+mode  train
+number of samples 1752714
+Mean feats length samples 6.0
+Standard deviation feats length samples 0.0
+Min feats length samples 6
+Max feats length samples 6
+80\% percentile feats length 6.0
+90\% percentile feats length 6.0
+95\% percentile feats length 6.0
+Mean texts length samples 5.455297898002755
+Standard deviation texts length samples 2.0557668357452528
+Min texts length samples 1
+Max texts length samples 30
+80\% percentile texts length 7.0
+90\% percentile texts length 8.0
+95\% percentile texts length 9.0
+Loading features...
+Example feature for episode:
+5213407827313563421
+(22050, 249)
+float32
+[ 0.46581715  0.0151352   0.00087896 -0.5526834  -0.0934952   0.00148996
+  0.28729844  0.43397757 -0.00342792 -0.6781753 ]
+Loading word spottings...
+Adding bias to word spottings  0
+mode  val
+number of samples 56222
+Mean feats length samples 6.0
+Standard deviation feats length samples 0.0
+Min feats length samples 6
+Max feats length samples 6
+80\% percentile feats length 6.0
+90\% percentile feats length 6.0
+95\% percentile feats length 6.0
+Mean texts length samples 5.415246700579845
+Standard deviation texts length samples 2.1027620166714196
+Min texts length samples 1
+Max texts length samples 20
+80\% percentile texts length 7.0
+90\% percentile texts length 8.0
+95\% percentile texts length 9.0
+Model's state_dict:
+[32mAdam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 1e-05
+    maximize: False
+    weight_decay: 0
+)[0m
+Number of parameters: 15959809
+Epoch end: val: dt 1.77 dt/total 1.00 f1@0.5 0.91 f1@0.5_b 3.57 frame_acc 1.76 frame_acc_b 2.59 loss 1.05 t 1.77 
+Epoch 1/100
+Epoch end: train: dt 2.34 dt/total 0.77 f1@0.5 0.05 f1@0.5_b 3.40 frame_acc 4.17 frame_acc_b 2.53 loss 1.18 t 3.04 
+Epoch end: val: dt 1.74 dt/total 1.00 f1@0.5 2.44 f1@0.5_b 3.50 frame_acc 3.08 frame_acc_b 2.58 loss 0.78 t 1.74 
+best checkpoint so far!
+saving model  model_0000001712.pt
+Epoch 2/100
+Epoch end: train: dt 2.31 dt/total 0.77 f1@0.5 0.36 f1@0.5_b 3.41 frame_acc 4.55 frame_acc_b 2.53 loss 1.18 t 3.01 
+Epoch end: val: dt 1.70 dt/total 1.00 f1@0.5 2.13 f1@0.5_b 3.23 frame_acc 4.88 frame_acc_b 2.46 loss 0.78 t 1.70 
+best checkpoint so far!
+saving model  model_0000003424.pt
+Epoch 3/100
+Epoch end: train: dt 2.38 dt/total 0.77 f1@0.5 0.51 f1@0.5_b 3.44 frame_acc 4.73 frame_acc_b 2.55 loss 1.17 t 3.08 
+Epoch end: val: dt 1.63 dt/total 1.00 f1@0.5 1.66 f1@0.5_b 3.37 frame_acc 4.98 frame_acc_b 2.54 loss 0.78 t 1.63 
+best checkpoint so far!
+saving model  model_0000005136.pt
+Epoch 4/100
+Epoch end: train: dt 2.35 dt/total 0.77 f1@0.5 0.53 f1@0.5_b 3.40 frame_acc 4.73 frame_acc_b 2.53 loss 1.17 t 3.05 
+Epoch end: val: dt 1.53 dt/total 1.00 f1@0.5 1.06 f1@0.5_b 3.54 frame_acc 4.99 frame_acc_b 2.59 loss 0.78 t 1.53 
+best checkpoint so far!
+saving model  model_0000006848.pt
+Epoch 5/100
+Epoch end: train: dt 2.32 dt/total 0.77 f1@0.5 0.57 f1@0.5_b 3.40 frame_acc 4.73 frame_acc_b 2.54 loss 1.17 t 3.02 
+Epoch end: val: dt 1.58 dt/total 1.00 f1@0.5 1.54 f1@0.5_b 3.42 frame_acc 4.95 frame_acc_b 2.54 loss 0.79 t 1.58 
+saving model  model_0000008560.pt
+Epoch 6/100
+Epoch end: train: dt 2.33 dt/total 0.77 f1@0.5 0.59 f1@0.5_b 3.41 frame_acc 4.75 frame_acc_b 2.53 loss 1.17 t 3.03 
+Epoch end: val: dt 1.61 dt/total 1.00 f1@0.5 1.30 f1@0.5_b 3.45 frame_acc 4.96 frame_acc_b 2.56 loss 0.79 t 1.61 
+saving model  model_0000010272.pt
+Epoch 7/100
+Epoch end: train: dt 2.31 dt/total 0.77 f1@0.5 0.58 f1@0.5_b 3.38 frame_acc 4.72 frame_acc_b 2.52 loss 1.17 t 3.01 
+Epoch end: val: dt 1.67 dt/total 1.00 f1@0.5 1.64 f1@0.5_b 3.41 frame_acc 4.92 frame_acc_b 2.53 loss 0.78 t 1.67 
+saving model  model_0000011984.pt
+Epoch 8/100
+Epoch end: train: dt 2.31 dt/total 0.77 f1@0.5 0.62 f1@0.5_b 3.39 frame_acc 4.73 frame_acc_b 2.52 loss 1.17 t 3.00 
+Epoch end: val: dt 1.77 dt/total 1.00 f1@0.5 1.95 f1@0.5_b 3.30 frame_acc 4.72 frame_acc_b 2.51 loss 0.79 t 1.77 
+saving model  model_0000013696.pt
+Epoch 9/100
+Epoch end: train: dt 2.27 dt/total 0.77 f1@0.5 0.69 f1@0.5_b 3.39 frame_acc 4.76 frame_acc_b 2.52 loss 1.17 t 2.97 
+Epoch end: val: dt 1.76 dt/total 1.00 f1@0.5 1.85 f1@0.5_b 3.27 frame_acc 4.89 frame_acc_b 2.46 loss 0.79 t 1.76 
+saving model  model_0000015408.pt
+Epoch 10/100
+Epoch end: train: dt 2.30 dt/total 0.77 f1@0.5 0.64 f1@0.5_b 3.42 frame_acc 4.73 frame_acc_b 2.54 loss 1.17 t 2.99 
+Epoch end: val: dt 1.66 dt/total 1.00 f1@0.5 1.96 f1@0.5_b 3.45 frame_acc 4.96 frame_acc_b 2.54 loss 0.78 t 1.66 
+saving model  model_0000017120.pt
+Epoch 11/100
+Epoch end: train: dt 2.30 dt/total 0.77 f1@0.5 0.66 f1@0.5_b 3.42 frame_acc 4.75 frame_acc_b 2.53 loss 1.17 t 3.00 
+Epoch end: val: dt 1.74 dt/total 1.00 f1@0.5 1.43 f1@0.5_b 3.65 frame_acc 4.87 frame_acc_b 2.63 loss 0.79 t 1.74 
+saving model  model_0000018832.pt
+Epoch 12/100
+Epoch end: train: dt 2.27 dt/total 0.77 f1@0.5 0.73 f1@0.5_b 3.39 frame_acc 4.77 frame_acc_b 2.52 loss 1.17 t 2.96 
+Epoch end: val: dt 1.54 dt/total 1.00 f1@0.5 0.76 f1@0.5_b 3.39 frame_acc 4.98 frame_acc_b 2.52 loss 0.78 t 1.54 
+saving model  model_0000020544.pt
+Epoch 13/100
+Epoch end: train: dt 2.25 dt/total 0.76 f1@0.5 0.70 f1@0.5_b 3.41 frame_acc 4.75 frame_acc_b 2.52 loss 1.17 t 2.95 
+Epoch end: val: dt 1.63 dt/total 1.00 f1@0.5 1.68 f1@0.5_b 3.54 frame_acc 4.96 frame_acc_b 2.57 loss 0.79 t 1.63 
+saving model  model_0000022256.pt
+Epoch 14/100

@@ -6,7 +6,7 @@ python main.py \
 --gpu_id 0 \
 --feature_dim 768 \
 --load_features_from_lmdb True \
---batch_size 1024 \
+--batch_size 256 \
 --n_workers 8 \
 --pr_subs_delta_bias 2.7 \
 --fixed_feat_len 20 \
@@ -16,14 +16,14 @@ python main.py \
 --load_words False \
 --load_subtitles True \
 --lr 1e-6 \
---save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles/' \
+--save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/finetune_subtitles_i3d/' \
 --n_epochs 100 \
 --concatenate_prior True \
 --min_sent_len_filter 0.5 \
 --max_sent_len_filter 20 \
 --shuffle_words_subs 0.5 \
 --drop_words_subs 0.15 \
---resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_swin/train_coarse_subtitles/checkpoints/model_0000121914.pt' \
+--resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align/train_coarse_subtitles/checkpoints/model_0000250341.pt' \
 # --train_videos_txt 'data/bobsl_align_train.txt' \
 # --val_videos_txt 'data/bobsl_align_test.txt' \
 # --test_videos_txt 'data/bobsl_test_254.txt' \

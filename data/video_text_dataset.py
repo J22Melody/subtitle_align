@@ -66,20 +66,35 @@ def get_video_frame_count(videos_path, video_name):
     
     return total_frames
 
-def load_pose_features(pose_path, stride=1):
+def load_pose_features(pose_path, stride=1, reduce=False):
     with open(pose_path, "rb") as f:
         buffer = f.read()
         pose = Pose.read(buffer)
 
-    pose = reduce_holistic(pose)
-    pose = pose.normalize()
+        if reduce:
+            pose_components = ["POSE_LANDMARKS", "FACE_LANDMARKS", "LEFT_HAND_LANDMARKS", "RIGHT_HAND_LANDMARKS"]
+            pose_points = {c.name: c.points for c in pose.header.components if c.name in pose_components}
 
-    feat = np.nan_to_num(pose.body.data)
-    feat = feat.reshape(feat.shape[0], -1)
+            # Reduced set from the YouTube-ASL paper
+            FACE_REDUCED = [0, 4, 13, 14, 17, 33, 37, 39, 46, 52, 55, 61, 64, 81, 82, 93, 133, 151, 152, 159, 172, 178, 181, 263, 269, 276, 282, 285, 291, 294, 311, 323, 362, 386, 397, 468, 473]
+            POSE_REDUCED = ['LEFT_SHOULDER', 'RIGHT_SHOULDER', 'LEFT_WRIST', 'RIGHT_WRIST', 'LEFT_HIP', 'RIGHT_HIP']
+            pose_points['FACE_LANDMARKS'] = [p for p in pose_points['FACE_LANDMARKS'] if int(p) in FACE_REDUCED]
+            pose_points['POSE_LANDMARKS'] = [p for p in pose_points['POSE_LANDMARKS'] if p in POSE_REDUCED]
 
-    feat = feat[::stride]
+            pose = pose.get_components(pose_components, pose_points)
+        else:
+            pose = reduce_holistic(pose)
 
-    return feat
+        pose = pose.normalize()
+
+        feat = np.nan_to_num(pose.body.data)
+        # feat = feat[:, :, :, :2]
+        feat = feat.reshape(feat.shape[0], -1)
+        feat = feat[::stride]
+
+        feat = feat.filled(0)
+
+        return feat
 
 class VideoTextDataset(Dataset): 
     
@@ -151,6 +166,7 @@ class VideoTextDataset(Dataset):
                         print('Example feature for episode:')
                         print(path)
                         print(episode_features.shape)
+                        print(episode_features.dtype)
                         print(episode_features[0][:10])
             else:
                 is_flat = False
@@ -172,9 +188,11 @@ class VideoTextDataset(Dataset):
                         full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
                     if os.path.exists(full_path):
                         if ext=='.pose':
-                            self.features[path] = load_pose_features(full_path, stride=self.opts.input_features_stride)
+                            self.features[path] = load_pose_features(full_path, stride=self.opts.input_features_stride, reduce=self.opts.load_features_from_pose_reduce)
+                            # self.features[path] = np.random.rand(int(45*60*25/2), 534)
                         elif ext=='.npy':
-                            self.features[path] = np.load(full_path)[::self.opts.input_features_stride]
+                            # self.features[path] = np.load(full_path)[::self.opts.input_features_stride]
+                            self.features[path] = np.random.rand(int(45*60*25/4), 768)
                         else:
                             self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
                     else:
@@ -184,6 +202,7 @@ class VideoTextDataset(Dataset):
                         print('Example feature for episode:')
                         print(path)
                         print(self.features[path].shape)
+                        print(self.features[path].dtype)
                         print(self.features[path][0][:10])
                     
             vid_episode_keys = self.features.keys()
@@ -191,8 +210,8 @@ class VideoTextDataset(Dataset):
             vid_episode_keys = data_paths
 
         ### Loading segmentation features
-        print('Loading segmentation features...')
         if self.opts.load_segmentation:
+            print('Loading segmentation features...')
             self.segmentation_features = {}
             for path in tqdm(data_paths):
                 full_path = os.path.join(self.opts.segmentation_path, data_paths[0]) + '.seg.npy'
