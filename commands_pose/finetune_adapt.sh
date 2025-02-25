@@ -1,6 +1,5 @@
 python main.py \
 --features_path '/users/zifan/BOBSL/derivatives/video_features/mediapipe' \
---videos_path '/users/zifan/BOBSL/derivatives/original_videos' \
 --gt_sub_path '/users/zifan/BOBSL/v1.4/manual_annotations/signing_aligned_subtitles' \
 --pr_sub_path '/users/zifan/BOBSL/v1.4/automatic_annotations/signing_aligned_subtitles/audio_aligned_heuristic_correction' \
 --gpu_id 0 \

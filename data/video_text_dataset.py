@@ -94,7 +94,7 @@ def load_pose_features(pose_path, stride=1, reduce=False):
 
         feat = feat.filled(0)
 
-        return feat
+        return feat, pose.body.fps
 
 class VideoTextDataset(Dataset): 
     
@@ -140,6 +140,7 @@ class VideoTextDataset(Dataset):
         ### Loading features
         print('Loading features...')
         self.features = {}
+        self.fps = {}
         if self.opts.load_features:
             if self.opts.load_features_from_lmdb:
                 lmdb_stride = 2
@@ -188,11 +189,13 @@ class VideoTextDataset(Dataset):
                         full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
                     if os.path.exists(full_path):
                         if ext=='.pose':
-                            self.features[path] = load_pose_features(full_path, stride=self.opts.input_features_stride, reduce=self.opts.load_features_from_pose_reduce)
+                            features, fps = load_pose_features(full_path, stride=self.opts.input_features_stride, reduce=self.opts.load_features_from_pose_reduce)
+                            self.features[path] = features
                             # self.features[path] = np.random.rand(int(45*60*25/2), 534)
+                            self.fps[path] = fps
                         elif ext=='.npy':
-                            # self.features[path] = np.load(full_path)[::self.opts.input_features_stride]
-                            self.features[path] = np.random.rand(int(45*60*25/4), 768)
+                            self.features[path] = np.load(full_path)[::self.opts.input_features_stride]
+                            # self.features[path] = np.random.rand(int(45*60*25/4), 768)
                         else:
                             self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
                     else:
@@ -336,13 +339,6 @@ class VideoTextDataset(Dataset):
         if self.opts.max_text_len > 0:
             self.max_text_len = self.opts.max_text_len
 
-        ### fixed window or pad to maximum feature length?
-        ## note that wind_len is in frames not seconds
-        if self.opts.fixed_feat_len>0:
-            self.wind_len = int(self.opts.fixed_feat_len*25/self.opts.input_features_stride)
-        else:
-            self.wind_len = self.max_feat_len
-
         self.shuffled_indices = self.shuffle()
 
     def calc_stats(self):
@@ -350,7 +346,7 @@ class VideoTextDataset(Dataset):
         print('mode ', self.mode)
         print('number of samples', n_samps)
         all_feat_lens = [
-            calc_feat_len(self.data_dict['pr_fr'][ii], self.data_dict['pr_to'][ii])
+            calc_feat_len(self.data_dict['pr_fr'][ii], self.data_dict['pr_to'][ii], self.opts.fps if self.opts.fps != -1 else self.fps[self.data_dict["ep"][ii]], self.opts.input_features_stride)
             for ii in range(n_samps)
         ]
         print_stats("feats", all_feat_lens)
@@ -407,10 +403,12 @@ class VideoTextDataset(Dataset):
         if self.opts.jitter_width_secs>0:
             pr_fr, pr_to = self.jitter_width(pr_fr, pr_to)
 
+        fps = self.fps[ep] if self.opts.fps == -1 else self.opts.fps
+
         ### Set length of prior window
         ### Pad window to fixed_feat_len width and shift prior within window
         if self.opts.fixed_feat_len > 0:
-            wind_fr, wind_to = self.pad_window(pr_fr, pr_to, ep_feats)
+            wind_fr, wind_to = self.pad_window(pr_fr, pr_to, ep_feats, fps)
         else:
             wind_fr, wind_to = pr_fr, pr_to
             
@@ -420,7 +418,7 @@ class VideoTextDataset(Dataset):
 
         if self.opts.load_features: 
             if not self.opts.pool_feats:
-                out_dict["feats"] = self.return_samp_feats(ep_feats, wind_fr, wind_to).astype(np.single)
+                out_dict["feats"] = self.return_samp_feats(ep_feats, wind_fr, wind_to, fps=fps).astype(np.single)
             else: 
                 out_dict["feats"] = self.pool_feats(ep_feats, wind_fr, wind_to).astype(np.single)
             out_dict["feats_mask"] = (np.sum(out_dict["feats"],1)==0)*1
@@ -442,12 +440,11 @@ class VideoTextDataset(Dataset):
             out_dict['gt_vec'] = self.times_to_labels_vec(out_dict["gt_fr_to"], out_dict["wind_fr_to"], out_dict["feats"]).astype(np.single)  
         out_dict['path'] = ep
 
-        # if self.opts.debug:
-        #     print(out_dict["orig_txt"])
-        #     print(out_dict["feats"].shape)
-        #     print(out_dict['pr_vec'].shape)
-        #     print(out_dict['gt_vec'].shape)
-        #     exit()
+        if self.opts.debug:
+            print(out_dict["orig_txt"])
+            print(out_dict["feats"].shape)
+            print(out_dict['pr_vec'].shape)
+            print(out_dict['gt_vec'].shape)
 
         return out_dict
 
@@ -487,7 +484,7 @@ class VideoTextDataset(Dataset):
         pr_fr = centre - new_width
         return pr_fr, pr_to
 
-    def pad_window(self, pr_fr, pr_to, ep_feats):
+    def pad_window(self, pr_fr, pr_to, ep_feats, fps):
         # random padding around ground truth or prior 
         window_centre = (pr_to+pr_fr)/2
         if random.random() > self.opts.negatives_percent:
@@ -505,18 +502,19 @@ class VideoTextDataset(Dataset):
         wind_to = window_centre + 0.5*self.opts.fixed_feat_len + shift
     
         ### ensure fits in video
-        wind_fr = np.clip(wind_fr,0,len(ep_feats)*self.opts.input_features_stride/self.opts.fps-self.opts.fixed_feat_len)
+        wind_fr = np.clip(wind_fr,0,len(ep_feats)*self.opts.input_features_stride/fps-self.opts.fixed_feat_len)
         wind_to = wind_fr + self.opts.fixed_feat_len
-        wind_to = np.clip(wind_to,0,len(ep_feats)*self.opts.input_features_stride/self.opts.fps)
+        wind_to = np.clip(wind_to,0,len(ep_feats)*self.opts.input_features_stride/fps)
         wind_fr = wind_to - self.opts.fixed_feat_len
         return wind_fr, wind_to
 
     ### Index into episode for features, subsample, augment, and add padding
-    def return_samp_feats(self, ep_feats, wind_fr, wind_to):
+    def return_samp_feats(self, ep_feats, wind_fr, wind_to, fps):
         t0_ix, t1_ix, feats = get_feature_interval(
                             ep_feats,
                             t0_sec=wind_fr,
                             t1_sec=wind_to,
+                            fps=fps,
                             clip_stride=self.opts.input_features_stride,
                         )
         if self.opts.subsample_stride > 1:
@@ -526,24 +524,32 @@ class VideoTextDataset(Dataset):
         if self.mode == "train":
             feats = self.augment_feats(feats)
 
-        # if self.opts.debug:
-        #     print(wind_fr)
-        #     print(wind_to)
-        #     print(ep_feats.shape)
+        if self.opts.debug:
+            print(fps)
+            print(wind_fr)
+            print(wind_to)
+            print(ep_feats.shape)
 
-        #     print(t0_ix)
-        #     print(t1_ix)
-        #     print(feats.shape)
+            print(t0_ix)
+            print(t1_ix)
+            print(feats.shape)
+
+        ### fixed window or pad to maximum feature length?
+        ## note that wind_len is in frames not seconds
+        if self.opts.fixed_feat_len>0:
+            wind_len = round(self.opts.fixed_feat_len*fps/self.opts.input_features_stride)
+        else:
+            wind_len = self.max_feat_len
         
-        npad = self.wind_len - feats.shape[0]
+        npad = wind_len - feats.shape[0]
         # TODO debug check 
         # if self.opts.fixed_feat_len: 
         #     assert npad == 0
         if npad < 0 :
-            # print(f"WARNING - padding should not be less than 0. npad, wind len, feats = ", npad, self.wind_len, feats.shape[0])
+            # print(f"WARNING - padding should not be less than 0. npad, wind len, feats, fps = ", npad, wind_len, feats.shape[0], fps)
             # import pdb; pdb.set_trace()
             npad = 0
-            feats = feats[:self.wind_len, :]
+            feats = feats[:wind_len, :]
         if self.opts.pad_start_features:
             feats = np.pad(feats, [(int(npad), 0), (0, 0)])
         else:
@@ -559,13 +565,13 @@ class VideoTextDataset(Dataset):
                             clip_stride=1,
                         )
 
-        wind_len = self.wind_len * self.opts.input_features_stride
+        wind_len = wind_len * self.opts.input_features_stride
         npad = wind_len - feats.shape[0]
         # TODO debug check 
         # if self.opts.fixed_feat_len: 
         #     assert npad == 0
         if npad < 0 :
-            # print(f"WARNING - padding should not be less than 0. npad, wind len, feats = ", npad, self.wind_len, feats.shape[0])
+            # print(f"WARNING - padding should not be less than 0. npad, wind len, feats = ", npad, wind_len, feats.shape[0])
             # import pdb; pdb.set_trace()
             npad = 0
             feats = feats[:wind_len, :]

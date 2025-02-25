@@ -605,7 +605,7 @@ def frame2index(time_frame: int, clip_size: int = 16, clip_stride: int = 8) -> i
         time_index = 0
     else:
         time_frame -= offset
-        time_index = int(time_frame // clip_stride)
+        time_index = round(time_frame // clip_stride)
     return time_index
 
 def sec2index(

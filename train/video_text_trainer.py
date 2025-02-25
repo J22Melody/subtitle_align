@@ -204,9 +204,17 @@ class VideoTextTrainer(BaseTrainer):
             )  # this counts how long we are waiting for data
 
             if self.opts.debug:
+                print('========EVAL========')
                 print(model_out['gt_vec'].shape)
                 print(model_out['pr_vec'].shape)
                 print(model_out['preds'].shape)
+
+                # for i in range(model_out['gt_vec'].shape[0]):
+                #     print(i)
+                #     print(model_out['gt_vec'][i].astype(int).tolist())
+                #     print(np.squeeze(model_out['pr_vec'])[i].astype(int).tolist())
+                #     print((model_out['preds'][i] > 0.5).astype(int).tolist())
+
                 for key, value in model_out.items():
                     if key not in ['gt_vec', 'pr_vec', 'preds']:
                         print(key, value)

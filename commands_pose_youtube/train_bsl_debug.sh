@@ -4,9 +4,15 @@ python main.py \
 --pr_sub_path '/scratch/shared/beegfs/zifan/Youtube-SL-25-BSL/subtitles' \
 --gpu_id 0 \
 --feature_dim 1024 \
---feature_dim_adapt 534 \
+--feature_dim_adapt 255 \
 --load_features_from_pose True \
---batch_size 1024 \
+--load_features_from_pose_reduce True \
+--input_features_stride 1 \
+--fps -1 \
+--d_model 512 \
+--n_dec_layers 6 \
+--n_heads 8 \
+--batch_size 512 \
 --n_workers 8 \
 --pr_subs_delta_bias 0 \
 --gt_subs_delta_bias 0 \
@@ -18,16 +24,15 @@ python main.py \
 --load_words False \
 --load_subtitles True \
 --lr 5e-6 \
---save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose_youtube/train_coarse_subtitles' \
+--save_path '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose_youtube/train_bsl' \
 --n_epochs 100 \
 --concatenate_prior True \
 --min_sent_len_filter 0.5 \
 --max_sent_len_filter 20 \
---shuffle_words_subs 0.5 \
+--shuffle_words_subs 0.15 \
 --drop_words_subs 0.15 \
---resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align/word_pretrain/checkpoints/model_0000191709.pt' \
---train_videos_txt 'data/youtube_bsl_train.txt' \
---val_videos_txt 'data/youtube_bsl_val.txt' \
-# --train_videos_txt 'data/youtube_bsl_1.txt' \
-# --val_videos_txt 'data/youtube_bsl_1.txt' \
+--train_videos_txt 'data/youtube_bsl_1.txt' \
+--val_videos_txt 'data/youtube_bsl_1.txt' \
+--resume '/scratch/shared/beegfs/zifan/checkpoints/subtitle_align_pose_youtube/train_bsl/checkpoints/model_0000192150.pt' \
+--pos_weight 5. \
 # --debug
