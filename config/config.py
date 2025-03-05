@@ -56,7 +56,8 @@ def load_opts():
                             help = 'Path to videos directory')
     parser.add_argument('--features_path', 
                             type = str, 
-                            default = '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/', 
+                            nargs="+",
+                            default = ['/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/'], 
                             help = 'Path to I3D features directory')
     parser.add_argument('--segmentation_path', 
                             type = str, 

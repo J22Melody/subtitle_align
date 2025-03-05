@@ -145,7 +145,7 @@ class VideoTextDataset(Dataset):
             if self.opts.load_features_from_lmdb:
                 lmdb_stride = 2
                 lmdb_loader = LMDBLoader(
-                    lmdb_path=self.opts.features_path,
+                    lmdb_path=self.opts.features_path[0],
                     load_type="feats",
                     feat_dim=768,
                     lmdb_stride=lmdb_stride,
@@ -170,43 +170,112 @@ class VideoTextDataset(Dataset):
                         print(episode_features.dtype)
                         print(episode_features[0][:10])
             else:
-                is_flat = False
-                if self.opts.load_features_from_pose:
-                    ext='.pose'
-                    is_flat = True
-                elif os.path.exists(os.path.join(self.opts.features_path, data_paths[0]) + '.npy'):
-                    ext='.npy'
-                    is_flat = True
-                elif 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
-                    ext='.npy'
-                else:
-                    ext='.mat'
-                
                 for i, path in tqdm(enumerate(data_paths)):
-                    if is_flat:
-                        full_path = os.path.join(self.opts.features_path, data_paths[0]) + ext
-                    else:
-                        full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
-                    if os.path.exists(full_path):
-                        if ext=='.pose':
-                            features, fps = load_pose_features(full_path, stride=self.opts.input_features_stride, reduce=self.opts.load_features_from_pose_reduce)
-                            self.features[path] = features
-                            # self.features[path] = np.random.rand(int(45*60*25/2), 534)
-                            self.fps[path] = fps
-                        elif ext=='.npy':
-                            self.features[path] = np.load(full_path)[::self.opts.input_features_stride]
-                            # self.features[path] = np.random.rand(int(45*60*25/4), 768)
-                        else:
-                            self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
-                    else:
-                        print(f"Not found: {full_path}")
+                    feature_list = []  # To store feature arrays from different feature paths
+                    fps_list = []      # To store fps values if applicable
 
-                    if i == 0:
+                    for base_path in self.opts.features_path:
+                        # Determine file extension and flat mode separately for each feature path.
+                        is_flat = False
+                        if self.opts.load_features_from_pose:
+                            ext = '.pose'
+                            is_flat = True
+                        elif os.path.exists(os.path.join(base_path, data_paths[0]) + '.npy'):
+                            ext = '.npy'
+                            is_flat = True
+                        elif 'features.npy' in os.listdir(os.path.join(base_path, data_paths[0])):
+                            ext = '.npy'
+                        else:
+                            ext = '.mat'
+                        
+                        # Build the full file path based on whether the features are stored in a flat file.
+                        if is_flat:
+                            full_path = os.path.join(base_path, data_paths[0]) + ext
+                        else:
+                            full_path = os.path.join(base_path, path, 'features' + ext)
+                        
+                        # Load the features if the file exists.
+                        if os.path.exists(full_path):
+                            if ext == '.pose':
+                                features, fps = load_pose_features(
+                                    full_path,
+                                    stride=self.opts.input_features_stride,
+                                    reduce=self.opts.load_features_from_pose_reduce
+                                )
+                                feature_list.append(features)
+                                fps_list.append(fps)
+                            elif ext == '.npy':
+                                features = np.load(full_path)
+                                if 'auto_asvr' in base_path:
+                                    features = features[::self.opts.input_features_stride]
+                                feature_list.append(features)
+                            else:
+                                features = io.loadmat(os.path.join(base_path, path, 'features.mat'))['preds']
+                                feature_list.append(features)
+                        else:
+                            print(f"Not found: {full_path}")
+                    
+                    # Before concatenating, ensure all feature arrays have the same number of rows (dim 0).
+                    if feature_list:
+                        # Determine the minimum number of rows among all feature arrays.
+                        min_rows = min(feat.shape[0] for feat in feature_list)
+                        # Trim each feature array to the minimum number of rows.
+                        trimmed_features = [feat[:min_rows] for feat in feature_list]
+                        # Concatenate the trimmed feature arrays along the second dimension.
+                        concatenated_features = np.concatenate(trimmed_features, axis=1)
+                        self.features[path] = concatenated_features
+                        
+                        # Use the first available fps value (adjust as needed).
+                        if fps_list:
+                            self.fps[path] = fps_list[0]
+                    else:
+                        print(f"No features found for {path}")
+
+                    # Print example feature info for the first data sample.
+                    if i == 0 and path in self.features:
                         print('Example feature for episode:')
                         print(path)
                         print(self.features[path].shape)
                         print(self.features[path].dtype)
                         print(self.features[path][0][:10])
+
+                # is_flat = False
+                # if self.opts.load_features_from_pose:
+                #     ext='.pose'
+                #     is_flat = True
+                # elif os.path.exists(os.path.join(self.opts.features_path, data_paths[0]) + '.npy'):
+                #     ext='.npy'
+                #     is_flat = True
+                # elif 'features.npy' in os.listdir(os.path.join(self.opts.features_path, data_paths[0])):
+                #     ext='.npy'
+                # else:
+                #     ext='.mat'
+                
+                # for i, path in tqdm(enumerate(data_paths)):
+                #     if is_flat:
+                #         full_path = os.path.join(self.opts.features_path, data_paths[0]) + ext
+                #     else:
+                #         full_path = os.path.join(self.opts.features_path, path, 'features'+ext)
+                #     if os.path.exists(full_path):
+                #         if ext=='.pose':
+                #             features, fps = load_pose_features(full_path, stride=self.opts.input_features_stride, reduce=self.opts.load_features_from_pose_reduce)
+                #             self.features[path] = features
+                #             self.fps[path] = fps
+                #         elif ext=='.npy':
+                #             self.features[path] = np.load(full_path)
+                #             # self.features[path] = np.load(full_path)[::self.opts.input_features_stride]
+                #             # self.features[path] = np.random.rand(*self.features[path].shape)
+                #         else:
+                #             self.features[path] = io.loadmat(os.path.join(self.opts.features_path, path, 'features.mat'))['preds']
+                #     else:
+                #         print(f"Not found: {full_path}")
+
+                #     if i == 0:
+                #         print('Example feature for episode:')
+                #         print(path)
+                #         print(self.features[path].shape)
+                #         print(self.features[path].dtype)
+                #         print(self.features[path][0][:10])
                     
             vid_episode_keys = self.features.keys()
         else: 
@@ -440,11 +509,13 @@ class VideoTextDataset(Dataset):
             out_dict['gt_vec'] = self.times_to_labels_vec(out_dict["gt_fr_to"], out_dict["wind_fr_to"], out_dict["feats"]).astype(np.single)  
         out_dict['path'] = ep
 
-        if self.opts.debug:
-            print(out_dict["orig_txt"])
-            print(out_dict["feats"].shape)
-            print(out_dict['pr_vec'].shape)
-            print(out_dict['gt_vec'].shape)
+        # if self.opts.debug:
+        #     print(out_dict["orig_txt"])
+        #     print(out_dict["feats"].shape)
+        #     print(out_dict['pr_vec'].shape)
+        #     print(np.where(out_dict['pr_vec'][:, 0] == 1))
+        #     print(out_dict['gt_vec'].shape)
+        #     print(np.where(out_dict['gt_vec'][:, 0] == 1))
 
         return out_dict
 
@@ -524,15 +595,15 @@ class VideoTextDataset(Dataset):
         if self.mode == "train":
             feats = self.augment_feats(feats)
 
-        if self.opts.debug:
-            print(fps)
-            print(wind_fr)
-            print(wind_to)
-            print(ep_feats.shape)
+        # if self.opts.debug:
+        #     print(fps)
+        #     print(wind_fr)
+        #     print(wind_to)
+        #     print(ep_feats.shape)
 
-            print(t0_ix)
-            print(t1_ix)
-            print(feats.shape)
+        #     print(t0_ix)
+        #     print(t1_ix)
+        #     print(feats.shape)
 
         ### fixed window or pad to maximum feature length?
         ## note that wind_len is in frames not seconds

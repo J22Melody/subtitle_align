@@ -203,7 +203,7 @@ class VideoTextTrainer(BaseTrainer):
             self.data_tic = time.time(
             )  # this counts how long we are waiting for data
 
-            if self.opts.debug:
+            if self.opts.debug and mode == 'train':
                 print('========EVAL========')
                 print(model_out['gt_vec'].shape)
                 print(model_out['pr_vec'].shape)
@@ -219,7 +219,6 @@ class VideoTextTrainer(BaseTrainer):
                     if key not in ['gt_vec', 'pr_vec', 'preds']:
                         print(key, value)
                 print(metrics_dict)
-                exit()
 
         # bar.close()
 
@@ -238,6 +237,10 @@ class VideoTextTrainer(BaseTrainer):
             self.tb_writer.add_scalar(f'{mode}_epoch/{cuml_name}',
                                       cuml / counter, self.global_step)
         print(desc)
+        
+        if self.opts.debug and mode == 'train':
+            exit()
+
         self.tb_writer.flush()
 
         if counter > 0:

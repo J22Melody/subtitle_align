@@ -12,7 +12,7 @@ python misc/sub_align/evaluate_sub_alignment.py \
     --pred_subtitle_dir /scratch/shared/beegfs/albanie/shared-datasets/bbcsl_raw/subtitles/subtitles-vtt-text-normalized-aligned/heuristic-aligned-subs-05_01_2021-mouth-padding4_all
 """
 import sys
-sys.path.append('/net/cephfs/shares/volk.cl.uzh/zifjia/subtitle_align') #hack
+sys.path.append('/athenahomes/zifan/subtitle_align') #hack
 
 import argparse
 from pickle import SHORT_BINSTRING
@@ -25,10 +25,10 @@ from statistics import mean, median
 import numpy as np
 import webvtt
 from beartype import beartype
-from config.config import *
 
-opts = load_opts()
-
+if __name__ == "__main__":
+    from config.config import *
+    opts = load_opts()
 
 @beartype
 def get_labels_start_end_time(
@@ -306,7 +306,7 @@ def eval_subtitle_alignment(
         f1_msg = (f"F1@{overlap:0.2f}: {f1:.2f}")
         msg = f'{msg} {f1_msg}'
 
-    print(msg)
+    # print(msg)
     return msg 
 
 def parse_args():
@@ -343,6 +343,7 @@ def main():
         shift_start=opts.pr_subs_delta_bias_start,
         shift_end=opts.pr_subs_delta_bias_end,
     )
+    print(eval_str)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,23 @@
+python main.py \
+--features_path '/scratch/shared/beegfs/gul/datasets/features/bobsl/featurize-c2281_16f_pad10sec_m8_-15_4_d0.8_-3_22_anon-v0-stride0.25/filtered/' \
+--spottings_path 'scratch/shared/beegfs/hbull/data/annotationsMDAPEN.pkl' \
+--gpu_id 0 \
+--batch_size 64 \
+--n_workers 32 \
+--pr_subs_delta_bias 0 \
+--fixed_feat_len 20 \
+--jitter_location \
+--jitter_abs \
+--jitter_loc_quantity 10. \
+--load_words True \
+--load_subtitles False \
+--lr 1e-5 \
+--centre_window \
+--save_path 'inference_output/word_pretrain' \
+--train_videos_txt 'data/bobsl_train_1658.txt' \
+--val_videos_txt 'data/bobsl_val_32.txt' \
+--test_videos_txt 'data/bobsl_test_250.txt' \
+--pos_weight 19. \
+--n_epochs 100 \
+--shuffle_getitem True \
+--concatenate_prior True \
