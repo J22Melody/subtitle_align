@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+import random
 import argparse
 import xml.etree.ElementTree as ET
 import bisect
@@ -22,7 +23,7 @@ if misc_dir not in sys.path:
     sys.path.append(misc_dir)
 from evaluate_sub_alignment import eval_subtitle_alignment
 
-from align_dp import dp_align_subtitles_to_signs, dp_align_subtitles_to_signs_dtw
+from align_dp import dp_align_subtitles_to_signs
 
 def parse_time(time_str):
     """Convert a time string (HH:MM:SS.mmm) to total seconds (float)."""
@@ -112,7 +113,7 @@ def reconstruct_vtt(header_lines, cues):
         output_lines.append("")
     return "\n".join(output_lines)
 
-def get_sign_segments(segmentation_file, video_id):
+def get_sign_segments(segmentation_file):
     """Parse an ELAN (.eaf) file and return all segments from the SIGN tier."""
     segments = []
     try:
@@ -216,10 +217,10 @@ def merge_signs(elan_signs, cslr_signs):
         merged = new_merged
     return merged
 
-def write_updated_eaf(eaf_file, cues, video_id, merged_signs=None):
+def write_updated_eaf(eaf_file, cues, video_id, signs=None):
     """
     Write one updated ELAN file that contains two new tiers:
-      - SIGN_MERGED: the merged sign annotations (if merged_signs is provided)
+      - SIGN_MERGED: the merged sign annotations (if signs is provided)
       - SUBTITLE_SHIFTED: the DP-aligned subtitle cues.
     The updated file is saved with the suffix "_updated.eaf".
     """
@@ -233,9 +234,9 @@ def write_updated_eaf(eaf_file, cues, video_id, merged_signs=None):
     if time_order is None:
         print(f"No TIME_ORDER element found in {eaf_file}")
         return
-    if merged_signs is not None and len(merged_signs) > 0:
+    if signs is not None and len(signs) > 0:
         sign_tier = ET.Element("TIER", {"TIER_ID": "SIGN_MERGED", "LINGUISTIC_TYPE_REF": "default-lt"})
-        for i, sign in enumerate(merged_signs):
+        for i, sign in enumerate(signs):
             ts1 = f"SIGN_MERGED_TS_{video_id}_{i}_1"
             ts2 = f"SIGN_MERGED_TS_{video_id}_{i}_2"
             new_ts1 = ET.Element("TIME_SLOT", {"TIME_SLOT_ID": ts1, "TIME_VALUE": str(int(sign['start'] * 1000))})
@@ -279,24 +280,27 @@ def write_updated_eaf(eaf_file, cues, video_id, merged_signs=None):
     tree.write(output_eaf, encoding="utf-8", xml_declaration=True)
     print(f"Written updated ELAN file to {output_eaf}")
 
-def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_weight, dp_window_size, dp_max_gap, output_dir, save_elan):
-    """Process one video: shift timings, merge CSLR signs (if --cslr), run DP using merged signs, and write output."""
-    print(f"\nProcessing video: {video_id}")
+def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_weight,
+                  dp_window_size, dp_max_gap, similarity_weight, output_dir, save_elan):
+    print(f"Processing video: {video_id}")
+
     segmentation_file = os.path.join(args.segmentation_dir, f"{video_id}.eaf")
     elan_signs = []
     if os.path.exists(segmentation_file):
-        elan_signs = get_sign_segments(segmentation_file, video_id)
-    merged_signs = elan_signs
+        elan_signs = get_sign_segments(segmentation_file)
+    signs = elan_signs
+
     if args.cslr:
         cslr_signs = get_cslr_signs(video_id, args.cslr_dir)
         if cslr_signs:
-            merged_signs = merge_signs(elan_signs, cslr_signs)
-    input_file = os.path.join(args.input_dir, f"{video_id}.vtt")
-    if not os.path.exists(input_file):
-        print(f"Subtitle file for video {video_id} not found in {args.input_dir}. Skipping.")
+            signs = merge_signs(elan_signs, cslr_signs)
+
+    subtitle_file = os.path.join(args.pr_sub_path, f"{video_id}.vtt")
+    if not os.path.exists(subtitle_file):
+        print(f"Subtitle file for video {video_id} not found in {args.pr_sub_path}. Skipping.")
         return
     try:
-        with open(input_file, "r", encoding="utf-8") as fin:
+        with open(subtitle_file, "r", encoding="utf-8") as fin:
             vtt_content = fin.read()
     except Exception as e:
         return
@@ -304,12 +308,53 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
     header_lines, cues = get_subtitle_cues(shifted_content)
     if not cues:
         return
-    dp_align_subtitles_to_signs(cues, merged_signs,
+
+    # Read ground truth subtitles
+    gt_subtitle_file = os.path.join(args.gt_sub_path, f"{video_id}.vtt")
+    gt_cues = []
+    if os.path.exists(gt_subtitle_file):
+        try:
+            with open(gt_subtitle_file, "r", encoding="utf-8") as fgt:
+                gt_vtt_content = fgt.read()
+            _, gt_cues = get_subtitle_cues(gt_vtt_content)
+        except Exception as e:
+            pass
+
+    # Load embeddings if using sign_clip_embedding.
+    subtitle_embedding = None
+    segmentation_embedding = None
+    if args.similarity_measure == "sign_clip_embedding":
+        subtitle_emb_file = os.path.join(args.subtitle_embedding_dir, f"{video_id}.npy")
+        segmentation_emb_file = os.path.join(args.segmentation_embedding_dir, f"{video_id}.npy")
+        if os.path.exists(subtitle_emb_file) and os.path.exists(segmentation_emb_file):
+            subtitle_embedding = np.load(subtitle_emb_file)
+            segmentation_embedding = np.load(segmentation_emb_file)
+        else:
+            print(f"Embedding files for video {video_id} not found. Skipping video.")
+            return
+
+    if args.debug:
+        # Restrict to first debug_sec seconds for debugging
+        debug_sec = 30
+        cues_ = [cue for cue in cues if cue['start'] < debug_sec]
+        gt_cues_ = [cue for cue in gt_cues if cue['start'] < debug_sec]
+        signs_ = [seg for seg in signs if seg['start'] < debug_sec]
+    else:
+        cues_ = cues
+        gt_cues_ = gt_cues
+        signs_ = signs
+
+    dp_align_subtitles_to_signs(cues_, signs_, gt_cues=gt_cues_,
        duration_penalty_weight=dp_duration_penalty_weight,
        gap_penalty_weight=dp_gap_penalty_weight,
        window_size=dp_window_size,
-       max_gap=dp_max_gap)
-    # dp_align_subtitles_to_signs_dtw(cues, merged_signs)
+       max_gap=dp_max_gap,
+       similarity_weight=similarity_weight,
+       similarity_measure=args.similarity_measure,
+       subtitle_embedding=subtitle_embedding,
+       segmentation_embedding=segmentation_embedding,
+       visualize_similarity=args.visualize_similarity)
+    
     updated_vtt = reconstruct_vtt(header_lines, cues)
     output_vtt = os.path.join(output_dir, f"{video_id}.vtt")
     os.makedirs(output_dir, exist_ok=True)
@@ -318,8 +363,9 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
             fout.write(updated_vtt)
     except Exception as e:
         pass
+
     if save_elan and os.path.exists(segmentation_file):
-        write_updated_eaf(segmentation_file, cues, video_id, merged_signs)
+        write_updated_eaf(segmentation_file, cues, video_id, signs)
 
 def extract_f1_score(eval_output):
     """Extract F1@0.50 score from evaluation output."""
@@ -328,13 +374,14 @@ def extract_f1_score(eval_output):
         return float(m.group(1))
     return 0.0
 
-def process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, output_dir, save_elan):
+def process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, similarity_weight, output_dir, save_elan):
     from functools import partial
     func = partial(process_video, args=args,
                    dp_duration_penalty_weight=dp_dpw,
                    dp_gap_penalty_weight=dp_gpw,
                    dp_window_size=dp_ws,
                    dp_max_gap=dp_mg,
+                   similarity_weight=similarity_weight,
                    output_dir=output_dir,
                    save_elan=save_elan)
     if args.num_workers > 1:
@@ -350,13 +397,15 @@ def main():
     parser = argparse.ArgumentParser(
         description="Shift subtitle timings, align cues to SIGN segments, merge CSLR signs (if --cslr is set), and write one updated ELAN file."
     )
-    parser.add_argument("--mode", type=str, default="inference", choices=["inference", "training"],
-                        help="Mode: inference (default) or training (parameter search).")
+    # basic file paths
     parser.add_argument("--video_ids", type=str,
                         default="/users/zifan/subtitle_align/data/bobsl_align_test.txt",
                         help="Path to text file with video ids (one per line).")
-    parser.add_argument("--input_dir", type=str,
+    parser.add_argument("--pr_sub_path", type=str,
                         default="/users/zifan/BOBSL/v1.4/automatic_annotations/signing_aligned_subtitles/audio_aligned_heuristic_correction",
+                        help="Directory where subtitle (VTT) files are stored.")
+    parser.add_argument("--gt_sub_path", type=str,
+                        default="/users/zifan/BOBSL/v1.4/manual_annotations/signing_aligned_subtitles",
                         help="Directory where subtitle (VTT) files are stored.")
     parser.add_argument("--save_dir", type=str,
                         default="/users/zifan/subtitle_align/alternative/aligned_subtitles",
@@ -364,75 +413,112 @@ def main():
     parser.add_argument("--segmentation_dir", type=str,
                         default="/scratch/shared/beegfs/zifan/bobsl/video_features/segmentation",
                         help="Directory with segmentation ELAN (.eaf) files.")
+
+    # similarity matrix
+    parser.add_argument("--similarity_measure", type=str, default="none", choices=["none", "cslr_subtitle", "cslr_text_embedding", "sign_clip_embedding"],
+                        help="Similarity measure to use. 'none' (default), 'cslr_subtitle', 'cslr_text_embedding', or 'sign_clip_embedding'.")
+    
+    # embedding
+    parser.add_argument("--subtitle_embedding_dir", type=str,
+                        default="/scratch/shared/beegfs/zifan/bobsl/video_features/subtitle_sign_clip",
+                        help="Directory containing subtitle cue embeddings (NPY files) for sign_clip_embedding similarity measure.")
+    parser.add_argument("--segmentation_embedding_dir", type=str,
+                        default="/scratch/shared/beegfs/zifan/bobsl/video_features/segmentation_sign_clip",
+                        help="Directory containing sign segment embeddings (NPY files) for sign_clip_embedding similarity measure.")
+    parser.add_argument("--visualize_similarity", action="store_true")
+
+    # CSLR
+    parser.add_argument("--cslr", action="store_true",
+                        help="If set, merge CSLR CSV sign annotations with ELAN signs before DP alignment.")
     parser.add_argument("--cslr_dir", type=str,
                         default="/users/zifan/BOBSL/v1.4/manual_annotations/continuous_sign_sequences/cslr-raw",
                         help="Directory with CSLR CSV files (searched recursively).")
-    parser.add_argument("--cslr", action="store_true",
-                        help="If set, merge CSLR CSV sign annotations with ELAN signs before DP alignment.")
-    parser.add_argument("--overwrite", action='store_true',
-                        help="Overwrite existing files if set.")
+    
+    # general settings
+    parser.add_argument("--fps", type=int, default=25)
     parser.add_argument("--pr_subs_delta_bias_start", type=float, default=2.7,
                         help="Delta bias (seconds) added to the start time of each subtitle cue.")
     parser.add_argument("--pr_subs_delta_bias_end", type=float, default=2.7,
                         help="Delta bias (seconds) added to the end time of each subtitle cue.")
     parser.add_argument("--num_workers", type=int, default=1,
                         help="Number of processes for parallel processing.")
-    parser.add_argument("--gt_sub_path", type=str,
-                        default="/users/zifan/BOBSL/v1.4/manual_annotations/signing_aligned_subtitles",
-                        help="Ground truth subtitle directory for evaluation.")
-    parser.add_argument("--dp_duration_penalty_weight", type=float, nargs='+', default=[1.0],
+    parser.add_argument("--overwrite", action='store_true',
+                        help="Overwrite existing files if set.")
+
+    # training mode
+    parser.add_argument("--mode", type=str, default="inference", choices=["inference", "training"],
+                        help="Mode: inference (default) or training (parameter search).")
+    parser.add_argument("--num_search", type=int, default=2,
+                        help="Number of random search iterations in training mode.")
+    parser.add_argument("--dp_duration_penalty_weight", type=float, nargs='+', default=[5.0],
                         help="Duration penalty weight(s) for DP alignment.")
-    parser.add_argument("--dp_gap_penalty_weight", type=float, nargs='+', default=[2.0],
+    parser.add_argument("--dp_gap_penalty_weight", type=float, nargs='+', default=[10.0],
                         help="Gap penalty weight(s) for DP alignment.")
-    parser.add_argument("--dp_window_size", type=int, nargs='+', default=[40],
+    parser.add_argument("--dp_window_size", type=int, nargs='+', default=[50],
                         help="Window size(s) for DP alignment.")
     parser.add_argument("--dp_max_gap", type=float, nargs='+', default=[8.0],
                         help="Max gap(s) allowed between SIGN segments for DP alignment.")
+    parser.add_argument("--similarity_weight", type=float, nargs='+', default=[30.0],
+                        help="Similarity weight(s) for DP alignment. Can be multiple values for training.")
     
+    # debug
+    parser.add_argument("--debug", action="store_true",
+                        help="If set, only use the first 20s of cues and segments for fast development.")
+
     args = parser.parse_args()
-    try:
-        with open(args.video_ids, "r") as f:
-            video_ids = [line.strip() for line in f if line.strip()]
-    except Exception as e:
-        return
+
+    with open(args.video_ids, "r") as f:
+        video_ids = [line.strip() for line in f if line.strip()]
+
     if args.mode == "inference":
         dp_dpw = args.dp_duration_penalty_weight[0]
         dp_gpw = args.dp_gap_penalty_weight[0]
         dp_ws  = args.dp_window_size[0]
         dp_mg  = args.dp_max_gap[0]
-        process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, args.save_dir, save_elan=True)
-        eval_output = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path), video_ids, 25, 0, 0)
+        sim_w  = args.similarity_weight[0]
+        process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, args.save_dir, save_elan=True)
+        eval_output = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path), video_ids, args.fps, 0, 0)
         print(eval_output)
-    else:
+    if args.mode == "training":
         training_base = f"{args.save_dir}_training"
         os.makedirs(training_base, exist_ok=True)
         best_score = -1.0
         best_params = None
         scores = {}
-        combinations = list(itertools.product(args.dp_duration_penalty_weight,
-                                              args.dp_gap_penalty_weight,
-                                              args.dp_window_size,
-                                              args.dp_max_gap))
-        for comb in itertools.product(args.dp_duration_penalty_weight,
-                                        args.dp_gap_penalty_weight,
-                                        args.dp_window_size,
-                                        args.dp_max_gap):
-            dp_dpw, dp_gpw, dp_ws, dp_mg = comb
-            comb_str = f"dpd_{dp_dpw}_dpg_{dp_gpw}_ws_{dp_ws}_mg_{dp_mg}"
+        for i in range(args.num_search):
+            dp_dpw = random.choice(args.dp_duration_penalty_weight)
+            dp_gpw = random.choice(args.dp_gap_penalty_weight)
+            dp_ws  = random.choice(args.dp_window_size)
+            dp_mg  = random.choice(args.dp_max_gap)
+            sim_w  = random.choice(args.similarity_weight)
+            comb_str = f"dpd_{dp_dpw}_dpg_{dp_gpw}_ws_{dp_ws}_mg_{dp_mg}_sim_{sim_w}"
             output_dir = os.path.join(training_base, comb_str)
             os.makedirs(output_dir, exist_ok=True)
-            process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, output_dir, save_elan=False)
-            eval_output = eval_subtitle_alignment(Path(output_dir), Path(args.gt_sub_path), video_ids, 25, 0, 0)
+            process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, output_dir, save_elan=False)
+            eval_output = eval_subtitle_alignment(Path(output_dir), Path(args.gt_sub_path), video_ids, args.fps, 0, 0)
             f1_score = extract_f1_score(eval_output)
             scores[comb_str] = f1_score
+            print(f"Trial {i+1}/{args.num_search}, Params: {comb_str}, F1@0.50: {f1_score}")
             if f1_score > best_score:
                 best_score = f1_score
-                best_params = (dp_dpw, dp_gpw, dp_ws, dp_mg)
-        if best_params is not None:
-            process_all_videos(video_ids, args, best_params[0], best_params[1], best_params[2], best_params[3],
-                                args.save_dir, save_elan=True)
-            final_eval = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path), video_ids, 25, 0, 0)
-            print(final_eval)
+                best_params = (dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w)
+                print("New best found!")
+                print(f"New Best F1@0.50: {best_score} with parameters: dp_duration_penalty_weight={best_params[0]}, "
+                      f"dp_gap_penalty_weight={best_params[1]}, dp_window_size={best_params[2]}, "
+                      f"dp_max_gap={best_params[3]}, similarity_weight={best_params[4]}")
+        print("----- All Trials -----")
+        for comb_str, score in scores.items():
+            print(f"{comb_str} => F1@0.50: {score}")
+        print("----- Best Parameters -----")
+        print(f"Best F1@0.50: {best_score} with parameters: dp_duration_penalty_weight={best_params[0]}, "
+              f"dp_gap_penalty_weight={best_params[1]}, dp_window_size={best_params[2]}, "
+              f"dp_max_gap={best_params[3]}, similarity_weight={best_params[4]}")
+
+        # Final run with best parameters and saving ELAN file.
+        process_all_videos(video_ids, args, best_params[0], best_params[1], best_params[2],
+                           best_params[3], best_params[4], args.save_dir, save_elan=True)
+        final_eval = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path), video_ids, args.fps, 0, 0)
+        print(final_eval)
 
 if __name__ == '__main__':
     main()

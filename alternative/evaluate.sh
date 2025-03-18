@@ -44,15 +44,9 @@
 # Mean and median end offset (abs): 1.54 / 0.91
 # Computed over 87847 frames, 462 sentences - Frame-level accuracy: 75.89 F1@0.10: 89.27 F1@0.25: 85.81 F1@0.50: 73.67
 
-# python misc/evaluate_sub_alignment.py \
-# --gt_sub_path '/users/zifan/BOBSL/v1.4/manual_annotations/signing_aligned_subtitles' \
-# --pred_path_root '/users/zifan/subtitle_align/alternative/aligned_subtitles' \
-# --test_videos_txt 'data/bobsl_align_test.txt' \
-# --pr_subs_delta_bias_end 1.0 \
-
 python misc/evaluate_sub_alignment.py \
 --gt_sub_path '/users/zifan/BOBSL/v1.4/manual_annotations/signing_aligned_subtitles' \
 --pred_path_root '/users/zifan/subtitle_align/alternative/aligned_subtitles' \
---test_videos_txt 'data/bobsl_align_test.txt' \
+--test_videos_txt 'data/bobsl_align_val.txt' \
 --pr_subs_delta_bias_start 0.0 \
 --pr_subs_delta_bias_end 1.0 \

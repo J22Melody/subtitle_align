@@ -1,214 +1,334 @@
+import copy
 import numpy as np
 from tqdm import tqdm
+from numba import njit
+
+# --- DP alignment helper functions ---
+
+def compute_gap_cost(sign_segments):
+    """
+    Vectorized computation of the gap cost matrix.
+    
+    Given a list of sign segments (each a dict with 'start' and 'end'),
+    compute a (N+1)x(N+1) matrix where for i < j:
+        gap_cost[i][j] = sum_{p=i+1}^{j} max(0, sign_segments[p]['start'] - sign_segments[p-1]['end'])
+    and gap_cost[i][j] = 0 for j <= i.
+    """
+    N = len(sign_segments)
+    # Build arrays of start and end times.
+    starts = np.array([seg['start'] for seg in sign_segments])
+    ends = np.array([seg['end'] for seg in sign_segments])
+    # Compute the gap between adjacent segments and clip negative values to zero.
+    gaps = np.maximum(0, starts[1:] - ends[:-1])
+    # Compute cumulative sum of gaps. This yields an array of length N.
+    cumsum = np.concatenate(([0], np.cumsum(gaps)))
+    # Now, gap_cost for indices 0 <= i,j < N is: cumsum[j] - cumsum[i] (for j>=i)
+    gap_cost = cumsum.reshape(1, -1) - cumsum.reshape(-1, 1)
+    # For j < i, the difference will be negative; we set these to zero.
+    gap_cost[gap_cost < 0] = 0
+    # Pad to shape (N+1, N+1) if desired.
+    gap_cost_padded = np.zeros((N+1, N+1))
+    gap_cost_padded[:N, :N] = gap_cost
+    return gap_cost_padded
+
+def compute_similarity_matrix(cues, sign_segments, similarity_measure, subtitle_embedding=None, segmentation_embedding=None):
+    """
+    Compute a similarity matrix between cues and sign segments along with a cumulative sum.
+    
+    [Documentation omitted for brevity]
+    """
+    M = len(cues)
+    N = len(sign_segments)
+    sim_matrix = None
+
+    if similarity_measure == "cslr_subtitle":
+        sim_matrix = np.zeros((M, N))
+        for i in tqdm(range(M), desc="Precomputing similarity matrix (cslr_subtitle)"):
+            cue_text = cues[i]['text']
+            for j in range(N):
+                seg_sub = sign_segments[j].get('subtitle', '')
+                if seg_sub:
+                    sim_matrix[i, j] = 1 if seg_sub == cue_text else -1
+                else:
+                    sim_matrix[i, j] = 0
+
+    elif similarity_measure == "cslr_text_embedding":
+        from sentence_transformers import SentenceTransformer
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+        cue_texts = [cue['text'] for cue in cues]
+        cue_embeddings = model.encode(cue_texts, show_progress_bar=True)
+        sign_texts = [(seg.get('text') or "").strip() for seg in sign_segments]
+        sign_embeddings = model.encode(sign_texts, show_progress_bar=True)
+        sim_matrix = np.dot(cue_embeddings, sign_embeddings.T)
+        for j, seg in enumerate(sign_segments):
+            if not (seg.get('text') or "").strip():
+                sim_matrix[:, j] = 0
+
+    elif similarity_measure == "sign_clip_embedding":
+        if subtitle_embedding.shape[0] != M:
+            raise ValueError(f"Subtitle embedding mismatch: expected {M} rows, got {subtitle_embedding.shape[0]}")
+        if segmentation_embedding.shape[0] != N:
+            raise ValueError(f"Segmentation embedding mismatch: expected {N} rows, got {segmentation_embedding.shape[0]}")
+        sim_matrix = np.dot(subtitle_embedding, segmentation_embedding.T)
+        # Optionally, apply normalization here.
+    else:
+        raise ValueError(f"Unsupported similarity_measure: {similarity_measure}")
+
+    # Compute the cumulative sum along each row.
+    sim_cumsum = np.zeros((M, N+1))
+    for i in tqdm(range(M), desc="Computing similarity cumulative sum"):
+        sim_cumsum[i, 1:] = np.cumsum(sim_matrix[i, :])
+    
+    return sim_matrix, sim_cumsum
 
 def compute_alignment_cost(cue_start, cue_end, group_start, group_end, 
                            duration_penalty_weight, gap_penalty_weight, gap,
-                           mismatch_total, mismatch_weight):
+                           similarity_total, similarity_weight):
+    """
+    Compute the alignment cost between a cue and a group of sign segments.
+    
+    The cost comprises differences in start/end times, duration differences,
+    a gap penalty, and a similarity penalty (where a higher similarity_total reduces the cost).
+    """
     cue_duration = cue_end - cue_start
     group_duration = group_end - group_start
     return (abs(cue_start - group_start) +
             abs(cue_end - group_end) +
             duration_penalty_weight * abs(cue_duration - group_duration) +
             gap_penalty_weight * gap +
-            mismatch_weight * mismatch_total)
+            similarity_weight * (- similarity_total))
 
-def compute_mismatch_array(signs, cue_text):
+def cost_for_subgroup(subgroup, original_start, original_end, group_global_start, cue_index,
+                      duration_penalty_weight, gap_penalty_weight, similarity_weight,
+                      sim_cumsum=None):
     """
-    For a list of sign segments (signs), compute an array where for each segment:
-      - If seg['subtitle'] is non-empty and differs from cue_text, penalty = mismatch_weight.
-      - Otherwise, penalty = 0.
-    Returns a list of penalty values.
+    Helper function for post-processing cost computation for a candidate subgroup.
+    
+    Computes the alignment cost for a subgroup of sign segments.
     """
-    return [1 if (seg.get('subtitle', '') and seg.get('subtitle', '') != cue_text) else 0
-            for seg in signs]
+    if not subgroup:
+        return float('inf')
+    subgroup_start = subgroup[0]['start']
+    subgroup_end = subgroup[-1]['end']
+    gap_val = sum(subgroup[i]['start'] - subgroup[i-1]['end'] for i in range(1, len(subgroup)))
+    
+    similarity_total_candidate = 0
+    if sim_cumsum is not None and cue_index > 0:
+        L = len(subgroup)
+        similarity_total_candidate = sim_cumsum[cue_index-1, group_global_start + L] - sim_cumsum[cue_index-1, group_global_start]
+    
+    return compute_alignment_cost(
+        original_start, original_end,
+        subgroup_start, subgroup_end,
+        duration_penalty_weight, gap_penalty_weight, gap_val,
+        similarity_total_candidate, similarity_weight
+    )
 
-def dp_align_subtitles_to_signs(cues, sign_segments, 
-                                duration_penalty_weight=0.4, gap_penalty_weight=2.0, 
-                                window_size=40, max_gap=8.0, mismatch_weight=1000):
+@njit
+def softmax_normalize_jit(vec, axis=0, tau=10):
+    """
+    JIT-compatible softmax normalization.
+    
+    Accepts a 1D array 'vec' (when axis=0) and returns its softmax normalized version,
+    scaled by the length of the vector.
+    
+    The signature matches softmax_normalize (with axis parameter defaulting to 0).
+    """
+    n = vec.shape[0]
+    exp_vals = np.empty(n, dtype=vec.dtype)
+    sum_val = 0.0
+    for i in range(n):
+        exp_vals[i] = np.exp(vec[i] / tau)
+        sum_val += exp_vals[i]
+    for i in range(n):
+        exp_vals[i] = exp_vals[i] / sum_val * n
+    return exp_vals
+
+@njit
+def dp_inner_loop(M, N, dp, prev, cue_starts, cue_ends, sign_starts, sign_ends, gap_cost,
+                  candidate_min, candidate_max, sim_matrix, duration_penalty_weight,
+                  gap_penalty_weight, similarity_weight, use_similarity):
+    """
+    JIT-compiled inner loop for dynamic programming.
+    
+    For each cue i (1-indexed in dp), this function:
+      - Determines the candidate sign window from candidate_min to candidate_max.
+      - If use_similarity is True, it extracts the corresponding slice from sim_matrix,
+        applies softmax normalization via softmax_normalize_jit (with default axis and tau),
+        and computes the cumulative sum.
+      - Then iterates over j and k to update dp and prev.
+    """
+    for i in range(1, M+1):
+        cand_min = candidate_min[i-1]
+        cand_max = candidate_max[i-1]
+        if i > cand_min + 1:
+            j_lower = i
+        else:
+            j_lower = cand_min + 1
+        if cand_max + 1 < N:
+            j_upper = cand_max + 1
+        else:
+            j_upper = N
+
+        if use_similarity:
+            length = cand_max - cand_min + 1
+            local_sim = np.empty(length, dtype=dp.dtype)
+            for idx in range(length):
+                local_sim[idx] = sim_matrix[i-1, cand_min + idx]
+            # Use the JIT softmax normalization on the row (local_sim)
+            local_sim = softmax_normalize_jit(local_sim)
+            local_sim_cumsum = np.empty(length + 1, dtype=dp.dtype)
+            local_sim_cumsum[0] = 0.0
+            for idx in range(length):
+                local_sim_cumsum[idx+1] = local_sim_cumsum[idx] + local_sim[idx]
+        
+        for j in range(j_lower, j_upper+1):
+            for k in range(i-1, j):
+                group_start = sign_starts[k]
+                group_end = sign_ends[j-1]
+                if k < j-1:
+                    total_gap = gap_cost[k, j-1]
+                else:
+                    total_gap = 0.0
+                if use_similarity:
+                    local_k = k - cand_min
+                    if local_k < 0:
+                        local_k = 0
+                    local_j = j - cand_min
+                    if local_j > length:
+                        local_j = length
+                    similarity_total = local_sim_cumsum[local_j] - local_sim_cumsum[local_k]
+                else:
+                    similarity_total = 0.0
+                cue_start = cue_starts[i-1]
+                cue_end = cue_ends[i-1]
+                diff_start = abs(cue_start - group_start)
+                diff_end = abs(cue_end - group_end)
+                diff_duration = abs((cue_end - cue_start) - (group_end - group_start))
+                cost_val = diff_start + diff_end + duration_penalty_weight * diff_duration + gap_penalty_weight * total_gap + similarity_weight * (-similarity_total)
+                cur_cost = dp[i-1, k] + cost_val
+                if cur_cost < dp[i, j]:
+                    dp[i, j] = cur_cost
+                    prev[i, j] = k
+
+def dp_align_subtitles_to_signs(cues, sign_segments, gt_cues=None,
+                                duration_penalty_weight=0.4, gap_penalty_weight=2.0,
+                                window_size=40, max_gap=8.0, similarity_weight=10,
+                                similarity_measure=None,
+                                subtitle_embedding=None,
+                                segmentation_embedding=None,
+                                visualize_similarity=False):
+    """Dynamic programming alignment."""
     M = len(cues)
     N = len(sign_segments)
     if M == 0 or N == 0:
         return
+
+    cues_original = copy.deepcopy(cues)
     original_cue_timings = [(c['start'], c['end']) for c in cues]
-    sign_mids = [(seg['start'] + seg['end']) / 2 for seg in sign_segments]
     
-    # Precompute gap costs.
-    gap_cost = np.zeros((N+1, N+1))
-    for i in range(N):
-        current_gap = 0
-        for j in range(i+1, N):
-            gap = sign_segments[j]['start'] - sign_segments[j-1]['end']
-            current_gap += max(0, gap)
-            gap_cost[i][j] = current_gap
-            
-    dp = [[float('inf')] * (N + 1) for _ in range(M + 1)]
-    prev = [[-1] * (N + 1) for _ in range(M + 1)]
-    dp[0][0] = 0
-
-    # Check if any segment has a non-empty "subtitle".
-    cslr_exists = any(seg.get('subtitle', '') for seg in sign_segments)
-
-    for i in tqdm(range(1, M + 1), desc="Aligning cues"):
-        cue = cues[i - 1]
+    # Precompute candidate indices for each cue.
+    sign_mids = np.array([(seg['start'] + seg['end'])/2 for seg in sign_segments])
+    candidate_min_list = []
+    candidate_max_list = []
+    for cue in cues:
         cue_mid = (cue['start'] + cue['end']) / 2
-        cue_text = cue['text']
-        diffs = [abs(mid - cue_mid) for mid in sign_mids]
-        candidate_indices = np.argsort(diffs)[:window_size]
-        lower_bound = int(min(candidate_indices))
-        upper_bound = int(max(candidate_indices))
-        j_lower = max(i, lower_bound + 1)
-        j_upper = min(N, upper_bound + 1)
-        if j_lower > j_upper:
-            j_lower, j_upper = i, N
-        
-        if cslr_exists:
-            # Precompute mismatch penalty array for the candidate window.
-            local_signs = sign_segments[lower_bound:upper_bound+1]
-            mismatch_array = compute_mismatch_array(local_signs, cue_text)
-            mismatch_cumsum = np.concatenate(([0], np.cumsum(mismatch_array)))
-        
-        for j in range(j_lower, j_upper + 1):
-            for k in range(i - 1, j):
-                group_start = sign_segments[k]['start']
-                group_end = sign_segments[j-1]['end']
-                total_gap = gap_cost[k][j-1] if k < j-1 else 0
-                if cslr_exists:
-                    # Map global indices k and j to local indices.
-                    local_k = k - lower_bound
-                    local_j = j - lower_bound
-                    if local_k < 0:
-                        local_k = 0
-                    if local_j >= len(mismatch_cumsum):
-                        local_j = len(mismatch_cumsum) - 1
-                    mismatch_total = mismatch_cumsum[local_j] - mismatch_cumsum[local_k]
-                else:
-                    mismatch_total = 0
-                candidate = dp[i-1][k] + compute_alignment_cost(cue['start'], cue['end'],
-                                                                  group_start, group_end,
-                                                                  duration_penalty_weight,
-                                                                  gap_penalty_weight,
-                                                                  total_gap,
-                                                                  mismatch_total,
-                                                                  mismatch_weight)
-                if candidate < dp[i][j]:
-                    dp[i][j] = candidate
-                    prev[i][j] = k
+        cand = np.argsort(np.abs(sign_mids - cue_mid))[:window_size]
+        candidate_min_list.append(int(np.min(cand)))
+        candidate_max_list.append(int(np.max(cand)))
+    candidate_min_arr = np.array(candidate_min_list)
+    candidate_max_arr = np.array(candidate_max_list)
+    
+    # Build numpy arrays for cue and sign timings.
+    cue_starts = np.array([c['start'] for c in cues])
+    cue_ends = np.array([c['end'] for c in cues])
+    sign_starts = np.array([s['start'] for s in sign_segments])
+    sign_ends = np.array([s['end'] for s in sign_segments])
+    
+    # Initialize DP matrices as numpy arrays.
+    dp = np.full((M+1, N+1), np.inf, dtype=np.float64)
+    prev = np.full((M+1, N+1), -1, dtype=np.int64)
+    dp[0, 0] = 0.0
 
-    best_j = None
-    best_cost = float('inf')
-    for j in range(M, N + 1):
-        if dp[M][j] < best_cost:
-            best_cost = dp[M][j]
-            best_j = j
-    if best_j is None or best_cost == float('inf'):
-        return
+    use_similarity = similarity_measure != "none"
+    if use_similarity:
+        if similarity_measure == "sign_clip_embedding":
+            sim_matrix, sim_cumsum = compute_similarity_matrix(
+                cues, sign_segments, similarity_measure,
+                subtitle_embedding, segmentation_embedding)
+        else:
+            sim_matrix, sim_cumsum = compute_similarity_matrix(
+                cues, sign_segments, similarity_measure)
+    else:
+        sim_matrix = np.empty((M, N), dtype=np.float64)  # dummy; not used
+
+    gap_cost = compute_gap_cost(sign_segments)
+    
+    # Call the JIT-compiled DP inner loop.
+    dp_inner_loop(M, N, dp, prev, cue_starts, cue_ends, sign_starts, sign_ends, gap_cost,
+                  candidate_min_arr, candidate_max_arr, sim_matrix,
+                  duration_penalty_weight, gap_penalty_weight, similarity_weight, use_similarity)
+    
+    # Backtracking to recover boundaries.
+    best_j = int(np.argmin(dp[M, :]))
     boundaries = [0] * (M + 1)
     boundaries[M] = best_j
     cur = best_j
     for i in range(M, 0, -1):
-        k = prev[i][cur]
+        k = int(prev[i, cur])
         boundaries[i - 1] = k
         cur = k
 
-    # Post-processing: For each cue, further split the assigned group if gaps exceed max_gap.
+    # Post-processing: refine cue timings by selecting the best candidate subgroup.
     for i in range(M):
-        original_group = sign_segments[boundaries[i]:boundaries[i+1]]
-        if not original_group:
+        group = sign_segments[boundaries[i]:boundaries[i+1]]
+        if not group:
             continue
         original_start, original_end = original_cue_timings[i]
-        sub_groups = []
-        current_group = [original_group[0]]
-        sub_group_gaps = [0]
-        for seg in original_group[1:]:
-            gap = seg['start'] - current_group[-1]['end']
-            if gap <= max_gap:
-                current_group.append(seg)
-                sub_group_gaps[-1] += gap
+        group_global_start = boundaries[i]
+        
+        min_cost = np.inf
+        best_subgroup = None
+        
+        current_subgroup = []
+        current_subgroup_offset = None
+        for j, seg in enumerate(group):
+            if not current_subgroup:
+                current_subgroup = [seg]
+                current_subgroup_offset = j
             else:
-                sub_groups.append((current_group, sub_group_gaps[-1]))
-                current_group = [seg]
-                sub_group_gaps.append(0)
-        sub_groups.append((current_group, sub_group_gaps[-1]))
-        min_cost = float('inf')
-        best_sub_group = None
-        for sg, sg_gap in sub_groups:
-            sg_start = sg[0]['start']
-            sg_end = sg[-1]['end']
-            # Compute mismatch total for the subgroup.
-            mismatch_total = sum(compute_mismatch_array(sg, cues[i]['text'])) if cslr_exists else 0
-            cost = compute_alignment_cost(original_start, original_end, sg_start, sg_end,
-                                          duration_penalty_weight, gap_penalty_weight, sg_gap,
-                                          mismatch_total, mismatch_weight)
-            if cost < min_cost:
-                min_cost = cost
-                best_sub_group = sg
-        if best_sub_group:
-            cues[i]['start'] = best_sub_group[0]['start']
-            cues[i]['end'] = best_sub_group[-1]['end']
+                if seg['start'] - group[j-1]['end'] <= max_gap:
+                    current_subgroup.append(seg)
+                else:
+                    candidate_global_start = group_global_start + current_subgroup_offset
+                    candidate_cost = cost_for_subgroup(
+                        current_subgroup, original_start, original_end,
+                        candidate_global_start, i,
+                        duration_penalty_weight, gap_penalty_weight, similarity_weight,
+                        sim_cumsum if use_similarity else None
+                    )
+                    if candidate_cost < min_cost:
+                        min_cost = candidate_cost
+                        best_subgroup = current_subgroup.copy()
+                    current_subgroup = [seg]
+                    current_subgroup_offset = j
+        if current_subgroup:
+            candidate_global_start = group_global_start + current_subgroup_offset
+            candidate_cost = cost_for_subgroup(
+                current_subgroup, original_start, original_end,
+                candidate_global_start, i,
+                duration_penalty_weight, gap_penalty_weight, similarity_weight,
+                sim_cumsum if use_similarity else None
+            )
+            if candidate_cost < min_cost:
+                best_subgroup = current_subgroup
+        
+        if best_subgroup:
+            cues[i]['start'] = best_subgroup[0]['start']
+            cues[i]['end'] = best_subgroup[-1]['end']
             cues[i]['mid'] = (cues[i]['start'] + cues[i]['end']) / 2
 
-from fastdtw import fastdtw
-
-def dp_align_subtitles_to_signs_dtw(cues, sign_segments):
-    """
-    A simple DTW-based alignment function.
-    
-    For each cue and sign segment, we form a tuple (mid, id) where:
-      - For a cue, mid = cue['mid'] (or (start+end)/2) and id is a unique numeric ID for cue['text'] (0 if empty).
-      - For a sign segment, mid = seg['mid'] (or computed) and id is a unique numeric ID for seg.get('subtitle', '') (0 if empty).
-    
-    The DTW distance function is defined as follows:
-      - If both IDs are nonzero and equal, the distance is 0.
-      - If both IDs are nonzero and different, the distance is abs(mid_cue - mid_seg) + 1000.
-      - Otherwise, the distance is abs(mid_cue - mid_seg).
-      
-    After DTW, each cue is updated so that its start is the minimum start and its end is the maximum end among all sign segments assigned to it.
-    """
-    # Build a set of all non-empty text values from cues and sign segments.
-    texts = set()
-    for c in cues:
-        if c['text']:
-            texts.add(c['text'])
-    for s in sign_segments:
-        text = s.get('subtitle', '')
-        if text:
-            texts.add(text)
-    # Map each non-empty text to a unique ID starting from 1; use 0 for empty.
-    text_to_id = {text: idx+1 for idx, text in enumerate(sorted(texts))}
-    
-    # Build the sequences for DTW.
-    cue_seq = [((c['mid'] if isinstance(c['mid'], float) else (c['start'] + c['end'])/2), 
-                 text_to_id[c['text']] if c['text'] in text_to_id else 0)
-               for c in cues]
-    seg_seq = [((s['mid'] if isinstance(s['mid'], float) else (s['start'] + s['end'])/2),
-                 text_to_id[s.get('subtitle', '')] if s.get('subtitle', '') in text_to_id else 0)
-               for s in sign_segments]
-    
-    # Define the distance function.
-    def dtw_dist(x, y):
-        # x = (cue_mid, cue_id), y = (seg_mid, seg_id)
-        if x[1] != 0 and y[1] != 0:
-            if x[1] == y[1]:
-                return 0
-            else:
-                return abs(x[0] - y[0]) + 1000
-        return abs(x[0] - y[0])
-    
-    # Compute DTW alignment.
-    distance, path = fastdtw(cue_seq, seg_seq, dist=dtw_dist)
-    
-    # Build assignments: cue index -> list of sign segment indices.
-    assignments = {i: [] for i in range(len(cues))}
-    for i, j in path:
-        assignments[i].append(j)
-    
-    # Update each cue boundaries based on assigned sign segments.
-    for i, cue in enumerate(cues):
-        if not assignments[i]:
-            continue
-        assigned_segments = [sign_segments[j] for j in assignments[i]]
-        new_start = min(seg['start'] for seg in assigned_segments)
-        new_end = max(seg['end'] for seg in assigned_segments)
-        cue['start'] = new_start
-        cue['end'] = new_end
-        cue['mid'] = (new_start + new_end) / 2
+    if visualize_similarity:
+        # Import the visualization function from the separate file.
+        from align_dp_visualization import visualize_similarity_heatmap
+        visualize_similarity_heatmap(sim_matrix, cues_original, sign_segments, gt_cues, cues)
