@@ -70,7 +70,24 @@ def compute_similarity_matrix(cues, sign_segments, similarity_measure, subtitle_
         if segmentation_embedding.shape[0] != N:
             raise ValueError(f"Segmentation embedding mismatch: expected {N} rows, got {segmentation_embedding.shape[0]}")
         sim_matrix = np.dot(subtitle_embedding, segmentation_embedding.T)
-        # Optionally, apply normalization here.
+
+        # print(sim_matrix)
+        
+        # # Optionally, apply normalization here.
+        # # Normalize rows by the ratio of each subtitle cue's duration to the mean subtitle duration.
+        # cue_durations = np.array([cue['end'] - cue['start'] for cue in cues])
+        # mean_cue_duration = np.mean(cue_durations)
+        # row_factors = cue_durations / mean_cue_duration
+
+        # # Normalize columns by the ratio of each sign segment's duration to the mean sign segment duration.
+        # sign_durations = np.array([seg['end'] - seg['start'] for seg in sign_segments])
+        # mean_sign_duration = np.mean(sign_durations)
+        # col_factors = sign_durations / mean_sign_duration
+
+        # sim_matrix = sim_matrix * row_factors[:, None] 
+        # sim_matrix = sim_matrix * col_factors[None, :]
+
+        # print(sim_matrix)
     else:
         raise ValueError(f"Unsupported similarity_measure: {similarity_measure}")
 

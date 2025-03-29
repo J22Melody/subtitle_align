@@ -161,6 +161,7 @@ def eval_subtitle_alignment(
         fps: int, 
         shift_start = 0,
         shift_end = 0,
+        filter_gt_by_pred = False,
 ):
 
     if os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.vtt')): 
@@ -209,6 +210,22 @@ def eval_subtitle_alignment(
         for sub_idx in range(len(pred_subs)): 
             pred_subs[sub_idx]._start += shift_start
             pred_subs[sub_idx]._end += shift_end
+
+        if filter_gt_by_pred:
+            # Filter gt_subs so that for each predicted subtitle there is exactly one ground truth
+            # subtitle with exactly matching start and end times. We do a one-to-one matching.
+            available_gt = list(gt_subs)
+            new_gt = []
+            for pred in pred_subs:
+                found = None
+                for i, gt in enumerate(available_gt):
+                    if pred.text in gt.text:
+                        found = gt
+                        del available_gt[i]
+                        break
+                if found is not None:
+                    new_gt.append(found)
+            gt_subs = new_gt
 
         msg = (f"Expected num. preds {len(pred_subs)} to match num. gt {len(gt_subs)} for"
                f" {pred_path}")
