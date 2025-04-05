@@ -161,7 +161,6 @@ def eval_subtitle_alignment(
         fps: int, 
         shift_start = 0,
         shift_end = 0,
-        filter_gt_by_pred = False,
 ):
 
     if os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.vtt')): 
@@ -207,25 +206,26 @@ def eval_subtitle_alignment(
         gt_subs = list(webvtt.from_srt(gt_path) if ext_gt == '.srt' else webvtt.read(gt_path))
         pred_subs = list(webvtt.from_srt(pred_path) if ext_pred == '.srt' else webvtt.read(pred_path))
 
+        # suppose pred_subs already exclude [NON-SIGN], etc.
+        if len(gt_subs) != len(pred_subs):
+            gt_subs = [sub for sub in gt_subs if not ("[" in sub.text and "]" in sub.text)]
+            pred_subs = [sub for sub in pred_subs if not ("[" in sub.text and "]" in sub.text)]
+        else:
+            # Get indices in pred_subs where the exclusion tag appears
+            excluded_indices = [i for i, sub in enumerate(gt_subs) if '[' in sub.text and ']' in sub.text]
+            # Filter out entries with those indices from both lists
+            gt_subs = [sub for i, sub in enumerate(gt_subs) if i not in excluded_indices]
+            pred_subs = [sub for i, sub in enumerate(pred_subs) if i not in excluded_indices]
+
+        # Get indices in pred_subs where the exclusion tag appears
+        excluded_indices = [i for i, sub in enumerate(pred_subs) if '{CSLR_EXCLUDED}' in sub.text]
+        # Filter out entries with those indices from both lists
+        gt_subs = [sub for i, sub in enumerate(gt_subs) if i not in excluded_indices]
+        pred_subs = [sub for i, sub in enumerate(pred_subs) if i not in excluded_indices]
+
         for sub_idx in range(len(pred_subs)): 
             pred_subs[sub_idx]._start += shift_start
             pred_subs[sub_idx]._end += shift_end
-
-        if filter_gt_by_pred:
-            # Filter gt_subs so that for each predicted subtitle there is exactly one ground truth
-            # subtitle with exactly matching start and end times. We do a one-to-one matching.
-            available_gt = list(gt_subs)
-            new_gt = []
-            for pred in pred_subs:
-                found = None
-                for i, gt in enumerate(available_gt):
-                    if pred.text in gt.text:
-                        found = gt
-                        del available_gt[i]
-                        break
-                if found is not None:
-                    new_gt.append(found)
-            gt_subs = new_gt
 
         msg = (f"Expected num. preds {len(pred_subs)} to match num. gt {len(gt_subs)} for"
                f" {pred_path}")
@@ -269,14 +269,16 @@ def eval_subtitle_alignment(
         pred_frames = subs2frames(
             subs=pred_subs,
             max_time=float(max_time),
-            exclude_subs=exclude_subs,
+            # exclude_subs=exclude_subs,
+            exclude_subs=[],
             fps=fps,
             background_label=BACKGROUND_LABEL,
         )
         gt_frames = subs2frames(
             subs=gt_subs,
             max_time=float(max_time),
-            exclude_subs=exclude_subs,
+            # exclude_subs=exclude_subs,
+            exclude_subs=[],
             fps=fps,
             background_label=BACKGROUND_LABEL,
         )

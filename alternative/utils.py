@@ -1,8 +1,13 @@
 import re
 import os
+import sys
+import bisect
+import glob
 from io import StringIO
 import webvtt
+import csv
 import xml.etree.ElementTree as ET
+
 
 def timestamp_to_seconds(time_str: str) -> float:
     """
@@ -174,10 +179,11 @@ def get_sign_segments_from_eaf(segmentation_file):
         segments.append({'start': start_time, 'end': end_time, 'mid': mid, 'text': text})
     return segments
 
-def write_updated_eaf(eaf_file, cues, video_id, signs=None):
+def write_updated_eaf(eaf_file, cues, video_id, signs=None, additional_signs={}):
     """
     Write an updated ELAN file with new tiers:
-      - SIGN_MERGED: merged sign annotations
+      - SIGN_MERGED: merged sign annotations (from `signs`)
+      - Additional tiers: for each key in `additional_signs` (if its value is a list), write the sign annotations.
       - SUBTITLE_SHIFTED: DP-aligned subtitle cues.
     The updated file is saved with the suffix "_updated.eaf".
     """
@@ -191,6 +197,8 @@ def write_updated_eaf(eaf_file, cues, video_id, signs=None):
     if time_order is None:
         print(f"No TIME_ORDER element found in {eaf_file}")
         return
+
+    # Process the standard signs tier, if provided.
     if signs:
         sign_tier = ET.Element("TIER", {"TIER_ID": "SIGN_MERGED", "LINGUISTIC_TYPE_REF": "default-lt"})
         for i, sign in enumerate(signs):
@@ -212,6 +220,35 @@ def write_updated_eaf(eaf_file, cues, video_id, signs=None):
             annotation.append(alignable)
             sign_tier.append(annotation)
         root.append(sign_tier)
+
+    # Process additional_signs dictionary for extra tiers.
+    if additional_signs:
+        for tier_key, tier_signs in additional_signs.items():
+            if isinstance(tier_signs, list):
+                tier_element = ET.Element("TIER", {"TIER_ID": tier_key, "LINGUISTIC_TYPE_REF": "default-lt"})
+                for i, sign in enumerate(tier_signs):
+                    ts1 = f"{tier_key}_TS_{video_id}_{i}_1"
+                    ts2 = f"{tier_key}_TS_{video_id}_{i}_2"
+                    new_ts1 = ET.Element("TIME_SLOT", {"TIME_SLOT_ID": ts1, "TIME_VALUE": str(int(sign['start'] * 1000))})
+                    new_ts2 = ET.Element("TIME_SLOT", {"TIME_SLOT_ID": ts2, "TIME_VALUE": str(int(sign['end'] * 1000))})
+                    time_order.append(new_ts1)
+                    time_order.append(new_ts2)
+                    annotation = ET.Element("ANNOTATION")
+                    alignable = ET.Element("ALIGNABLE_ANNOTATION", {
+                        "ANNOTATION_ID": f"a_{tier_key}_{video_id}_{i}",
+                        "TIME_SLOT_REF1": ts1,
+                        "TIME_SLOT_REF2": ts2
+                    })
+                    annotation_value = ET.Element("ANNOTATION_VALUE")
+                    annotation_value.text = sign['text']
+                    alignable.append(annotation_value)
+                    annotation.append(alignable)
+                    tier_element.append(annotation)
+                root.append(tier_element)
+            # else:
+            #     print(f"Value for tier '{tier_key}' is not a list, skipping.")
+
+    # Process the subtitle cues.
     subtitle_tier = ET.Element("TIER", {"TIER_ID": "SUBTITLE_SHIFTED", "LINGUISTIC_TYPE_REF": "default-lt"})
     for i, cue in enumerate(cues):
         ts1 = f"SUBTITLE_TS_{video_id}_{i}_1"
@@ -232,6 +269,7 @@ def write_updated_eaf(eaf_file, cues, video_id, signs=None):
         annotation.append(alignable)
         subtitle_tier.append(annotation)
     root.append(subtitle_tier)
+
     output_eaf = os.path.splitext(eaf_file)[0] + "_updated.eaf"
     tree.write(output_eaf, encoding="utf-8", xml_declaration=True)
     print(f"Written updated ELAN file to {output_eaf}")
@@ -240,3 +278,147 @@ def extract_f1_score(eval_output):
     """Extract F1@0.50 score from evaluation output."""
     m = re.search(r"F1@0\.50:\s*([\d.]+)", eval_output)
     return float(m.group(1)) if m else 0.0
+    
+def get_cslr_signs(video_id, cslr_dir):
+    """
+    Recursively search for a CSV file named <video_id>.csv under cslr_dir
+    and return sign annotations.
+    """
+    pattern = os.path.join(cslr_dir, '**', f"{video_id}.csv")
+    files = glob.glob(pattern, recursive=True)
+    if not files:
+        return []
+    csv_file = files[0]
+    signs = []
+    with open(csv_file, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            approx_gloss = row.get("approx gloss sequence", "")
+            english_sentence = row.get("english sentence", "").strip()
+            matches = re.findall(r'(\S+)\[(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)\]', approx_gloss)
+            for word, start_str, end_str in matches:
+                start = float(start_str)
+                end = float(end_str)
+                mid = (start + end) / 2
+                signs.append({'start': start, 'end': end, 'mid': mid, 'text': word, 'subtitle': english_sentence})
+    return sorted(signs, key=lambda s: s['start'])
+
+def get_cmpl_signs(video_id, segmentation_dir_cmpl):
+    """
+    Read sign segments from a directory in CMPL format.
+    In this format, segmentation_dir_cmpl contains subdirectories for each video id,
+    and inside each subdirectory there is a demo.vtt file.
+    Each subtitle cue in the vtt file represents a sign segment (with an empty text).
+    """
+    vtt_path = os.path.join(segmentation_dir_cmpl, video_id, "demo.vtt")
+    if not os.path.exists(vtt_path):
+        return []
+    try:
+        with open(vtt_path, "r", encoding="utf-8") as f:
+            vtt_content = f.read()
+    except Exception:
+        return []
+    header_lines, cues = get_subtitle_cues(vtt_content)
+    segments = []
+    for cue in cues:
+        segments.append({'start': cue['start'], 'end': cue['end'], 'mid': (cue['start']+cue['end'])/2, 'text': ""})
+    return segments
+
+def get_pseudo_signs(video_id, pseudo_glosses_dir):
+    """
+    Read pseudo gloss annotations for a given video_id from a CSV file located at:
+        <pseudo_glosses_dir>/<video_id>.csv
+    Each row in the CSV is expected to have columns: start, end, text, probs.
+    
+    Returns a list of dictionaries, where each dictionary contains:
+        'start': float, 
+        'end': float, 
+        'mid': float (average of start and end),
+        'text': string, 
+        'probs': float
+    """
+    csv_path = os.path.join(pseudo_glosses_dir, f"{video_id}.csv")
+    signs = []
+    with open(csv_path, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                start = float(row.get("start", 0))
+                end = float(row.get("end", 0))
+                text = row.get("text", "")
+                probs = float(row.get("probs", 0))
+                mid = (start + end) / 2.0
+                signs.append({
+                    "start": start,
+                    "end": end,
+                    "mid": mid,
+                    "text": text,
+                    "probs": probs
+                })
+            except Exception as e:
+                # Optionally log the error.
+                continue
+    return signs
+
+def merge_signs(elan_signs, new_signs, conservative=True, overlapIoU=0.2):
+    """
+    Merge additional signs into the base ELAN sign list.
+    For each new sign, remove overlapping ELAN segments and insert the new sign.
+    If conservative is True, the new sign is only appended if it overlaps with at least one segment in elan_signs
+    with an Intersection over Union (IoU) greater than overlapIoU.
+    If conservative is False, the new sign is always appended.
+    """
+    def iou(interval1, interval2):
+        # Calculate Intersection over Union (IoU) for two intervals.
+        inter = max(0, min(interval1['end'], interval2['end']) - max(interval1['start'], interval2['start']))
+        union = max(interval1['end'], interval2['end']) - min(interval1['start'], interval2['start'])
+        return inter / union if union > 0 else 0
+
+    # Sort the input lists.
+    elan_signs = sorted(elan_signs, key=lambda s: s['start'])
+    new_signs = sorted(new_signs, key=lambda s: s['start'])
+    
+    # Cache the IDs of the original elan_signs for fast membership checking.
+    original_ids = {id(seg) for seg in elan_signs}
+    
+    # Start with the original ELAN signs.
+    merged = elan_signs[:]
+    
+    for ns in new_signs:
+        if conservative:
+            # Only merge ns if it overlaps with at least one original segment with IoU > overlapIoU.
+            if not any(
+                iou(seg, ns) > overlapIoU
+                for seg in merged
+                if seg['end'] > ns['start'] and seg['start'] < ns['end'] and id(seg) in original_ids
+            ):
+                continue
+
+        # Remove overlapping segments from the original elan_signs.
+        new_merged = [seg for seg in merged
+                      if not (id(seg) in original_ids and seg['end'] > ns['start'] and seg['start'] < ns['end'])]
+        # Insert the new sign into the sorted list using bisect.
+        insert_points = [s['start'] for s in new_merged]
+        idx = bisect.bisect_left(insert_points, ns['start'])
+        new_merged.insert(idx, ns)
+        merged = new_merged
+
+    return merged
+
+def filter_cues_by_cslr(cues, cslr_signs):
+    """
+    Return a filtered list of cues that have temporal overlap with any of the CSLR signs.
+    A cue overlaps if its end time is greater than a sign's start time and its start time is less than the sign's end time.
+    """
+    filtered_cues = []
+    for cue in cues:
+        overlap = False
+        for sign in cslr_signs:
+            if cue['end'] > sign['start'] and cue['start'] < sign['end']:
+                filtered_cues.append(cue)
+                overlap = True
+                break
+        if not overlap:
+            cue['text'] = cue['text'] + ' {CSLR_EXCLUDED}'
+            filtered_cues.append(cue)
+    return filtered_cues

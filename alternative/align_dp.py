@@ -31,7 +31,7 @@ def compute_gap_cost(sign_segments):
     gap_cost_padded[:N, :N] = gap_cost
     return gap_cost_padded
 
-def compute_similarity_matrix(cues, sign_segments, similarity_measure, subtitle_embedding=None, segmentation_embedding=None):
+def compute_similarity_matrix(cues, sign_segments, similarity_measure, subtitle_embedding=None, subtitle_embedding_tokenized=None, segmentation_embedding=None, tokenize_text_embedding=False, text_embedding_pooling='max'):
     """
     Compute a similarity matrix between cues and sign segments along with a cumulative sum.
     
@@ -41,53 +41,102 @@ def compute_similarity_matrix(cues, sign_segments, similarity_measure, subtitle_
     N = len(sign_segments)
     sim_matrix = None
 
-    if similarity_measure == "cslr_subtitle":
+    if similarity_measure in ["cslr_subtitle", "cslr_text"]:
         sim_matrix = np.zeros((M, N))
         for i in tqdm(range(M), desc="Precomputing similarity matrix (cslr_subtitle)"):
             cue_text = cues[i]['text']
             for j in range(N):
-                seg_sub = sign_segments[j].get('subtitle', '')
-                if seg_sub:
-                    sim_matrix[i, j] = 1 if seg_sub == cue_text else -1
-                else:
-                    sim_matrix[i, j] = 0
+                if similarity_measure == "cslr_subtitle":
+                    seg_sub = sign_segments[j].get('subtitle', '')
+                    if seg_sub:
+                        sim_matrix[i, j] = 1 if seg_sub == cue_text else -1
+                    else:
+                        sim_matrix[i, j] = 0
+                elif similarity_measure == "cslr_text":
+                    seg_text = sign_segments[j].get('text', '')
+                    if seg_text:
+                        sim_matrix[i, j] = -1
+                        seg_texts = seg_text.split('/')
+                        for seg_text in seg_texts:
+                            if seg_text.lower() in cue_text.lower():
+                                probs = sign_segments[j].get('probs', 1)
+                                sim_matrix[i, j] = probs
+                    else:
+                        sim_matrix[i, j] = 0
 
     elif similarity_measure == "cslr_text_embedding":
         from sentence_transformers import SentenceTransformer
         model = SentenceTransformer('all-MiniLM-L6-v2')
-        cue_texts = [cue['text'] for cue in cues]
-        cue_embeddings = model.encode(cue_texts, show_progress_bar=True)
+        
+        # Encode sign texts once.
         sign_texts = [(seg.get('text') or "").strip() for seg in sign_segments]
         sign_embeddings = model.encode(sign_texts, show_progress_bar=True)
-        sim_matrix = np.dot(cue_embeddings, sign_embeddings.T)
-        for j, seg in enumerate(sign_segments):
-            if not (seg.get('text') or "").strip():
-                sim_matrix[:, j] = 0
+        
+        if tokenize_text_embedding:
+            # Initialize an empty similarity matrix.
+            sim_matrix = np.zeros((M, N))
+            for i, cue in enumerate(cues):
+                cue_text = (cue.get('text') or "").strip()
+                # Tokenize the cue text into words (customize tokenization as needed)
+                tokens = cue_text.split()
+                if tokens:
+                    # Compute embeddings for each token.
+                    token_embeddings = model.encode(tokens, show_progress_bar=False)
+                    for j, sign_embedding in enumerate(sign_embeddings):
+                        # If the sign text is empty, assign 0 similarity.
+                        if not sign_texts[j]:
+                            sim_matrix[i, j] = 0
+                        else:
+                            # Compute the similarity (dot product) between each token and the sign embedding.
+                            token_similarities = np.dot(token_embeddings, sign_embedding)
+                            # Pool the token similarities based on the text_embedding_pooling method.
+                            if text_embedding_pooling == "mean":
+                                sim_matrix[i, j] = np.mean(token_similarities)
+                            elif text_embedding_pooling == "max":
+                                sim_matrix[i, j] = np.max(token_similarities)
+                            else:
+                                raise ValueError("Invalid text_embedding_pooling value. Use 'mean' or 'max'.")
+                else:
+                    # If there are no tokens, set similarity to zero.
+                    sim_matrix[i, :] = 0
+        else:
+            # Original behavior: compute embeddings for the full cue texts.
+            cue_texts = [cue.get('text') or "" for cue in cues]
+            cue_embeddings = model.encode(cue_texts, show_progress_bar=True)
+            sim_matrix = np.dot(cue_embeddings, sign_embeddings.T)
+            # Zero out columns corresponding to empty sign texts.
+            for j, seg in enumerate(sign_segments):
+                if not (seg.get('text') or "").strip():
+                    sim_matrix[:, j] = 0
 
     elif similarity_measure == "sign_clip_embedding":
-        if subtitle_embedding.shape[0] != M:
-            raise ValueError(f"Subtitle embedding mismatch: expected {M} rows, got {subtitle_embedding.shape[0]}")
-        if segmentation_embedding.shape[0] != N:
-            raise ValueError(f"Segmentation embedding mismatch: expected {N} rows, got {segmentation_embedding.shape[0]}")
-        sim_matrix = np.dot(subtitle_embedding, segmentation_embedding.T)
-
-        # print(sim_matrix)
-        
-        # # Optionally, apply normalization here.
-        # # Normalize rows by the ratio of each subtitle cue's duration to the mean subtitle duration.
-        # cue_durations = np.array([cue['end'] - cue['start'] for cue in cues])
-        # mean_cue_duration = np.mean(cue_durations)
-        # row_factors = cue_durations / mean_cue_duration
-
-        # # Normalize columns by the ratio of each sign segment's duration to the mean sign segment duration.
-        # sign_durations = np.array([seg['end'] - seg['start'] for seg in sign_segments])
-        # mean_sign_duration = np.mean(sign_durations)
-        # col_factors = sign_durations / mean_sign_duration
-
-        # sim_matrix = sim_matrix * row_factors[:, None] 
-        # sim_matrix = sim_matrix * col_factors[None, :]
-
-        # print(sim_matrix)
+        if tokenize_text_embedding:
+            # Ensure we have one tokenized embedding per cue.
+            if subtitle_embedding_tokenized is None or len(subtitle_embedding_tokenized) != M:
+                raise ValueError(f"Subtitle embedding tokenized mismatch: expected {M} elements, got {len(subtitle_embedding_tokenized) if subtitle_embedding_tokenized is not None else 'None'}")
+            # Initialize an empty similarity matrix.
+            sim_matrix = np.zeros((M, N))
+            for i in range(M):
+                token_embeddings = subtitle_embedding_tokenized[i]  # shape: (num_tokens, embedding_dim)
+                if token_embeddings.size == 0 or token_embeddings.shape[0] == 0:
+                    sim_matrix[i, :] = 0
+                else:
+                    for j in range(N):
+                        sign_embedding = segmentation_embedding[j]  # shape: (embedding_dim,)
+                        token_similarities = np.dot(token_embeddings, sign_embedding)
+                        if text_embedding_pooling == "mean":
+                            sim_matrix[i, j] = np.mean(token_similarities)
+                        elif text_embedding_pooling == "max":
+                            sim_matrix[i, j] = np.max(token_similarities)
+                        else:
+                            raise ValueError("Invalid text_embedding_pooling value. Use 'mean' or 'max'.")
+        else:
+            if subtitle_embedding.shape[0] != M:
+                raise ValueError(f"Subtitle embedding mismatch: expected {M} rows, got {subtitle_embedding.shape[0]}")
+            if segmentation_embedding.shape[0] != N:
+                raise ValueError(f"Segmentation embedding mismatch: expected {N} rows, got {segmentation_embedding.shape[0]}")
+            sim_matrix = np.dot(subtitle_embedding, segmentation_embedding.T)
+    
     else:
         raise ValueError(f"Unsupported similarity_measure: {similarity_measure}")
 
@@ -97,6 +146,7 @@ def compute_similarity_matrix(cues, sign_segments, similarity_measure, subtitle_
         sim_cumsum[i, 1:] = np.cumsum(sim_matrix[i, :])
     
     return sim_matrix, sim_cumsum
+
 
 def compute_alignment_cost(cue_start, cue_end, group_start, group_end, 
                            duration_penalty_weight, gap_penalty_weight, gap,
@@ -233,7 +283,9 @@ def dp_align_subtitles_to_signs(cues, sign_segments, gt_cues=None,
                                 window_size=40, max_gap=8.0, similarity_weight=10,
                                 similarity_measure=None,
                                 subtitle_embedding=None,
+                                subtitle_embedding_tokenized=None,
                                 segmentation_embedding=None,
+                                tokenize_text_embedding=False,
                                 visualize_similarity=False):
     """Dynamic programming alignment."""
     M = len(cues)
@@ -272,10 +324,10 @@ def dp_align_subtitles_to_signs(cues, sign_segments, gt_cues=None,
         if similarity_measure == "sign_clip_embedding":
             sim_matrix, sim_cumsum = compute_similarity_matrix(
                 cues, sign_segments, similarity_measure,
-                subtitle_embedding, segmentation_embedding)
+                subtitle_embedding, subtitle_embedding_tokenized, segmentation_embedding, tokenize_text_embedding=tokenize_text_embedding)
         else:
             sim_matrix, sim_cumsum = compute_similarity_matrix(
-                cues, sign_segments, similarity_measure)
+                cues, sign_segments, similarity_measure, tokenize_text_embedding=tokenize_text_embedding)
     else:
         sim_matrix = np.empty((M, N), dtype=np.float64)  # dummy; not used
 

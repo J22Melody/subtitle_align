@@ -57,6 +57,8 @@ def process_video(vid, args, model, sign_b, sign_o):
     if os.path.exists(subtitle_corrected_file):
         cmd += f" --subtitles-corrected={subtitle_corrected_file}"
 
+    # print(cmd)
+
     # Run the command.
     result = subprocess.run(cmd, shell=True)
     if result.returncode != 0:
