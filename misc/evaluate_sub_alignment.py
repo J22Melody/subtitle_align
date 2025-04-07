@@ -18,6 +18,7 @@ import argparse
 from pickle import SHORT_BINSTRING
 from typing import List, Tuple
 from pathlib import Path
+import multiprocessing
 
 import os 
 import tqdm
@@ -153,92 +154,64 @@ def subs2frames(
         frames[start_idx:end_idx] = [sub_idx for _ in range(end_idx - start_idx)]
     return frames
 
-@beartype
-def eval_subtitle_alignment(
-        pred_path_root: Path,
-        gt_anno_path_root: Path,
-        list_videos: List,
-        fps: int, 
-        shift_start = 0,
-        shift_end = 0,
-):
-
-    if os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.vtt')): 
-        ext_gt = '.vtt'
-    elif os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.srt')): 
-        ext_gt = '.srt'
-    else: 
-        ext_gt = '/signhd.vtt'
-
-    if os.path.exists(os.path.join(pred_path_root, list_videos[0]+'.vtt')): 
-        ext_pred = '.vtt'
-    elif os.path.exists(os.path.join(pred_path_root, list_videos[0]+'.srt')): 
-        ext_pred = '.srt'
-    else: 
-        ext_pred = '/signhd.vtt'
-    gt_anno_paths = [Path(f'{gt_anno_path_root}/{p}{ext_gt}') for p in list_videos]
-    pred_paths = [Path(f'{pred_path_root}/{p}{ext_pred}') for p in list_videos]
-
-    """Evaluate subtitle alignment quality.
-
-    Args:
-        pred_paths: the locations of subtitle timing predictions (in .vtt format)
-        gt_anno_paths: the locations of subtitle ground truth timings (in .vtt format)
-        fps: the frame rate of the videos
+def _process_video(pred_path, gt_path, vid_id, shift_start, shift_end, fps, MAX_TIME_PAD_SECS, overlaps, BACKGROUND_LABEL, ext_gt, ext_pred):
     """
-    correct = 0
-    total = 0
-    total_subs = 0
-    all_offset_start = []
-    all_offset_end = []
-    all_offset_start_abs = []
-    all_offset_end_abs = []
-    BACKGROUND_LABEL = -1
-    MAX_TIME_PAD_SECS = 10
-    overlaps = [0.1, 0.25, 0.5]
-    tp, fp, fn = np.zeros(3), np.zeros(3), np.zeros(3)
+    Process a single video's subtitles and compute metrics.
+    """
+    # Initialize local metrics
+    video_correct = 0
+    video_total_frames = 0
+    video_total_subs = 0
+    video_all_offset_start = []
+    video_all_offset_end = []
+    video_all_offset_start_abs = []
+    video_all_offset_end_abs = []
+    video_tp = np.zeros(len(overlaps))
+    video_fp = np.zeros(len(overlaps))
+    video_fn = np.zeros(len(overlaps))
+    video_msg = 'no susbtitle to evaluate, skipping'
+    
+    # if 'natural' in str(pred_path):
+    #     continue
 
-    for pred_path, gt_path, vid_id in tqdm.tqdm(zip(pred_paths, gt_anno_paths, list_videos)):
+    gt_subs = list(webvtt.from_srt(gt_path) if ext_gt == '.srt' else webvtt.read(gt_path))
+    pred_subs = list(webvtt.from_srt(pred_path) if ext_pred == '.srt' else webvtt.read(pred_path))
 
-        # if 'natural' in str(pred_path):
-        #     continue
-
-        gt_subs = list(webvtt.from_srt(gt_path) if ext_gt == '.srt' else webvtt.read(gt_path))
-        pred_subs = list(webvtt.from_srt(pred_path) if ext_pred == '.srt' else webvtt.read(pred_path))
-
-        # suppose pred_subs already exclude [NON-SIGN], etc.
-        if len(gt_subs) != len(pred_subs):
-            gt_subs = [sub for sub in gt_subs if not ("[" in sub.text and "]" in sub.text)]
-            pred_subs = [sub for sub in pred_subs if not ("[" in sub.text and "]" in sub.text)]
-        else:
-            # Get indices in pred_subs where the exclusion tag appears
-            excluded_indices = [i for i, sub in enumerate(gt_subs) if '[' in sub.text and ']' in sub.text]
-            # Filter out entries with those indices from both lists
-            gt_subs = [sub for i, sub in enumerate(gt_subs) if i not in excluded_indices]
-            pred_subs = [sub for i, sub in enumerate(pred_subs) if i not in excluded_indices]
-
+    # suppose pred_subs already exclude [NON-SIGN], etc.
+    if len(gt_subs) != len(pred_subs):
+        gt_subs = [sub for sub in gt_subs if not ("[" in sub.text and "]" in sub.text)]
+        pred_subs = [sub for sub in pred_subs if not ("[" in sub.text and "]" in sub.text)]
+    else:
         # Get indices in pred_subs where the exclusion tag appears
-        excluded_indices = [i for i, sub in enumerate(pred_subs) if '{CSLR_EXCLUDED}' in sub.text]
+        excluded_indices = [i for i, sub in enumerate(gt_subs) if '[' in sub.text and ']' in sub.text]
         # Filter out entries with those indices from both lists
         gt_subs = [sub for i, sub in enumerate(gt_subs) if i not in excluded_indices]
         pred_subs = [sub for i, sub in enumerate(pred_subs) if i not in excluded_indices]
 
-        for sub_idx in range(len(pred_subs)): 
-            pred_subs[sub_idx]._start += shift_start
-            pred_subs[sub_idx]._end += shift_end
+    # Get indices in pred_subs where the exclusion tag appears
+    excluded_indices = [i for i, sub in enumerate(pred_subs) if '{CSLR_EXCLUDED}' in sub.text]
+    # Filter out entries with those indices from both lists
+    gt_subs = [sub for i, sub in enumerate(gt_subs) if i not in excluded_indices]
+    pred_subs = [sub for i, sub in enumerate(pred_subs) if i not in excluded_indices]
 
-        msg = (f"Expected num. preds {len(pred_subs)} to match num. gt {len(gt_subs)} for"
-               f" {pred_path}")
+    # for s in gt_subs:
+    #     print(s)
+    # for s in pred_subs:
+    #     print(s)
 
-        assert len(pred_subs) == len(gt_subs), msg
-        total_subs += len(gt_subs)
+    for sub_idx in range(len(pred_subs)): 
+        pred_subs[sub_idx]._start += shift_start
+        pred_subs[sub_idx]._end += shift_end
+
+    msg = (f"Expected num. preds {len(pred_subs)} to match num. gt {len(gt_subs)} for"
+           f" {pred_path}")
+    assert len(pred_subs) == len(gt_subs), msg
+
+    if len(gt_subs) > 0:
+        video_total_subs += len(gt_subs)
 
         # We pick the maximum time for the evaluation to be a fixed offset (10 seconds)
-        # beyond the last ground truth subtitle. The rationale here is that we want to
-        # evaluate over the same number of frames for each alignment algorithm (so the
-        # evaluation protocol should only depend on the ground truth subtitle alignments)
-        # but we also want to penalise methods that predict subtitles beyond the last
-        # ground truth alignment.
+        # beyond the last ground truth subtitle.
         max_time = gt_subs[-1]._end + MAX_TIME_PAD_SECS
 
         # If an annotator is unable to align the subtitle with the signing, they leave
@@ -254,18 +227,14 @@ def eval_subtitle_alignment(
         for sub_idx, sub in enumerate(gt_subs):
             if "[" in sub.text and "]" in sub.text:
                 exclude_subs.append(sub_idx)
-            # if sub._end - sub._start < 0.01:
-            #     exclude_subs.append(sub_idx)
             else:
-                all_offset_start.append(sub._start - pred_subs[sub_idx]._start)
-                all_offset_end.append(sub._end - pred_subs[sub_idx]._end)
-                all_offset_start_abs.append(abs(sub._start - pred_subs[sub_idx]._start))
-                all_offset_end_abs.append(abs(sub._end - pred_subs[sub_idx]._end))
-        total_subs -= len(exclude_subs)
+                video_all_offset_start.append(sub._start - pred_subs[sub_idx]._start)
+                video_all_offset_end.append(sub._end - pred_subs[sub_idx]._end)
+                video_all_offset_start_abs.append(abs(sub._start - pred_subs[sub_idx]._start))
+                video_all_offset_end_abs.append(abs(sub._end - pred_subs[sub_idx]._end))
+        video_total_subs -= len(exclude_subs)
 
-        # To compute metrics, we convert all the subtitles into a sequence of frame-level
-        # labels, where for each frame, the label indicates which subtitle (if any) it
-        # was assigned.
+        # Convert subtitles into a sequence of frame-level labels.
         pred_frames = subs2frames(
             subs=pred_subs,
             max_time=float(max_time),
@@ -285,15 +254,9 @@ def eval_subtitle_alignment(
 
         # Compute frame-level accuracy
         for pred, gt in zip(pred_frames, gt_frames):
-            total += 1
+            video_total_frames += 1
             if pred == gt:
-                correct += 1
-
-            msg = (f"Frame-level accuracy: {100 * float(correct)/total:.2f}"
-                f" (computed over {total} frames, {total_subs} sentences)")
-
-            # print(msg)
-            # import ipdb; ipdb.set_trace(context=20)
+                video_correct += 1
 
         # Compute f-scores at various overlaps over frame sequences
         for ii, overlap in enumerate(overlaps):
@@ -303,9 +266,148 @@ def eval_subtitle_alignment(
                 overlap=overlap,
                 bg_class=[BACKGROUND_LABEL],
             )
-            tp[ii] += tp1
-            fp[ii] += fp1
-            fn[ii] += fn1
+            video_tp[ii] += tp1
+            video_fp[ii] += fp1
+            video_fn[ii] += fn1
+
+        # Compute evaluation message for this video
+        video_msg = (
+            f"Mean and median start offset: {mean(video_all_offset_start):.2f} / {median(video_all_offset_start):.2f} \n"
+            f"Mean and median end offset: {mean(video_all_offset_end):.2f} / {median(video_all_offset_end):.2f} \n"
+            f"Mean and median start offset (abs): {mean(video_all_offset_start_abs):.2f} / {median(video_all_offset_start_abs):.2f} \n"
+            f"Mean and median end offset (abs): {mean(video_all_offset_end_abs):.2f} / {median(video_all_offset_end_abs):.2f} \n"
+            f"Computed over {video_total_frames} frames, {video_total_subs} sentences - "
+            f"Frame-level accuracy: {100 * float(video_correct)/video_total_frames:.2f}"
+        )
+        for ii, overlap in enumerate(overlaps):
+            precision = video_tp[ii] / float(video_tp[ii] + video_fp[ii])
+            recall = video_tp[ii] / float(video_tp[ii] + video_fn[ii])
+            f1 = 2.0 * (precision * recall) / (precision + recall)
+            f1 = np.nan_to_num(f1) * 100
+            video_msg += f" F1@{overlap:0.2f}: {f1:.2f}"
+        
+    return {
+        'correct': video_correct,
+        'total_frames': video_total_frames,
+        'total_subs': video_total_subs,
+        'all_offset_start': video_all_offset_start,
+        'all_offset_end': video_all_offset_end,
+        'all_offset_start_abs': video_all_offset_start_abs,
+        'all_offset_end_abs': video_all_offset_end_abs,
+        'tp': video_tp,
+        'fp': video_fp,
+        'fn': video_fn,
+        'msg': video_msg,  # add the per-video evaluation message
+    }
+
+def eval_subtitle_alignment(
+        pred_path_root: "Path",
+        gt_anno_path_root: "Path",
+        list_videos: list,
+        fps: int, 
+        shift_start=0,
+        shift_end=0,
+        num_workers=1,
+        debug=False,  # new debug parameter, default False
+):
+    if os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.vtt')): 
+        ext_gt = '.vtt'
+    elif os.path.exists(os.path.join(gt_anno_path_root, list_videos[0]+'.srt')): 
+        ext_gt = '.srt'
+    else: 
+        ext_gt = '/signhd.vtt'
+
+    if os.path.exists(os.path.join(pred_path_root, list_videos[0]+'.vtt')): 
+        ext_pred = '.vtt'
+    elif os.path.exists(os.path.join(pred_path_root, list_videos[0]+'.srt')): 
+        ext_pred = '.srt'
+    else: 
+        ext_pred = '/signhd.vtt'
+    gt_anno_paths = [f'{gt_anno_path_root}/{p}{ext_gt}' for p in list_videos]
+    pred_paths = [f'{pred_path_root}/{p}{ext_pred}' for p in list_videos]
+
+    """Evaluate subtitle alignment quality.
+
+    Args:
+        pred_paths: the locations of subtitle timing predictions (in .vtt format)
+        gt_anno_paths: the locations of subtitle ground truth timings (in .vtt format)
+        fps: the frame rate of the videos
+    """
+    correct = 0
+    total = 0
+    total_subs = 0
+    all_offset_start = []
+    all_offset_end = []
+    all_offset_start_abs = []
+    all_offset_end_abs = []
+    BACKGROUND_LABEL = -1
+    MAX_TIME_PAD_SECS = 10
+    overlaps = [0.1, 0.25, 0.5]
+    tp = np.zeros(3)
+    fp = np.zeros(3)
+    fn = np.zeros(3)
+
+    # Process each video either sequentially or in parallel based on num_workers.
+    results = []
+    if num_workers > 1:
+        # Use multiprocessing to parallelize the processing of videos.
+        args_list = [
+            (
+                pred_path,
+                gt_path,
+                vid_id,
+                shift_start,
+                shift_end,
+                fps,
+                MAX_TIME_PAD_SECS,
+                overlaps,
+                BACKGROUND_LABEL,
+                ext_gt,
+                ext_pred,
+            )
+            for pred_path, gt_path, vid_id in zip(pred_paths, gt_anno_paths, list_videos)
+        ]
+        with multiprocessing.Pool(num_workers) as pool:
+            # Using starmap to pass multiple arguments to _process_video.
+            for res in tqdm.tqdm(pool.starmap(_process_video, args_list), total=len(args_list)):
+                results.append(res)
+    else:
+        # Sequential processing as before.
+        for pred_path, gt_path, vid_id in tqdm.tqdm(zip(pred_paths, gt_anno_paths, list_videos)):
+            res = _process_video(
+                pred_path,
+                gt_path,
+                vid_id,
+                shift_start,
+                shift_end,
+                fps,
+                MAX_TIME_PAD_SECS,
+                overlaps,
+                BACKGROUND_LABEL,
+                ext_gt,
+                ext_pred,
+            )
+            results.append(res)
+            if debug:
+                print(f"Video {vid_id} evaluation:\n{res['msg']}\n")
+
+    # If running in parallel and debug is True, print each video's evaluation message
+    if num_workers > 1 and debug:
+        for idx, res in enumerate(results):
+            print(f"Video {list_videos[idx]} evaluation:\n{res['msg']}\n")
+
+    # Aggregate results from all videos
+    for res in results:
+        correct += res['correct']
+        total += res['total_frames']
+        total_subs += res['total_subs']
+        all_offset_start.extend(res['all_offset_start'])
+        all_offset_end.extend(res['all_offset_end'])
+        all_offset_start_abs.extend(res['all_offset_start_abs'])
+        all_offset_end_abs.extend(res['all_offset_end_abs'])
+        tp += res['tp']
+        fp += res['fp']
+        fn += res['fn']
 
     # Provide a summary of the computed metrics
     print('total ', total, 'subs', total_subs)
@@ -326,7 +428,7 @@ def eval_subtitle_alignment(
         msg = f'{msg} {f1_msg}'
 
     # print(msg)
-    return msg 
+    return msg
 
 def parse_args():
     # pylint: disable=line-too-long

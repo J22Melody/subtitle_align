@@ -136,6 +136,7 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
     cues = shift_cues(cues, pr_subs_delta_bias_start, pr_subs_delta_bias_end)
 
     subtitle_embedding = None
+    subtitle_embedding_tokenized = None
     segmentation_embedding = None
     if args.similarity_measure == "sign_clip_embedding":
         if args.live_embedding:
@@ -149,7 +150,8 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
             segmentation_emb_file = os.path.join(args.segmentation_embedding_dir, f"{video_id}.npy")
             if os.path.exists(subtitle_emb_file) and os.path.exists(segmentation_emb_file):
                 subtitle_embedding = np.load(subtitle_emb_file)
-                subtitle_embedding = np.delete(subtitle_embedding, excluded_ids, axis=0)
+                if not args.include_non_sign:
+                    subtitle_embedding = np.delete(subtitle_embedding, excluded_ids, axis=0)
                 segmentation_embedding = np.load(segmentation_emb_file)
             else:
                 print(f"Embedding files for video {video_id} not found. Skipping video.")
@@ -364,7 +366,7 @@ def main():
                            post_subs_start=post_subs_start, post_subs_end=post_subs_end,
                            cmpl_overlapIoU=args.cmpl_overlapIoU[0])
         eval_output = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                              video_ids, args.fps, 0, 0)
+                                              video_ids, args.fps, 0, 0, num_workers=args.num_workers)
         print(eval_output)
     elif args.mode == "training":
         training_base = f"{args.save_dir}_training"
@@ -397,7 +399,7 @@ def main():
                                post_subs_start=post_subs_start, post_subs_end=post_subs_end,
                                cmpl_overlapIoU=cmpl_overlapIoU)
             eval_output = eval_subtitle_alignment(Path(output_dir), Path(args.gt_sub_path),
-                                                  video_ids, args.fps, 0, 0)
+                                                  video_ids, args.fps, 0, 0, num_workers=args.num_workers)
             f1_score = extract_f1_score(eval_output)
             scores[comb_str] = f1_score
             print(f"Trial {i+1}/{args.num_search}, Params: {comb_str}, F1@0.50: {f1_score}")
@@ -431,7 +433,7 @@ def main():
                            post_subs_start=best_params[10], post_subs_end=best_params[11],
                            cmpl_overlapIoU=best_params[12])
         final_eval = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                             video_ids, args.fps, 0, 0)
+                                             video_ids, args.fps, 0, 0, num_workers=args.num_workers)
         print(final_eval)
 
 if __name__ == '__main__':
