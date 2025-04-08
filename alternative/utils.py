@@ -274,6 +274,133 @@ def write_updated_eaf(eaf_file, cues, video_id, signs=None, additional_signs={})
     tree.write(output_eaf, encoding="utf-8", xml_declaration=True)
     print(f"Written updated ELAN file to {output_eaf}")
 
+def print_results(eval_output, column_names=None):
+    """
+    Parses evaluation output(s) and prints a formatted table of results.
+    
+    If eval_output is a string, a single-column table is printed.
+    If eval_output is a list, each element is treated as a separate column.
+    
+    Each evaluation output is expected to have lines like:
+    
+    total  1172902 subs 9168
+    Mean and median start offset: 0.37 / 0.03
+    Mean and median end offset: -0.37 / -0.45
+    Mean and median start offset (abs): 1.30 / 0.61
+    Mean and median end offset (abs): 1.37 / 0.85
+    Computed over 1172902 frames, 9168 sentences - Frame-level accuracy: 75.43 F1@0.10: 82.36 F1@0.25: 77.17 F1@0.50: 61.43
+    """
+    # If eval_output is a string, convert to a single-element list.
+    if isinstance(eval_output, str):
+        eval_outputs = [eval_output]
+        if column_names is None:
+            column_names = ["Result"]
+    else:
+        eval_outputs = eval_output
+        if column_names is None:
+            column_names = [f"Result {i+1}" for i in range(len(eval_outputs))]
+    
+    # Parse each evaluation output into a dictionary of metric->value.
+    def parse_eval(e):
+        d = {}
+        for line in e.splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            if " - " in line:
+                prefix, suffix = line.split(" - ", 1)
+                m = re.search(r'over\s+(\d+)\s+frames,\s+(\d+)\s+sentences', prefix)
+                if m:
+                    d["Total frames"] = m.group(1)
+                    d["Total sentences"] = m.group(2)
+                pairs = re.findall(r'([A-Za-z0-9@\(\)\-\s]+):\s*([-\d\.\/]+)', suffix)
+                for key, value in pairs:
+                    key = key.strip()
+                    if key in {"F1@10", "10"}:
+                        key = "F1@0.10"
+                    elif key in {"F1@25", "25"}:
+                        key = "F1@0.25"
+                    elif key in {"F1@50", "50"}:
+                        key = "F1@0.50"
+                    d[key] = value.strip()
+            elif ":" in line:
+                key, value = line.split(":", 1)
+                d[key.strip()] = value.strip()
+            else:
+                tokens = line.split()
+                if len(tokens) >= 4 and tokens[0].lower() == "total":
+                    d["Total frames"] = tokens[1]
+                    d["Total subtitles"] = tokens[3]
+                else:
+                    d[line.strip()] = ""
+        return d
+
+    dicts = [parse_eval(e) for e in eval_outputs]
+    
+    # Get union of all keys.
+    all_keys = set()
+    for d in dicts:
+        all_keys.update(d.keys())
+    
+    # Sort keys by: Total frames, Total sentences/subtitles, non-abs offset values,
+    # then absolute offsets, frame-level accuracy, then F1 metrics.
+    def sort_key(metric):
+        m = metric.lower()
+        if m.startswith("total frames"):
+            return (0, m)
+        elif "total sentences" in m or "total subtitles" in m:
+            return (1, m)
+        elif "start offset" in m and "(abs)" not in m:
+            return (2, m)
+        elif "end offset" in m and "(abs)" not in m:
+            return (3, m)
+        elif "start offset" in m and "(abs)" in m:
+            return (4, m)
+        elif "end offset" in m and "(abs)" in m:
+            return (5, m)
+        elif m.startswith("frame-level accuracy"):
+            return (6, m)
+        elif m.startswith("f1@0.10"):
+            return (7, m)
+        elif m.startswith("f1@0.25"):
+            return (8, m)
+        elif m.startswith("f1@0.50"):
+            return (9, m)
+        else:
+            return (10, m)
+    sorted_keys = sorted(all_keys, key=sort_key)
+    
+    # Prepare table columns: first column is "Metric", then one column per evaluation output.
+    num_columns = 1 + len(dicts)
+    headers = ["Metric"] + column_names
+    
+    # Determine column widths.
+    col_widths = []
+    first_col_width = max(len("Metric"), max((len(k) for k in sorted_keys), default=0))
+    col_widths.append(first_col_width)
+    for i in range(len(dicts)):
+        header_len = len(column_names[i])
+        max_val_len = header_len
+        for key in sorted_keys:
+            val = dicts[i].get(key, "")
+            if len(val) > max_val_len:
+                max_val_len = len(val)
+        col_widths.append(max_val_len)
+    
+    # Print header row.
+    header_row = " | ".join(h.ljust(col_widths[i]) for i, h in enumerate(headers))
+    print(header_row)
+    separator_row = "-+-".join("-" * col_widths[i] for i in range(num_columns))
+    print(separator_row)
+    
+    # Print each metric row.
+    for key in sorted_keys:
+        row = [key.ljust(col_widths[0])]
+        for i in range(len(dicts)):
+            val = dicts[i].get(key, "")
+            row.append(val.ljust(col_widths[i+1]))
+        print(" | ".join(row))
+
 def extract_f1_score(eval_output):
     """Extract F1@0.50 score from evaluation output."""
     m = re.search(r"F1@0\.50:\s*([\d.]+)", eval_output)

@@ -21,6 +21,7 @@ from utils import (
     reconstruct_vtt,
     get_sign_segments_from_eaf,
     write_updated_eaf,
+    print_results,
     extract_f1_score,
     get_cslr_signs,
     get_cmpl_signs,
@@ -28,6 +29,7 @@ from utils import (
     merge_signs,
     filter_cues_by_cslr,
 )
+from config import get_args  # Import argument parser from config.py
 
 # Add the ../misc directory to sys.path to import the evaluation function.
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +38,7 @@ if misc_dir not in sys.path:
     sys.path.append(misc_dir)
 from evaluate_sub_alignment import eval_subtitle_alignment
 
+from align_similarity import compute_similarity_matrix
 from align_dp import dp_align_subtitles_to_signs
 
 def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_weight,
@@ -135,27 +138,62 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
     # Apply pre-alignment bias on cues.
     cues = shift_cues(cues, pr_subs_delta_bias_start, pr_subs_delta_bias_end)
 
-    subtitle_embedding = None
-    subtitle_embedding_tokenized = None
-    segmentation_embedding = None
-    if args.similarity_measure == "sign_clip_embedding":
-        if args.live_embedding:
-            sys.path.append("/users/zifan/sign_clip/scripts_bsl")
-            from extract_episode_features import live_embed_subtitles, live_embed_signs
+    # Initialize the output similarity matrix.
+    # If the only similarity measure is "none", then sim_matrices will be set to None.
+    if args.similarity_measure == ["none"]:
+        sim_matrix = None
+    else:
+        sim_matrices = []  # List to store similarity matrices for each measure.
+        
+        # Loop over each provided similarity measure.
+        for i, sim_measure in enumerate(args.similarity_measure):
+            # For the "sign_clip_embedding" measure, we need to get the embeddings first.
+            if sim_measure == "sign_clip_embedding":
+                if args.live_embedding:
+                    # If live embedding is enabled, import and run the live embedding functions.
+                    sys.path.append("/users/zifan/sign_clip/scripts_bsl")
+                    from extract_episode_features import live_embed_subtitles, live_embed_signs
 
-            subtitle_embedding, subtitle_embedding_tokenized = live_embed_subtitles(cues, tokenize_text_embedding=args.tokenize_text_embedding)
-            segmentation_embedding = live_embed_signs(signs, video_id)
-        else:
-            subtitle_emb_file = os.path.join(args.subtitle_embedding_dir, f"{video_id}.npy")
-            segmentation_emb_file = os.path.join(args.segmentation_embedding_dir, f"{video_id}.npy")
-            if os.path.exists(subtitle_emb_file) and os.path.exists(segmentation_emb_file):
-                subtitle_embedding = np.load(subtitle_emb_file)
-                if not args.include_non_sign:
-                    subtitle_embedding = np.delete(subtitle_embedding, excluded_ids, axis=0)
-                segmentation_embedding = np.load(segmentation_emb_file)
+                    subtitle_embedding, subtitle_embedding_tokenized = live_embed_subtitles(
+                        cues, tokenize_text_embedding=args.tokenize_text_embedding
+                    )
+                    segmentation_embedding = live_embed_signs(signs, video_id)
+                else:
+                    # Use the corresponding directory by index.
+                    subdir = args.subtitle_embedding_dir[i] 
+                    segdir = args.segmentation_embedding_dir[i] 
+                    subtitle_emb_file = os.path.join(subdir, f"{video_id}.npy")
+                    segmentation_emb_file = os.path.join(segdir, f"{video_id}.npy")
+                    
+                    if os.path.exists(subtitle_emb_file) and os.path.exists(segmentation_emb_file):
+                        subtitle_embedding = np.load(subtitle_emb_file)
+                        # Optionally remove non-sign embeddings if specified.
+                        if not args.include_non_sign:
+                            subtitle_embedding = np.delete(subtitle_embedding, excluded_ids, axis=0)
+                        segmentation_embedding = np.load(segmentation_emb_file)
+                    else:
+                        print(f"Embedding files for video {video_id} not found for similarity measure '{sim_measure}' in directories: {subdir} and {segdir}. Skipping measure.")
+                        continue  # Skip this measure if files are not found.
+                    
+                    # Since we are not live embedding, set tokenized embeddings to None.
+                    subtitle_embedding_tokenized = None
+                
+                # Call compute_similarity_matrix with the embeddings.
+                sim_matrix = compute_similarity_matrix(
+                    cues, signs, sim_measure,
+                    subtitle_embedding, subtitle_embedding_tokenized, segmentation_embedding,
+                    tokenize_text_embedding=args.tokenize_text_embedding
+                )
             else:
-                print(f"Embedding files for video {video_id} not found. Skipping video.")
-                return
+                # For non-sign_clip_embedding measures, compute similarity directly.
+                sim_matrix = compute_similarity_matrix(
+                    cues, signs, sim_measure,
+                    tokenize_text_embedding=args.tokenize_text_embedding
+                )
+            sim_matrices.append(sim_matrix)
+
+        # Convert list to numpy array and average along the 0th axis (elementwise mean).
+        sim_matrix = np.mean(np.array(sim_matrices), axis=0)
 
     if args.debug:
         debug_sec = 30
@@ -171,11 +209,7 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
        window_size=dp_window_size,
        max_gap=dp_max_gap,
        similarity_weight=similarity_weight,
-       similarity_measure=args.similarity_measure,
-       subtitle_embedding=subtitle_embedding,
-       subtitle_embedding_tokenized=subtitle_embedding_tokenized,
-       tokenize_text_embedding=args.tokenize_text_embedding,
-       segmentation_embedding=segmentation_embedding,
+       sim_matrix=sim_matrix,
        visualize_similarity=args.visualize_similarity)
     
     # Apply post-alignment bias on the cues.
@@ -239,115 +273,52 @@ def process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, similarity
         for vid in tqdm(video_ids, desc="Processing videos"):
             func(vid)
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Shift subtitle timings, align cues to SIGN segments, merge additional sign annotations (if set), and write an updated ELAN file."
-    )
-    parser.add_argument("--video_ids", type=str,
-                        default="/users/zifan/subtitle_align/data/bobsl_align_test.txt",
-                        help="Path to text file with video ids (one per line).")
-    parser.add_argument("--pr_sub_path", type=str,
-                        default="/users/zifan/BOBSL/v1.4/automatic_annotations/signing_aligned_subtitles/audio_aligned_heuristic_correction",
-                        help="Directory where subtitle (VTT) files are stored.")
-    parser.add_argument("--gt_sub_path", type=str,
-                        default="/users/zifan/BOBSL/v1.4/manual_annotations/signing_aligned_subtitles",
-                        help="Directory where ground truth subtitle (VTT) files are stored.")
-    parser.add_argument("--save_dir", type=str,
-                        default="/users/zifan/subtitle_align/alternative/aligned_subtitles",
-                        help="Directory to store aligned subtitle VTT files.")
-    parser.add_argument("--segmentation_dir", type=str,
-                        default="/scratch/shared/beegfs/zifan/bobsl/segmentation",
-                        help="Directory with segmentation ELAN (.eaf) files.")
-    parser.add_argument("--refine", action="store_true")
-    parser.add_argument("--refine_dir", type=str,
-                        default="/users/zifan/BOBSL/derivatives/segmentation/E4s-cslr_30_50",
-                        help="Directory with segmentation ELAN (.eaf) files.")
-    parser.add_argument("--include_non_sign", action="store_true")
-    # New argument for CMPL segmentation files.
-    parser.add_argument("--cmpl", action="store_true",
-                        help="If set, merge additional sign segments from the CMPL segmentation directory.")
-    parser.add_argument("--cmpl_only", action="store_true",
-                        help="Use CMPL segmentation only.")
-    parser.add_argument("--cmpl_dir", type=str,
-                        default="/users/zifan/BOBSL/derivatives/segmentation_bsl/mstcn_bsl1k_cmpl",
-                        help="Directory with segmentation files in CMPL format (optional).")
-    parser.add_argument("--pseudo_glosses", action="store_true",
-                        help="If set, merge additional sign segments from the pseudo_glosses segmentation directory.")
-    parser.add_argument("--pseudo_glosses_only", action="store_true",
-                        help="Use pseudo_glosses segmentation only.")
-    parser.add_argument("--pseudo_glosses_dir", type=str,
-                        default="/users/zifan/BOBSL/derivatives/pseudo_glosses",
-                        help="Directory with segmentation files in pseudo_glosses format (optional).")
-    parser.add_argument("--similarity_measure", type=str, default="none", choices=["none", "cslr_subtitle", "cslr_text", "cslr_text_embedding", "sign_clip_embedding"],
-                        help="Similarity measure to use.")
-    parser.add_argument("--tokenize_text_embedding", action="store_true")
-    parser.add_argument("--subtitle_embedding_dir", type=str,
-                        default="/scratch/shared/beegfs/zifan/bobsl/subtitle_embedding/sign_clip",
-                        help="Directory containing subtitle cue embeddings (NPY files) for sign_clip_embedding.")
-    parser.add_argument("--segmentation_embedding_dir", type=str,
-                        default="/scratch/shared/beegfs/zifan/bobsl/segmentation_embedding/E4s-1_30_50/sign_clip",
-                        help="Directory containing sign segment embeddings (NPY files) for sign_clip_embedding.")
-    parser.add_argument("--visualize_similarity", action="store_true")
-    parser.add_argument("--cslr", action="store_true",
-                        help="Merge CSLR CSV sign annotations with ELAN signs before DP alignment.")
-    parser.add_argument("--cslr_only", action="store_true",
-                        help="Use CSLR segmentation only.")
-    parser.add_argument("--cslr_partial_eval", action="store_true",
-                        help="If set, filter subtitle cues to those overlapping with CSLR signs only (partial evaluation).")
-    parser.add_argument("--cslr_dir", type=str,
-                        default="/users/zifan/BOBSL/v1.4/manual_annotations/continuous_sign_sequences/cslr-fixed",
-                        help="Directory with CSLR CSV files (searched recursively).")
-    parser.add_argument("--fps", type=int, default=25)
-    # Now pr_subs_delta_bias_* accept multiple values.
-    parser.add_argument("--pr_subs_delta_bias_start", type=float, nargs='+', default=[2.7],
-                        help="Delta bias (seconds) added to the start time of each subtitle cue (pre-alignment).")
-    parser.add_argument("--pr_subs_delta_bias_end", type=float, nargs='+', default=[2.7],
-                        help="Delta bias (seconds) added to the end time of each subtitle cue (pre-alignment).")
-    # New post_subs_delta_bias arguments.
-    parser.add_argument("--post_subs_delta_bias_start", type=float, nargs='+', default=[0.0],
-                        help="Delta bias (seconds) added to the start time of each subtitle cue (post-alignment).")
-    parser.add_argument("--post_subs_delta_bias_end", type=float, nargs='+', default=[1.0],
-                        help="Delta bias (seconds) added to the end time of each subtitle cue (post-alignment).")
-    parser.add_argument("--num_workers", type=int, default=1,
-                        help="Number of processes for parallel processing.")
-    parser.add_argument("--overwrite", action='store_true',
-                        help="Overwrite existing files if set.")
-    parser.add_argument("--live_segmentation", action="store_true",
-                        help="Run live segmentation before alignment.")
-    parser.add_argument("--live_embedding", action="store_true",
-                        help="Run live embedding before alignment.")
-    parser.add_argument("--mode", type=str, default="inference", choices=["inference", "training"],
-                        help="Mode: inference (default) or training (parameter search).")
-    parser.add_argument("--num_search", type=int, default=10,
-                        help="Number of random search iterations in training mode.")
-    parser.add_argument("--dp_duration_penalty_weight", type=float, nargs='+', default=[5.0],
-                        help="Duration penalty weight(s) for DP alignment.")
-    parser.add_argument("--dp_gap_penalty_weight", type=float, nargs='+', default=[10.0],
-                        help="Gap penalty weight(s) for DP alignment.")
-    parser.add_argument("--dp_window_size", type=int, nargs='+', default=[50],
-                        help="Window size(s) for DP alignment.")
-    parser.add_argument("--dp_max_gap", type=float, nargs='+', default=[8.0],
-                        help="Max gap(s) allowed between SIGN segments for DP alignment.")
-    parser.add_argument("--similarity_weight", type=float, nargs='+', default=[30.0],
-                        help="Similarity weight(s) for DP alignment.")
-    # New segmentation parameters.
-    parser.add_argument("--segmentation_model", nargs='+', default=["model_E4s-1.pth"], type=str,
-                        help="Path(s) to segmentation model file")
-    parser.add_argument("--sign-b-threshold", nargs='+', default=[30], type=int,
-                        help="Threshold(s) for sign B")
-    parser.add_argument("--sign-o-threshold", nargs='+', default=[70], type=int,
-                        help="Threshold(s) for sign O")
-    # New argument for CMPL overlap IoU threshold.
-    parser.add_argument("--cmpl_overlapIoU", type=float, nargs='+', default=[0.5],
-                        help="IoU threshold for merging CMPL sign segments conservatively.")
-    parser.add_argument("--debug", action="store_true",
-                        help="If set, only use the first 20-30 seconds of cues and segments for debugging.")
-    args = parser.parse_args()
+def load_video_ids(args, mode):
+    """
+    Loads video IDs based on the given mode.
+    For "inference", reads from args.video_ids.
+    For "dev" and "training", reads from args.video_ids_train, args.video_ids_val, and args.video_ids_test.
+    Returns a dictionary with keys:
+      - "all": combined list (for processing)
+      - For dev/training, also returns "train", "val", "test" lists.
+    """
+    if mode == "inference":
+        print('inference')
+        with open(args.video_ids, "r") as f:
+            ids = [line.strip() for line in f if line.strip()]
+        return {"all": ids}
+    elif mode in ["dev", "training"]:
+        with open(args.video_ids_train, "r") as f:
+            train_ids = [line.strip() for line in f if line.strip()]
+        with open(args.video_ids_val, "r") as f:
+            val_ids = [line.strip() for line in f if line.strip()]
+        with open(args.video_ids_test, "r") as f:
+            test_ids = [line.strip() for line in f if line.strip()]
+        combined = train_ids + val_ids + test_ids
+        return {"all": combined, "train": train_ids, "val": val_ids, "test": test_ids}
+    else:
+        return {"all": []}
 
-    with open(args.video_ids, "r") as f:
-        video_ids = [line.strip() for line in f if line.strip()]
-
-    if args.mode == "inference":
+def get_alignment_params(args, randomize=False):
+    """
+    Returns a tuple of common alignment parameters.
+    If randomize is True, a random value is selected from each list.
+    Otherwise, the first value is used.
+    """
+    if randomize:
+        dp_dpw = random.choice(args.dp_duration_penalty_weight)
+        dp_gpw = random.choice(args.dp_gap_penalty_weight)
+        dp_ws  = random.choice(args.dp_window_size)
+        dp_mg  = random.choice(args.dp_max_gap)
+        sim_w  = random.choice(args.similarity_weight)
+        seg_model = random.choice(args.segmentation_model)
+        seg_sign_b = random.choice(args.sign_b_threshold)
+        seg_sign_o = random.choice(args.sign_o_threshold)
+        pr_subs_start = random.choice(args.pr_subs_delta_bias_start)
+        pr_subs_end   = random.choice(args.pr_subs_delta_bias_end)
+        post_subs_start = random.choice(args.post_subs_delta_bias_start)
+        post_subs_end   = random.choice(args.post_subs_delta_bias_end)
+    else:
         dp_dpw = args.dp_duration_penalty_weight[0]
         dp_gpw = args.dp_gap_penalty_weight[0]
         dp_ws  = args.dp_window_size[0]
@@ -360,6 +331,21 @@ def main():
         pr_subs_end   = args.pr_subs_delta_bias_end[0]
         post_subs_start = args.post_subs_delta_bias_start[0]
         post_subs_end   = args.post_subs_delta_bias_end[0]
+    return (dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, seg_model, seg_sign_b, seg_sign_o,
+            pr_subs_start, pr_subs_end, post_subs_start, post_subs_end)
+
+def main():
+    args = get_args()  # Load arguments from config.py
+
+    mode = args.mode
+    # Load video IDs.
+    vids_dict = load_video_ids(args, mode)
+    # Get alignment parameters.
+    (dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, seg_model, seg_sign_b, seg_sign_o,
+     pr_subs_start, pr_subs_end, post_subs_start, post_subs_end) = get_alignment_params(args)
+
+    if mode == "inference":
+        video_ids = vids_dict["all"]
         process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, args.save_dir, save_elan=True,
                            seg_model=seg_model, seg_sign_b=seg_sign_b, seg_sign_o=seg_sign_o,
                            pr_subs_start=pr_subs_start, pr_subs_end=pr_subs_end,
@@ -367,39 +353,49 @@ def main():
                            cmpl_overlapIoU=args.cmpl_overlapIoU[0])
         eval_output = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
                                               video_ids, args.fps, 0, 0, num_workers=args.num_workers)
-        print(eval_output)
-    elif args.mode == "training":
+        print_results(eval_output)
+    elif mode == "dev":
+        video_ids = vids_dict["all"]
+        process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, args.save_dir, save_elan=True,
+                           seg_model=seg_model, seg_sign_b=seg_sign_b, seg_sign_o=seg_sign_o,
+                           pr_subs_start=pr_subs_start, pr_subs_end=pr_subs_end,
+                           post_subs_start=post_subs_start, post_subs_end=post_subs_end,
+                           cmpl_overlapIoU=args.cmpl_overlapIoU[0])
+        eval_train = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
+                                             vids_dict["train"], args.fps, 0, 0, num_workers=args.num_workers)
+        eval_val = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
+                                           vids_dict["val"], args.fps, 0, 0, num_workers=args.num_workers)
+        eval_test = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
+                                            vids_dict["test"], args.fps, 0, 0, num_workers=args.num_workers)
+        col_names = [os.path.splitext(os.path.basename(p))[0] for p in 
+                     [args.video_ids_train, args.video_ids_val, args.video_ids_test]]
+        print_results([eval_train, eval_val, eval_test], column_names=col_names)
+    elif mode == "training":
+        # Use train IDs for parameter search and then final evaluation with all IDs.
+        train_ids = vids_dict["train"]
+        all_ids = vids_dict["all"]
         training_base = f"{args.save_dir}_training"
         os.makedirs(training_base, exist_ok=True)
         best_score = -1.0
         best_params = None
         scores = {}
         for i in range(args.num_search):
-            dp_dpw = random.choice(args.dp_duration_penalty_weight)
-            dp_gpw = random.choice(args.dp_gap_penalty_weight)
-            dp_ws  = random.choice(args.dp_window_size)
-            dp_mg  = random.choice(args.dp_max_gap)
-            sim_w  = random.choice(args.similarity_weight)
-            seg_model = random.choice(args.segmentation_model)
-            seg_sign_b = random.choice(args.sign_b_threshold)
-            seg_sign_o = random.choice(args.sign_o_threshold)
-            pr_subs_start = random.choice(args.pr_subs_delta_bias_start)
-            pr_subs_end   = random.choice(args.pr_subs_delta_bias_end)
-            post_subs_start = random.choice(args.post_subs_delta_bias_start)
-            post_subs_end   = random.choice(args.post_subs_delta_bias_end)
+            # For each trial, randomize alignment parameters.
+            params = get_alignment_params(args, randomize=True)
+            dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, seg_model, seg_sign_b, seg_sign_o, pr_subs_start, pr_subs_end, post_subs_start, post_subs_end = params
             cmpl_overlapIoU = random.choice(args.cmpl_overlapIoU)
             comb_str = (f"dpd_{dp_dpw}_dpg_{dp_gpw}_ws_{dp_ws}_mg_{dp_mg}_sim_{sim_w}_"
                         f"{seg_model}_{seg_sign_b}_{seg_sign_o}_{pr_subs_start}_{pr_subs_end}_"
                         f"{post_subs_start}_{post_subs_end}_cmplIoU_{cmpl_overlapIoU}")
             output_dir = os.path.join(training_base, comb_str)
             os.makedirs(output_dir, exist_ok=True)
-            process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, output_dir, save_elan=False,
+            process_all_videos(train_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, output_dir, save_elan=False,
                                seg_model=seg_model, seg_sign_b=seg_sign_b, seg_sign_o=seg_sign_o,
                                pr_subs_start=pr_subs_start, pr_subs_end=pr_subs_end,
                                post_subs_start=post_subs_start, post_subs_end=post_subs_end,
                                cmpl_overlapIoU=cmpl_overlapIoU)
             eval_output = eval_subtitle_alignment(Path(output_dir), Path(args.gt_sub_path),
-                                                  video_ids, args.fps, 0, 0, num_workers=args.num_workers)
+                                                  train_ids, args.fps, 0, 0, num_workers=args.num_workers)
             f1_score = extract_f1_score(eval_output)
             scores[comb_str] = f1_score
             print(f"Trial {i+1}/{args.num_search}, Params: {comb_str}, F1@0.50: {f1_score}")
@@ -426,15 +422,21 @@ def main():
               f"pr_subs_delta_bias_start={best_params[8]}, pr_subs_delta_bias_end={best_params[9]}, "
               f"post_subs_delta_bias_start={best_params[10]}, post_subs_delta_bias_end={best_params[11]}, "
               f"cmpl_overlapIoU={best_params[12]}")
-        process_all_videos(video_ids, args, best_params[0], best_params[1], best_params[2],
+        process_all_videos(all_ids, args, best_params[0], best_params[1], best_params[2],
                            best_params[3], best_params[4], args.save_dir, save_elan=True,
                            seg_model=best_params[5], seg_sign_b=best_params[6], seg_sign_o=best_params[7],
                            pr_subs_start=best_params[8], pr_subs_end=best_params[9],
                            post_subs_start=best_params[10], post_subs_end=best_params[11],
                            cmpl_overlapIoU=best_params[12])
-        final_eval = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                             video_ids, args.fps, 0, 0, num_workers=args.num_workers)
-        print(final_eval)
-
+        eval_train = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
+                                             vids_dict["train"], args.fps, 0, 0, num_workers=args.num_workers)
+        eval_val = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
+                                           vids_dict["val"], args.fps, 0, 0, num_workers=args.num_workers)
+        eval_test = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
+                                            vids_dict["test"], args.fps, 0, 0, num_workers=args.num_workers)
+        col_names = [os.path.splitext(os.path.basename(p))[0] for p in 
+                     [args.video_ids_train, args.video_ids_val, args.video_ids_test]]
+        print_results([eval_train, eval_val, eval_test], column_names=col_names)
+    
 if __name__ == '__main__':
     main()
