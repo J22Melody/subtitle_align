@@ -126,7 +126,7 @@ def dp_inner_loop(M, N, dp, prev, cue_starts, cue_ends, sign_starts, sign_ends, 
             for idx in range(length):
                 local_sim[idx] = sim_matrix[i-1, cand_min + idx]
             # Use the JIT softmax normalization on the row (local_sim)
-            local_sim = softmax_normalize_jit(local_sim)
+            # local_sim = softmax_normalize_jit(local_sim)
             local_sim_cumsum = np.empty(length + 1, dtype=dp.dtype)
             local_sim_cumsum[0] = 0.0
             for idx in range(length):

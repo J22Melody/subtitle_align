@@ -1,6 +1,17 @@
 import numpy as np
 
-def compute_similarity_matrix(cues, sign_segments, similarity_measure, subtitle_embedding=None, subtitle_embedding_tokenized=None, segmentation_embedding=None, tokenize_text_embedding=False, text_embedding_pooling='max'):
+from utils import softmax_normalize, zscore_sigmoid_normalize, sinkhorn_normalize
+
+def compute_similarity_matrix(
+    cues, sign_segments, similarity_measure,
+    subtitle_embedding=None, subtitle_embedding_tokenized=None,
+    segmentation_embedding=None, tokenize_text_embedding=False,
+    text_embedding_pooling='max',
+    normalize_rowwise=True,
+    normalize_columnwise=False,
+    normalization_method='softmax',
+    filter_threshold: float = 0.0,
+):
     """
     Compute a similarity matrix between cues and sign segments along with a cumulative sum.
     
@@ -109,4 +120,101 @@ def compute_similarity_matrix(cues, sign_segments, similarity_measure, subtitle_
     else:
         raise ValueError(f"Unsupported similarity_measure: {similarity_measure}")
 
-    return sim_matrix
+    # Compute midpoints once
+    cue_midpoints = [(cue['start'] + cue['end']) / 2 for cue in cues]
+    sign_midpoints = [(seg['start'] + seg['end']) / 2 for seg in sign_segments]
+
+    normalized_matrix = sim_matrix.copy()
+    window_size_row = 50
+    window_size_col = int(window_size_row * len(cues) / len(sign_segments))
+
+    if normalization_method == 'sinkhorn':
+        row_normalized_matrix = np.zeros_like(sim_matrix)
+
+        for i_start in range(0, M, window_size_col):  # cues block (rows)
+            i_end = min(i_start + window_size_col, M)
+            cue_block = cues[i_start:i_end]
+            cue_block_midpoints = cue_midpoints[i_start:i_end]
+            mid_block_cue = np.mean(cue_block_midpoints)
+
+            # Find signs closest to the cue block center
+            sign_distances = [abs(sign_mid - mid_block_cue) for sign_mid in sign_midpoints]
+            sorted_sign_indices = np.argsort(sign_distances)
+            sign_window_indices = sorted_sign_indices[:window_size_row]  # signs block (columns)
+
+            # Extract submatrix for cue block × sign window
+            submatrix = sim_matrix[i_start:i_end, :][:, sign_window_indices]
+            if submatrix.size == 0:
+                continue
+
+            # Apply Sinkhorn
+            submatrix = sinkhorn_normalize(submatrix)
+            submatrix = submatrix * window_size_col
+
+            # Apply filtering
+            submatrix[submatrix <= filter_threshold] = 0.0
+
+            # Write submatrix back into global matrix
+            for local_i, global_i in enumerate(range(i_start, i_end)):
+                for local_j, global_j in enumerate(sign_window_indices):
+                    row_normalized_matrix[global_i, global_j] = submatrix[local_i, local_j]
+
+        normalized_matrix = row_normalized_matrix
+    else:
+        if normalize_columnwise:
+            col_normalized_matrix = np.zeros_like(normalized_matrix)
+
+            for j in range(N):
+                sign_mid = sign_midpoints[j]
+                cue_distances = [abs(cue_mid - sign_mid) for cue_mid in cue_midpoints]
+                sorted_indices = np.argsort(cue_distances)
+                window_indices = sorted_indices[:window_size_col]
+
+                values_to_normalize = normalized_matrix[window_indices, j]
+                normalized_values = softmax_normalize(values_to_normalize, axis=0, tau=10)
+                normalized_values *= window_size_col
+
+                # if j < 20:
+                #     print(j, sign_segments[j])
+                #     print(values_to_normalize)
+                #     print(normalized_values)
+
+                for k, i in enumerate(window_indices):
+                    col_normalized_matrix[i, j] = normalized_values[k]
+
+            normalized_matrix = col_normalized_matrix
+
+        if normalize_rowwise:
+            row_normalized_matrix = np.zeros_like(normalized_matrix)
+
+            for i in range(M):
+                cue_mid = cue_midpoints[i]
+                sign_distances = [abs(sign_mid - cue_mid) for sign_mid in sign_midpoints]
+                sorted_indices = np.argsort(sign_distances)
+                window_indices = sorted_indices[:window_size_row]
+
+                values_to_normalize = normalized_matrix[i, window_indices]
+
+                if normalization_method == 'softmax':
+                    normalized_values = softmax_normalize(values_to_normalize, axis=0, tau=10)
+                    normalized_values *= window_size_row
+                elif normalization_method == 'z-score':
+                    normalized_values = zscore_sigmoid_normalize(values_to_normalize, tau=5)
+                elif normalization_method == 'sinkhorn':
+                    submatrix = normalized_matrix[i:i+1, window_indices]
+                    submatrix = sinkhorn_normalize(submatrix)
+                    normalized_values = submatrix[0]
+                else:
+                    raise ValueError(f"Unsupported normalization_method: {normalization_method}")
+
+                # Apply filtering (always)
+                normalized_values[normalized_values <= filter_threshold] = 0.0
+
+                for k, j in enumerate(window_indices):
+                    row_normalized_matrix[i, j] = normalized_values[k]
+
+            normalized_matrix = row_normalized_matrix
+
+    # print(normalized_matrix)
+
+    return normalized_matrix

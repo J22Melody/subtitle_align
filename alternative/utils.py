@@ -7,6 +7,7 @@ from io import StringIO
 import webvtt
 import csv
 import xml.etree.ElementTree as ET
+import numpy as np
 
 
 def timestamp_to_seconds(time_str: str) -> float:
@@ -549,3 +550,35 @@ def filter_cues_by_cslr(cues, cslr_signs):
             cue['text'] = cue['text'] + ' {CSLR_EXCLUDED}'
             filtered_cues.append(cue)
     return filtered_cues
+
+def softmax_normalize(matrix, axis=None, tau=10):
+    """
+    Apply softmax normalization with temperature tau along the specified axis.
+    Always returns a proper softmax (sums to 1).
+    """
+    exp_vals = np.exp(matrix / tau)
+    sum_vals = np.sum(exp_vals, axis=axis, keepdims=True)
+    softmax = exp_vals / sum_vals
+    return softmax
+
+def zscore_sigmoid_normalize(vector, tau=10):
+    """
+    Normalize a 1D numpy array using z-score followed by sigmoid.
+    Values are mapped to (0, 1).
+    """
+    vector = np.asarray(vector)
+    mean = np.mean(vector)
+    std = np.std(vector) + 1e-6  # avoid division by zero
+    z = (vector - mean) / std
+    return 1 / (1 + np.exp(-z / tau))  # sigmoid with tau controlling sharpness
+
+def sinkhorn_normalize(matrix, num_iters=10, eps=1e-8):
+    """
+    Apply Sinkhorn normalization to a 2D matrix (or 1 row at a time).
+    Returns a doubly stochastic matrix.
+    """
+    matrix = np.maximum(matrix, eps)  # avoid division by zero
+    for _ in range(num_iters):
+        matrix /= matrix.sum(axis=1, keepdims=True)
+        matrix /= matrix.sum(axis=0, keepdims=True)
+    return matrix

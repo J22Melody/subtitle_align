@@ -4,24 +4,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
-def softmax_normalize(matrix, axis=None, tau=10):
-    """
-    Apply softmax normalization with temperature tau along the specified axis,
-    then scale the result by the number of elements along that axis.
-    If 'matrix' is 1D and axis is None (or 0), the vector is normalized.
-    """
-    exp_vals = np.exp(matrix / tau)
-    if axis is None:
-        sum_vals = np.sum(exp_vals)
-        softmax = exp_vals / sum_vals
-        scale_factor = matrix.shape[0]
-    else:
-        sum_vals = np.sum(exp_vals, axis=axis, keepdims=True)
-        softmax = exp_vals / sum_vals
-        scale_factor = matrix.shape[axis]
-    return softmax * scale_factor
-
-def visualize_similarity_heatmap(sim_matrix, cues, sign_segments, gt_cues=None, new_cues=None, fps=25, start_time_window=256, end_time_window=416):
+def visualize_similarity_heatmap(sim_matrix, cues, sign_segments, gt_cues=None, new_cues=None, fps=25, start_time_window=0, end_time_window=256):
     """Visualize similarity matrix with aligned and ground truth cues at frame-level resolution.
     
     [Documentation omitted for brevity]
@@ -87,8 +70,8 @@ def visualize_similarity_heatmap(sim_matrix, cues, sign_segments, gt_cues=None, 
         masks_list.append(mask)
         if np.any(mask):
             local_vals = heatmap_data[row_idx, mask]
-            local_sim_scaled = softmax_normalize(local_vals, axis=0, tau=10)
-            normalized_heatmap[row_idx, mask] = local_sim_scaled
+            # local_vals = softmax_normalize(local_vals, axis=0, tau=10)
+            normalized_heatmap[row_idx, mask] = local_vals
 
     global_min = np.nanmin(normalized_heatmap)
     for row_idx in range(M_filtered):
