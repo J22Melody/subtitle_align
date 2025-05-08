@@ -5,7 +5,7 @@ import subprocess
 from itertools import product
 from tqdm import tqdm
 import multiprocessing
-from functools import partial
+
 
 def process_video(vid, args, model, sign_b, sign_o):
     # Pin this worker process to a dedicated CPU from its allowed set.
@@ -18,7 +18,6 @@ def process_video(vid, args, model, sign_b, sign_o):
         print(f"Error setting CPU affinity for video {vid}: {e}")
 
     # Determine the sub-directory name.
-    # Remove "model_" prefix and ".pth" suffix from model.
     model_name = model
     if model_name.startswith("model_"):
         model_name = model_name[len("model_"):]
@@ -44,7 +43,6 @@ def process_video(vid, args, model, sign_b, sign_o):
     # Check for the video file.
     video_file = os.path.join(args.video_dir, f"{vid}.mp4")
     if os.path.exists(video_file):
-        # Pass a relative path for the video.
         cmd += f" --video=./{vid}.mp4"
 
     # Check for the automatic subtitles file.
@@ -57,17 +55,17 @@ def process_video(vid, args, model, sign_b, sign_o):
     if os.path.exists(subtitle_corrected_file):
         cmd += f" --subtitles-corrected={subtitle_corrected_file}"
 
-    # print(cmd)
-
     # Run the command.
+    print(cmd)
     result = subprocess.run(cmd, shell=True)
     if result.returncode != 0:
         return f"Error processing video id {vid} for {model_name}_{sign_b}_{sign_o} (return code {result.returncode}): {cmd}"
-    return f"Processed {vid} for {model_name}_{sign_b}_{sign_o}"
+    return f"Processed {vid} for {model_name}_{sign_b}_{sign_o}"  
 
 def process_task(task):
     vid, model, sign_b, sign_o, args = task
     return process_video(vid, args, model, sign_b, sign_o)
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -77,7 +75,7 @@ def main():
         "--video_ids",
         type=str,
         default="/users/zifan/subtitle_align/data/bobsl_align.txt",
-        help="Path to text file containing video ids (one per line)."
+        help="Path to text file containing video ids (one per line), or 'all' to auto-discover from pose_dir."
     )
     parser.add_argument(
         "--pose_dir",
@@ -120,19 +118,28 @@ def main():
         default=1,
         help="Number of parallel workers to process videos. Default is 1 (sequential processing)."
     )
-    # New arguments now allow multiple values.
     parser.add_argument("--model", nargs='+', default=["model_E4s-1.pth"], type=str, help="Path(s) to model file")
     parser.add_argument("--sign-b-threshold", nargs='+', default=[60], type=int, help="Threshold(s) for sign B")
     parser.add_argument("--sign-o-threshold", nargs='+', default=[50], type=int, help="Threshold(s) for sign O")
-    
     args = parser.parse_args()
 
     # Ensure that the save directory exists.
     os.makedirs(args.save_dir, exist_ok=True)
 
-    # Read video ids from the provided file.
-    with open(args.video_ids, "r") as file:
-        video_ids = [line.strip() for line in file if line.strip()]
+    # Determine video IDs
+    if args.video_ids.lower() == "all":
+        # Discover all pose files
+        try:
+            files = os.listdir(args.pose_dir)
+            video_ids = [os.path.splitext(f)[0] for f in files if f.endswith('.pose')]
+            print(f"Discovered {len(video_ids)} videos from pose_dir: {video_ids}")
+        except Exception as e:
+            print(f"Error listing pose_dir '{args.pose_dir}': {e}")
+            return
+    else:
+        # Read video ids from the provided file.
+        with open(args.video_ids, "r") as file:
+            video_ids = [line.strip() for line in file if line.strip()]
 
     # Create all combinations of model, sign-b-threshold, and sign-o-threshold.
     combinations = list(product(args.model, args.sign_b_threshold, args.sign_o_threshold))
@@ -143,6 +150,7 @@ def main():
         for combo in combinations:
             tasks.append((vid, combo[0], combo[1], combo[2], args))
     
+    # Process tasks
     if args.num_workers > 1:
         with multiprocessing.Pool(args.num_workers) as pool:
             for res in tqdm(pool.imap_unordered(process_task, tasks),

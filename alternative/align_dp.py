@@ -75,26 +75,6 @@ def cost_for_subgroup(subgroup, original_start, original_end, group_global_start
     )
 
 @njit
-def softmax_normalize_jit(vec, axis=0, tau=10):
-    """
-    JIT-compatible softmax normalization.
-    
-    Accepts a 1D array 'vec' (when axis=0) and returns its softmax normalized version,
-    scaled by the length of the vector.
-    
-    The signature matches softmax_normalize (with axis parameter defaulting to 0).
-    """
-    n = vec.shape[0]
-    exp_vals = np.empty(n, dtype=vec.dtype)
-    sum_val = 0.0
-    for i in range(n):
-        exp_vals[i] = np.exp(vec[i] / tau)
-        sum_val += exp_vals[i]
-    for i in range(n):
-        exp_vals[i] = exp_vals[i] / sum_val * n
-    return exp_vals
-
-@njit
 def dp_inner_loop(M, N, dp, prev, cue_starts, cue_ends, sign_starts, sign_ends, gap_cost,
                   candidate_min, candidate_max, sim_matrix, duration_penalty_weight,
                   gap_penalty_weight, similarity_weight, use_similarity):
@@ -204,9 +184,12 @@ def dp_align_subtitles_to_signs(cues, sign_segments, gt_cues=None,
         sim_cumsum = np.zeros((M, N+1))
         for i in tqdm(range(M), desc="Computing similarity cumulative sum"):
             sim_cumsum[i, 1:] = np.cumsum(sim_matrix[i, :])
+    else:
+        # HACK: dummy array for the JIT function
+        sim_matrix = np.zeros((M, N), dtype=np.float64)
 
     gap_cost = compute_gap_cost(sign_segments)
-    
+
     # Call the JIT-compiled DP inner loop.
     dp_inner_loop(M, N, dp, prev, cue_starts, cue_ends, sign_starts, sign_ends, gap_cost,
                   candidate_min_arr, candidate_max_arr, sim_matrix,
