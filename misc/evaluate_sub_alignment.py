@@ -19,6 +19,7 @@ from pickle import SHORT_BINSTRING
 from typing import List, Tuple
 from pathlib import Path
 import multiprocessing
+import warnings
 
 import os 
 import tqdm
@@ -177,10 +178,18 @@ def _process_video(pred_path, gt_path, vid_id, shift_start, shift_end, fps, MAX_
     gt_subs = list(webvtt.from_srt(gt_path) if ext_gt == '.srt' else webvtt.read(gt_path))
     pred_subs = list(webvtt.from_srt(pred_path) if ext_pred == '.srt' else webvtt.read(pred_path))
 
+    exceptional_misaligned = False
     # suppose pred_subs already exclude [NON-SIGN], etc.
     if len(gt_subs) != len(pred_subs):
+        _gt_subs = gt_subs
+        _pred_subs = pred_subs
         gt_subs = [sub for sub in gt_subs if not ("[" in sub.text and "]" in sub.text)]
         pred_subs = [sub for sub in pred_subs if not ("[" in sub.text and "]" in sub.text)]
+        # If still does not equal, leave it
+        if len(gt_subs) != len(pred_subs):
+            exceptional_misaligned = True
+            gt_subs = _gt_subs
+            pred_subs = _pred_subs
     else:
         # Get indices in pred_subs where the exclusion tag appears
         excluded_indices = [i for i, sub in enumerate(gt_subs) if '[' in sub.text and ']' in sub.text]
@@ -205,7 +214,10 @@ def _process_video(pred_path, gt_path, vid_id, shift_start, shift_end, fps, MAX_
 
     msg = (f"Expected num. preds {len(pred_subs)} to match num. gt {len(gt_subs)} for"
            f" {pred_path}")
-    assert len(pred_subs) == len(gt_subs), msg
+    if exceptional_misaligned:
+        warnings.warn(msg, UserWarning)
+    else:
+        assert len(pred_subs) == len(gt_subs), msg
 
     if len(gt_subs) > 0:
         video_total_subs += len(gt_subs)
@@ -228,6 +240,8 @@ def _process_video(pred_path, gt_path, vid_id, shift_start, shift_end, fps, MAX_
             if "[" in sub.text and "]" in sub.text:
                 exclude_subs.append(sub_idx)
             else:
+                if exceptional_misaligned and sub_idx >= len(pred_subs):
+                    continue
                 video_all_offset_start.append(sub._start - pred_subs[sub_idx]._start)
                 video_all_offset_end.append(sub._end - pred_subs[sub_idx]._end)
                 video_all_offset_start_abs.append(abs(sub._start - pred_subs[sub_idx]._start))
@@ -238,16 +252,16 @@ def _process_video(pred_path, gt_path, vid_id, shift_start, shift_end, fps, MAX_
         pred_frames = subs2frames(
             subs=pred_subs,
             max_time=float(max_time),
-            # exclude_subs=exclude_subs,
-            exclude_subs=[],
+            exclude_subs=exclude_subs if exceptional_misaligned else [],
+            # exclude_subs=[],
             fps=fps,
             background_label=BACKGROUND_LABEL,
         )
         gt_frames = subs2frames(
             subs=gt_subs,
             max_time=float(max_time),
-            # exclude_subs=exclude_subs,
-            exclude_subs=[],
+            exclude_subs=exclude_subs if exceptional_misaligned else [],
+            # exclude_subs=[],
             fps=fps,
             background_label=BACKGROUND_LABEL,
         )
