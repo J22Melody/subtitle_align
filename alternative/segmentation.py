@@ -45,14 +45,24 @@ def process_video(vid, args, model, sign_b, sign_o):
     if os.path.exists(video_file):
         cmd += f" --video=./{vid}.mp4"
 
-    # Check for the automatic subtitles file.
-    subtitle_file = os.path.join(args.subtitle_dir, f"{vid}.vtt")
-    if os.path.exists(subtitle_file):
+    # Check for the automatic subtitles file (.vtt or .srt)
+    subtitle_file = None
+    for ext in ['.vtt', '.srt']:
+        candidate = os.path.join(args.subtitle_dir, f"{vid}{ext}")
+        if os.path.exists(candidate):
+            subtitle_file = candidate
+            break
+    if subtitle_file:
         cmd += f" --subtitles={subtitle_file}"
 
-    # Check for the manually corrected subtitles file.
-    subtitle_corrected_file = os.path.join(args.subtitle_dir_corrected, f"{vid}.vtt")
-    if os.path.exists(subtitle_corrected_file):
+    # Check for the manually corrected subtitles file (.vtt or .srt)
+    subtitle_corrected_file = None
+    for ext in ['.vtt', '.srt']:
+        candidate = os.path.join(args.subtitle_dir_corrected, f"{vid}{ext}")
+        if os.path.exists(candidate):
+            subtitle_corrected_file = candidate
+            break
+    if subtitle_corrected_file:
         cmd += f" --subtitles-corrected={subtitle_corrected_file}"
 
     # Run the command.

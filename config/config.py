@@ -1,4 +1,5 @@
 import configargparse
+from pathlib import Path
 
 def save_opts(args, fn):
     with open(fn, 'w') as fw:
@@ -80,6 +81,7 @@ def load_opts():
     parser.add_argument('--subsample_stride', type=int, default=1, help='Sample every Nth frame from input features')
     parser.add_argument('--pad_start_features', action='store_true', help='Pad START rather than END of features if necessary')
     parser.add_argument("--fps", type=int, default=25)
+    parser.add_argument("--fps_file", type=Path, default=None, help="Path to a CSV file mapping video IDs to their FPS. If provided, overrides the global --fps for specific videos.")
     parser.add_argument('--shuffle_getitem', type = bool, default = False, help = "Shuffle get item")
     parser.add_argument("--feature_dim", type=int, default=1024)
     parser.add_argument("--feature_dim_adapt", type = int, help='Adapt different visual feature dim to pretrained I3D')

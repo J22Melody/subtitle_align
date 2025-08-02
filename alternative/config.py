@@ -1,3 +1,4 @@
+from pathlib import Path
 import argparse
 
 def get_args():
@@ -140,6 +141,7 @@ def get_args():
     # ----- Processing Options -----
     parser.add_argument("--fps", type=int, default=25,
                         help="Frames per second of the video.")
+    parser.add_argument("--fps_file", type=Path, default=None, help="Path to a CSV file mapping video IDs to their FPS. If provided, overrides the global --fps for specific videos.")
     parser.add_argument("--num_workers", type=int, default=1,
                         help="Number of processes for parallel processing.")
     parser.add_argument("--overwrite", action='store_true',

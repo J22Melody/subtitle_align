@@ -96,27 +96,36 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
     
     signs = elan_signs
 
-    subtitle_file = os.path.join(args.pr_sub_path, f"{video_id}.vtt")
-    if not os.path.exists(subtitle_file):
+    # Find and load the predicted subtitle file (.vtt or .srt)
+    subtitle_file = None
+    for ext in ['.vtt', '.srt']:
+        candidate = os.path.join(args.pr_sub_path, f"{video_id}{ext}")
+        if os.path.exists(candidate):
+            subtitle_file = candidate
+            break
+
+    if not subtitle_file:
         print(f"Subtitle file for video {video_id} not found. Skipping.")
         return
-    try:
-        with open(subtitle_file, "r", encoding="utf-8") as fin:
-            vtt_content = fin.read()
-    except Exception:
-        return
-    header_lines, cues = get_subtitle_cues(vtt_content)
+
+    header_lines, cues = get_subtitle_cues(subtitle_file)
     if not cues:
         return
 
-    gt_subtitle_file = os.path.join(args.gt_sub_path, f"{video_id}.vtt")
+    # Find and load the ground truth subtitle file (.vtt or .srt)
+    gt_subtitle_file = None
     gt_cues = []
-    if os.path.exists(gt_subtitle_file):
+    for ext in ['.vtt', '.srt']:
+        candidate = os.path.join(args.gt_sub_path, f"{video_id}{ext}")
+        if os.path.exists(candidate):
+            gt_subtitle_file = candidate
+            break
+
+    if gt_subtitle_file:
         try:
-            with open(gt_subtitle_file, "r", encoding="utf-8") as fgt:
-                gt_vtt_content = fgt.read()
-            _, gt_cues = get_subtitle_cues(gt_vtt_content)
-        except Exception:
+            _, gt_cues = get_subtitle_cues(gt_subtitle_file)
+        except Exception as e:
+            print(f"Failed to read GT subtitle for {video_id}: {e}")
             pass
 
     if not args.include_non_sign:
@@ -337,6 +346,30 @@ def get_alignment_params(args, randomize=False):
 def main():
     args = get_args()  # Load arguments from config.py
 
+    # --- NEW: Load per-video FPS from fps_file if provided ---
+    fps_map = {}
+    fps_file_path = getattr(args, 'fps_file', None)
+    if fps_file_path:
+        print(f"Loading per-video FPS from: {fps_file_path}")
+        try:
+            with open(fps_file_path, 'r', encoding='utf-8-sig') as f:
+                reader = csv.reader(f)
+                next(reader)  # Skip header
+                for row in reader:
+                    if not row: continue
+                    filename, video_fps_str = row
+                    # Strip extension from filename to get the video ID
+                    video_id = os.path.splitext(filename)[0]
+                    fps_map[video_id] = int(float(video_fps_str))
+            print(f"Loaded FPS for {len(fps_map)} videos.")
+        except FileNotFoundError:
+            print(f"Warning: FPS file not found at {fps_file_path}. Using global FPS.")
+            fps_map = {}
+        except Exception as e:
+            print(f"Warning: Error reading FPS file: {e}. Using global FPS.")
+            fps_map = {}
+    # --- END NEW ---
+
     mode = args.mode
     # Load video IDs.
     vids_dict = load_video_ids(args, mode)
@@ -352,7 +385,8 @@ def main():
                            post_subs_start=post_subs_start, post_subs_end=post_subs_end,
                            cmpl_overlapIoU=args.cmpl_overlapIoU[0])
         eval_output = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                              video_ids, args.fps, 0, 0, num_workers=args.num_workers)
+                                              video_ids, args.fps, 0, 0, num_workers=args.num_workers,
+                                              fps_map=fps_map) # MODIFIED
         print_results(eval_output)
     elif mode == "dev":
         video_ids = vids_dict["all"]
@@ -362,11 +396,14 @@ def main():
                            post_subs_start=post_subs_start, post_subs_end=post_subs_end,
                            cmpl_overlapIoU=args.cmpl_overlapIoU[0])
         eval_train = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                             vids_dict["train"], args.fps, 0, 0, num_workers=args.num_workers)
+                                             vids_dict["train"], args.fps, 0, 0, num_workers=args.num_workers,
+                                             fps_map=fps_map) # MODIFIED
         eval_val = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                           vids_dict["val"], args.fps, 0, 0, num_workers=args.num_workers)
+                                           vids_dict["val"], args.fps, 0, 0, num_workers=args.num_workers,
+                                           fps_map=fps_map) # MODIFIED
         eval_test = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                            vids_dict["test"], args.fps, 0, 0, num_workers=args.num_workers)
+                                            vids_dict["test"], args.fps, 0, 0, num_workers=args.num_workers,
+                                            fps_map=fps_map) # MODIFIED
         col_names = [os.path.splitext(os.path.basename(p))[0] for p in 
                      [args.video_ids_train, args.video_ids_val, args.video_ids_test]]
         print_results([eval_train, eval_val, eval_test], column_names=col_names)
@@ -395,7 +432,8 @@ def main():
                                post_subs_start=post_subs_start, post_subs_end=post_subs_end,
                                cmpl_overlapIoU=cmpl_overlapIoU)
             eval_output = eval_subtitle_alignment(Path(output_dir), Path(args.gt_sub_path),
-                                                  train_ids, args.fps, 0, 0, num_workers=args.num_workers)
+                                                  train_ids, args.fps, 0, 0, num_workers=args.num_workers,
+                                                  fps_map=fps_map) # MODIFIED
             f1_score = extract_f1_score(eval_output)
             scores[comb_str] = f1_score
             print(f"Trial {i+1}/{args.num_search}, Params: {comb_str}, F1@0.50: {f1_score}")
@@ -429,11 +467,14 @@ def main():
                            post_subs_start=best_params[10], post_subs_end=best_params[11],
                            cmpl_overlapIoU=best_params[12])
         eval_train = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                             vids_dict["train"], args.fps, 0, 0, num_workers=args.num_workers)
+                                             vids_dict["train"], args.fps, 0, 0, num_workers=args.num_workers,
+                                             fps_map=fps_map) # MODIFIED
         eval_val = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                           vids_dict["val"], args.fps, 0, 0, num_workers=args.num_workers)
+                                           vids_dict["val"], args.fps, 0, 0, num_workers=args.num_workers,
+                                           fps_map=fps_map) # MODIFIED
         eval_test = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                            vids_dict["test"], args.fps, 0, 0, num_workers=args.num_workers)
+                                            vids_dict["test"], args.fps, 0, 0, num_workers=args.num_workers,
+                                            fps_map=fps_map) # MODIFIED
         col_names = [os.path.splitext(os.path.basename(p))[0] for p in 
                      [args.video_ids_train, args.video_ids_val, args.video_ids_test]]
         print_results([eval_train, eval_val, eval_test], column_names=col_names)

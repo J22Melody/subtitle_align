@@ -52,3 +52,5 @@ checkpoints_subtitle_align/
 slurm*.out
 
 alternative/aligned_subtitles*
+
+*.log

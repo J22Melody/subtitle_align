@@ -4,8 +4,10 @@ import sys
 import bisect
 import glob
 from io import StringIO
+import pysrt
 import webvtt
 import csv
+from pathlib import Path
 import xml.etree.ElementTree as ET
 import numpy as np
 
@@ -87,29 +89,50 @@ def shift_cues(cues, delta_start: float, delta_end: float):
         cue["mid"] = (cue["start"] + cue["end"]) / 2
     return cues
 
-def get_subtitle_cues(vtt_content: str):
+def get_subtitle_cues(path: str):
     """
-    Parse the VTT content and return a tuple (header_lines, cues) where:
-      - header_lines is a list containing "WEBVTT"
-      - cues is a list of dictionaries, each with keys: 'start', 'end', 'mid', and 'text'
+    Parse .vtt or .srt subtitle file and return (header_lines, cues), where:
+      - header_lines: ["WEBVTT"] or ["SRT"]
+      - cues: list of dicts with 'start', 'end', 'mid', 'text'
     """
-    vtt_content = ensure_valid_vtt_format(vtt_content)
-    try:
-        vtt_obj = webvtt.read_buffer(StringIO(vtt_content))
-    except Exception as e:
-        print("Error parsing VTT content:", e)
-        return ["WEBVTT"], []
+    def timestamp_to_seconds(ts: str) -> float:
+        ts = ts.replace(',', '.')
+        h, m, s = ts.split(':')
+        return int(h) * 3600 + int(m) * 60 + float(s)
+
+    ext = Path(path).suffix.lower()
+    header_lines = ["SRT"] if ext == ".srt" else ["WEBVTT"]
     cues = []
-    for cue in vtt_obj:
-        start_sec = timestamp_to_seconds(cue.start)
-        end_sec = timestamp_to_seconds(cue.end)
-        cues.append({
-            'start': start_sec,
-            'end': end_sec,
-            'mid': (start_sec + end_sec) / 2,
-            'text': cue.text
-        })
-    return ["WEBVTT"], cues
+
+    try:
+        if ext == ".srt":
+            subs = pysrt.open(path)
+            for sub in subs:
+                start = sub.start.ordinal / 1000.0
+                end = sub.end.ordinal / 1000.0
+                text = " ".join(sub.text.splitlines()).strip()
+                cues.append({
+                    'start': start,
+                    'end': end,
+                    'mid': (start + end) / 2,
+                    'text': text
+                })
+        else:
+            vtt_obj = webvtt.read(path)
+            for cue in vtt_obj:
+                text = cue.text.strip()
+                start_sec = timestamp_to_seconds(cue.start)
+                end_sec = timestamp_to_seconds(cue.end)
+                cues.append({
+                    'start': start_sec,
+                    'end': end_sec,
+                    'mid': (start_sec + end_sec) / 2,
+                    'text': text
+                })
+    except Exception as e:
+        print(f"Error reading subtitle file {path}: {e}")
+    
+    return header_lines, cues
 
 def reconstruct_vtt(header_lines, cues) -> str:
     """
