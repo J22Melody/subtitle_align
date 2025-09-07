@@ -3,8 +3,9 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
+from utils import softmax_normalize
 
-def visualize_similarity_heatmap(sim_matrix, cues, sign_segments, gt_cues=None, new_cues=None, fps=25, start_time_window=0, end_time_window=256):
+def visualize_similarity_heatmap(sim_matrix, cues, sign_segments, gt_cues=None, new_cues=None, fps=25, start_time_window=60, end_time_window=90):
     """Visualize similarity matrix with aligned and ground truth cues at frame-level resolution.
     
     [Documentation omitted for brevity]
@@ -104,15 +105,15 @@ def visualize_similarity_heatmap(sim_matrix, cues, sign_segments, gt_cues=None, 
 
     ax = plt.gca()
 
-    for i, cue_idx in enumerate(cue_indices_in_window[::-1]):
-        cue = cues[cue_idx]
-        box_start = max(cue['start'], start_time_window)
-        box_end = min(cue['end'], end_time_window)
-        if box_end > box_start:
-            y_box = M_filtered - i - 1
-            rect = plt.Rectangle((box_start, y_box), box_end-box_start, 1,
-                                 edgecolor='red', facecolor='none', linewidth=2)
-            ax.add_patch(rect)
+    # for i, cue_idx in enumerate(cue_indices_in_window[::-1]):
+    #     cue = cues[cue_idx]
+    #     box_start = max(cue['start'], start_time_window)
+    #     box_end = min(cue['end'], end_time_window)
+    #     if box_end > box_start:
+    #         y_box = M_filtered - i - 1
+    #         rect = plt.Rectangle((box_start, y_box), box_end-box_start, 1,
+    #                              edgecolor='red', facecolor='none', linewidth=2)
+    #         ax.add_patch(rect)
     
     if gt_cues:
         gt_text_map = {}
@@ -131,8 +132,8 @@ def visualize_similarity_heatmap(sim_matrix, cues, sign_segments, gt_cues=None, 
                 if box_end > box_start:
                     y_box = M_filtered - i - 1
                     rect = plt.Rectangle((box_start, y_box), box_end-box_start, 1,
-                                         edgecolor='lime', facecolor='none', 
-                                         linewidth=2)
+                                         edgecolor='#ccffd0', facecolor='none', 
+                                         linewidth=5)
                     ax.add_patch(rect)
 
     # New block for new_cues (yellow dotted boxes)
@@ -153,8 +154,8 @@ def visualize_similarity_heatmap(sim_matrix, cues, sign_segments, gt_cues=None, 
                 if box_end > box_start:
                     y_box = M_filtered - i - 1
                     rect = plt.Rectangle((box_start, y_box), box_end-box_start, 1,
-                                         edgecolor='lime', facecolor='none', 
-                                         linewidth=2, linestyle='--')
+                                         edgecolor='#ccffd0', facecolor='none', 
+                                         linewidth=5, linestyle='--')
                     ax.add_patch(rect)
 
     plt.xlabel("Time")

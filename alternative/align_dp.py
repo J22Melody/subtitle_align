@@ -135,6 +135,7 @@ def dp_inner_loop(M, N, dp, prev, cue_starts, cue_ends, sign_starts, sign_ends, 
                 diff_start = abs(cue_start - group_start)
                 diff_end = abs(cue_end - group_end)
                 diff_duration = abs((cue_end - cue_start) - (group_end - group_start))
+                # FIXME: should use the function compute_alignment_cost
                 cost_val = diff_start + diff_end + duration_penalty_weight * diff_duration + gap_penalty_weight * total_gap + similarity_weight * (-similarity_total)
                 cur_cost = dp[i-1, k] + cost_val
                 if cur_cost < dp[i, j]:

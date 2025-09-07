@@ -118,6 +118,7 @@ def get_subtitle_cues(path: str):
                     'text': text
                 })
         else:
+            # FIXME: suppress the prints
             vtt_obj = webvtt.read(path)
             for cue in vtt_obj:
                 text = cue.text.strip()
