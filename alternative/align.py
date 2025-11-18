@@ -114,7 +114,7 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
 
     # Find and load the ground truth subtitle file (.vtt or .srt)
     gt_subtitle_file = None
-    gt_cues = []
+    gt_cues = None  # changed: None denotes "not available"
     for ext in ['.vtt', '.srt']:
         candidate = os.path.join(args.gt_sub_path, f"{video_id}{ext}")
         if os.path.exists(candidate):
@@ -126,23 +126,27 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
             _, gt_cues = get_subtitle_cues(gt_subtitle_file)
         except Exception as e:
             print(f"Failed to read GT subtitle for {video_id}: {e}")
-            pass
+            gt_cues = None  # changed: ensure None if parsing fails
+
+    # Prepare for optional non-sign filtering
+    excluded_ids = []  # changed: define upfront so later usage is safe
 
     if not args.include_non_sign:
-        # Ensure both lists have the same length before filtering.
-        assert len(cues) == len(gt_cues), f'len(cues) {len(cues)} != len(gt_cues) {len(gt_cues)}'
-        
-        excluded_ids = []
-        filtered_cues = []
-        
-        for i, cue in enumerate(cues):
-            # Check if the ground truth cue's text contains '[' or ']'
-            if '[' not in gt_cues[i]['text'] and ']' not in gt_cues[i]['text']:
-                filtered_cues.append(cue)
+        if gt_cues:
+            # Ensure both lists have the same length before filtering; otherwise skip filtering.
+            if len(cues) != len(gt_cues):
+                print(f"Warning: len(cues) {len(cues)} != len(gt_cues) {len(gt_cues)} for {video_id}. Skipping non-sign filtering.")
             else:
-                excluded_ids.append(i)
-        
-        cues = filtered_cues
+                filtered_cues = []
+                for i, cue in enumerate(cues):
+                    if '[' not in gt_cues[i]['text'] and ']' not in gt_cues[i]['text']:
+                        filtered_cues.append(cue)
+                    else:
+                        excluded_ids.append(i)
+                cues = filtered_cues
+        else:
+            # No GT present: skip filtering
+            print(f"No GT subtitles for {video_id}. Skipping non-sign filtering.")
 
     # Apply pre-alignment bias on cues.
     cues = shift_cues(cues, pr_subs_delta_bias_start, pr_subs_delta_bias_end)
@@ -177,7 +181,7 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
                     if os.path.exists(subtitle_emb_file) and os.path.exists(segmentation_emb_file):
                         subtitle_embedding = np.load(subtitle_emb_file)
                         # Optionally remove non-sign embeddings if specified.
-                        if not args.include_non_sign:
+                        if (not args.include_non_sign) and excluded_ids:  # changed: guard on excluded_ids
                             subtitle_embedding = np.delete(subtitle_embedding, excluded_ids, axis=0)
                         segmentation_embedding = np.load(segmentation_emb_file)
                     else:
@@ -204,13 +208,15 @@ def process_video(video_id, args, dp_duration_penalty_weight, dp_gap_penalty_wei
         # Convert list to numpy array and average along the 0th axis (elementwise mean).
         sim_matrix = np.mean(np.array(sim_matrices), axis=0)
 
+    # Debug slicing with safe GT handling
+    gt_list = gt_cues if gt_cues else []  # changed: normalize to list for downstream
     if args.debug:
         debug_sec = 30
         cues_ = [cue for cue in cues if cue['start'] < debug_sec]
-        gt_cues_ = [cue for cue in gt_cues if cue['start'] < debug_sec]
+        gt_cues_ = [cue for cue in gt_list if cue['start'] < debug_sec]
         signs_ = [seg for seg in signs if seg['start'] < debug_sec]
     else:
-        cues_, gt_cues_, signs_ = cues, gt_cues, signs
+        cues_, gt_cues_, signs_ = cues, gt_list, signs  # changed: use gt_list
 
     dp_align_subtitles_to_signs(cues_, signs_, gt_cues=gt_cues_,
        duration_penalty_weight=dp_duration_penalty_weight,
@@ -384,10 +390,19 @@ def main():
                            pr_subs_start=pr_subs_start, pr_subs_end=pr_subs_end,
                            post_subs_start=post_subs_start, post_subs_end=post_subs_end,
                            cmpl_overlapIoU=args.cmpl_overlapIoU[0])
-        eval_output = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
-                                              video_ids, args.fps, 0, 0, num_workers=args.num_workers,
-                                              fps_map=fps_map) # MODIFIED
-        print_results(eval_output)
+
+        # changed: Skip eval when any GT subtitle is missing; still save outputs/ELAN.
+        missing_gt = [
+            vid for vid in video_ids
+            if not any(os.path.exists(os.path.join(args.gt_sub_path, f"{vid}{ext}")) for ext in ['.vtt', '.srt'])
+        ]
+        if missing_gt:
+            print(f"Skipping evaluation: missing GT subtitles for {len(missing_gt)} video(s).")
+        else:
+            eval_output = eval_subtitle_alignment(Path(args.save_dir), Path(args.gt_sub_path),
+                                                  video_ids, args.fps, 0, 0, num_workers=args.num_workers,
+                                                  fps_map=fps_map)
+            print_results(eval_output)
     elif mode == "dev":
         video_ids = vids_dict["all"]
         process_all_videos(video_ids, args, dp_dpw, dp_gpw, dp_ws, dp_mg, sim_w, args.save_dir, save_elan=True,
